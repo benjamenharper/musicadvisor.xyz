@@ -130,7 +130,7 @@ export default function ContentPage() {
           <div className="sticky top-8 space-y-8">
             {/* Recent Posts */}
             {recentPosts.length > 0 && (
-              <RelatedContent posts={recentPosts} />
+              <RelatedContent posts={recentPosts} currentSlug={params.slug} />
             )}
           </div>
         </aside>
