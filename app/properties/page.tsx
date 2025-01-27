@@ -22,11 +22,12 @@ export default function PropertiesPage() {
         const sort = searchParams.get('sort') || 'date-desc';
 
         // Convert price range to min/max values
-        let minPrice: number | undefined, maxPrice: number | undefined;
+        let minPrice = 0;
+        let maxPrice = Number.MAX_SAFE_INTEGER;
         if (price) {
           const [min, max] = price.split('-').map(Number);
-          minPrice = min;
-          maxPrice = max;
+          if (!isNaN(min)) minPrice = min;
+          if (!isNaN(max)) maxPrice = max;
         }
 
         const results = await searchProperties(island, 'sale');
