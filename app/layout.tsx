@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import type { Metadata } from "next";
 import "./globals.css";
 import ClientLayout from "@/components/ClientLayout";
+import { StoreProvider } from '@/components/providers/StoreProvider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -23,7 +24,9 @@ export default function RootLayout({
       <body
         className={`${inter.variable} font-sans antialiased min-h-screen flex flex-col bg-background text-foreground`}
       >
-        <ClientLayout>{children}</ClientLayout>
+        <StoreProvider>
+          <ClientLayout>{children}</ClientLayout>
+        </StoreProvider>
       </body>
     </html>
   );

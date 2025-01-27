@@ -1,26 +1,58 @@
-import { searchProperties } from '@/lib/api/properties';
-import PropertyCard from '@/components/properties/PropertyCard';
-import PropertyFilters from '@/components/properties/PropertyFilters';
-import CalloutPanel from '@/components/CalloutPanel';
+import { fetchProperties } from '@/lib/api';
 
 export default async function Home() {
-  const properties = await searchProperties();
+  try {
+    const properties = await fetchProperties({
+      region_id: '6_2446',
+      status: 'sale',
+      offset: '0',
+      limit: '42'
+    });
 
-  return (
-    <div>
+    return (
       <main className="bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <PropertyFilters />
-          
-          {/* Featured Properties */}
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {properties.map((property) => (
-              <PropertyCard key={property.id} property={property} />
+          <h1 className="text-3xl font-bold mb-8">Featured Properties</h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {properties.data.map((property) => (
+              <div key={property.id} className="bg-white shadow-lg rounded-lg overflow-hidden">
+                <div className="p-6">
+                  <h2 className="text-xl font-bold mb-2">{property.address}</h2>
+                  <p className="text-2xl font-bold text-blue-600 mb-4">${property.price.toLocaleString()}</p>
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <p className="text-gray-600">Beds</p>
+                      <p className="font-semibold">{property.beds}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600">Baths</p>
+                      <p className="font-semibold">{property.baths}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600">Sq Ft</p>
+                      <p className="font-semibold">{property.sqft}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600">Year Built</p>
+                      <p className="font-semibold">{property.yearBuilt}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </main>
-      <CalloutPanel />
-    </div>
-  );
+    );
+  } catch (error) {
+    console.error('Error in Home page:', error);
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-between p-24">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-red-600">Error loading properties</h1>
+          <p className="mt-2">Please try again later</p>
+        </div>
+      </main>
+    );
+  }
 }
