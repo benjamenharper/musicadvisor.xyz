@@ -1,11 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { fetchPosts, fetchCategories } from '@/lib/wordpress';
-import { config } from '@/lib/config';
-import { useStore } from '@/components/providers/StoreProvider';
 import SearchBox from '@/components/SearchBox';
 
 interface Post {
@@ -31,11 +28,16 @@ interface Category {
   slug: string;
 }
 
-export default function Posts() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+interface PostsClientProps {
+  initialPosts: Post[];
+  initialCategories: Category[];
+}
+
+export default function PostsClient({ initialPosts, initialCategories }: PostsClientProps) {
+  const [posts, setPosts] = useState(initialPosts);
+  const [categories, setCategories] = useState(initialCategories);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const currentSiteKey = useStore((state) => state.currentSiteKey);
 
   useEffect(() => {
