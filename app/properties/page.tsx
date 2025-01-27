@@ -22,7 +22,7 @@ export default function PropertiesPage() {
         const sort = searchParams.get('sort') || 'date-desc';
 
         // Convert price range to min/max values
-        let minPrice, maxPrice;
+        let minPrice: number | undefined, maxPrice: number | undefined;
         if (price) {
           const [min, max] = price.split('-').map(Number);
           minPrice = min;
