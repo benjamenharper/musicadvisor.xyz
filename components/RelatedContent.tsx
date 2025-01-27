@@ -5,13 +5,20 @@ import Link from 'next/link';
 import { fetchRelatedPosts } from '@/lib/wordpress';
 import { format } from 'date-fns';
 
+interface Post {
+  id: string | number;
+  title: string;
+  slug: string;
+  date?: string;
+}
+
 interface RelatedContentProps {
-  posts?: any[];
+  posts?: Post[];
   currentSlug: string;
 }
 
 export default function RelatedContent({ posts, currentSlug }: RelatedContentProps) {
-  const [relatedPosts, setRelatedPosts] = useState<any[]>(posts || []);
+  const [relatedPosts, setRelatedPosts] = useState<Post[]>(posts || []);
 
   useEffect(() => {
     const loadRelatedPosts = async () => {
