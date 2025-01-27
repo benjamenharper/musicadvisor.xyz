@@ -2,12 +2,7 @@ import { fetchProperties } from '@/lib/api';
 
 export default async function Home() {
   try {
-    const properties = await fetchProperties({
-      region_id: '6_2446',
-      status: 'sale',
-      offset: '0',
-      limit: '42'
-    });
+    const properties = await fetchProperties();
 
     return (
       <main className="bg-background">
