@@ -6,10 +6,12 @@ import { fetchRelatedPosts } from '@/lib/wordpress';
 import { format } from 'date-fns';
 
 interface Post {
-  id: string | number;
-  title: string;
+  id: number;
+  title: {
+    rendered: string;
+  };
   slug: string;
-  date?: string;
+  date: string;
 }
 
 interface RelatedContentProps {
@@ -47,7 +49,7 @@ export default function RelatedContent({ posts, currentSlug }: RelatedContentPro
           <article key={post.id} className="group">
             <Link href={`/content/${post.slug}`}>
               <h4 className="font-medium group-hover:text-primary transition-colors">
-                {post.title}
+                {post.title.rendered}
               </h4>
               {post.date && (
                 <time className="text-sm text-muted-foreground">

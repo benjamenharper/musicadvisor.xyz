@@ -129,7 +129,7 @@ export default function ContentPage() {
         <aside className="lg:w-80 flex-none mt-12 lg:mt-0">
           <div className="sticky top-8 space-y-8">
             {/* Recent Posts */}
-            {recentPosts.length > 0 && (
+            {recentPosts?.length > 0 && (
               <RelatedContent 
                 posts={recentPosts} 
                 currentSlug={Array.isArray(params.slug) ? params.slug[0] : params.slug} 
