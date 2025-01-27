@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { searchPosts } from '@/lib/wordpress';
-import { useSiteStore } from '@/lib/store';
+import { useStore } from '@/components/providers/StoreProvider';
 import { useDebounce } from '@/lib/hooks';
 
 interface SearchResult {
@@ -19,7 +19,7 @@ export default function SearchBox() {
   const [showResults, setShowResults] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const searchRef = useRef<HTMLDivElement>(null);
-  const { currentSiteKey } = useSiteStore();
+  const currentSiteKey = useStore((state) => state.currentSiteKey);
   const debouncedQuery = useDebounce(query, 300);
 
   useEffect(() => {

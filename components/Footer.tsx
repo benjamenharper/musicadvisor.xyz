@@ -3,13 +3,13 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
-import { useSiteStore } from '@/lib/store';
+import { useStore } from '@/components/providers/StoreProvider';
 import { config } from '@/lib/config';
 
 export default function Footer() {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
-  const { currentSiteKey } = useSiteStore();
+  const currentSiteKey = useStore((state) => state.currentSiteKey);
   const site = config.sites[currentSiteKey];
 
   useEffect(() => {

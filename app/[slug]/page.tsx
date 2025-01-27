@@ -8,7 +8,7 @@ import { notFound } from 'next/navigation';
 import { format } from 'date-fns';
 import RelatedContent from '@/components/RelatedContent';
 import { fetchContentBySlug } from '@/lib/wordpress';
-import { useSiteStore } from '@/lib/store';
+import { useStore } from '@/components/providers/StoreProvider';
 
 interface ContentPageProps {
   params: {
@@ -18,7 +18,7 @@ interface ContentPageProps {
 
 export default function ContentPage() {
   const params = useParams();
-  const { currentSiteKey } = useSiteStore();
+  const currentSiteKey = useStore((state) => state.currentSiteKey);
   const [content, setContent] = useState<any>(null);
   const [recentPosts, setRecentPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { fetchPosts, fetchPages } from '@/lib/wordpress';
-import { useSiteStore } from '@/lib/store';
+import { useStore } from '@/components/providers/StoreProvider';
 import SearchBox from '@/components/SearchBox';
 
 interface ContentItem {
@@ -30,7 +30,7 @@ export default function Content() {
   const [content, setContent] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'posts' | 'pages'>('all');
-  const { currentSiteKey } = useSiteStore();
+  const currentSiteKey = useStore((state) => state.currentSiteKey);
 
   useEffect(() => {
     const loadContent = async () => {

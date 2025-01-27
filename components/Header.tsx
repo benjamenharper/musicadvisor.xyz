@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useSiteStore } from '@/lib/store';
+import { useStore } from '@/components/providers/StoreProvider';
 import { config } from '@/lib/config';
 import { cn } from '@/lib/utils';
 import { Home } from 'lucide-react';
@@ -22,7 +22,7 @@ const mainNav = [
 ];
 
 export default function Header() {
-  const { currentSiteKey } = useSiteStore();
+  const currentSiteKey = useStore((state) => state.currentSiteKey);
   const site = config.sites[currentSiteKey];
 
   return (

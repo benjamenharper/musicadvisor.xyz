@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { fetchPages } from '@/lib/wordpress';
-import { useSiteStore } from '@/lib/store';
+import { useStore } from '@/components/providers/StoreProvider';
 
 interface WordPressPage {
   id: number;
@@ -16,7 +16,7 @@ interface WordPressPage {
 export default function Pages() {
   const [pages, setPages] = useState<WordPressPage[]>([]);
   const [loading, setLoading] = useState(true);
-  const { currentSiteKey } = useSiteStore();
+  const currentSiteKey = useStore((state) => state.currentSiteKey);
 
   useEffect(() => {
     const loadPages = async () => {

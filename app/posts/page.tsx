@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { fetchPosts, fetchCategories } from '@/lib/wordpress';
 import { config } from '@/lib/config';
-import { useSiteStore } from '@/lib/store';
+import { useStore } from '@/components/providers/StoreProvider';
 import SearchBox from '@/components/SearchBox';
 
 interface Post {
@@ -36,7 +36,7 @@ export default function Posts() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [loading, setLoading] = useState(true);
-  const { currentSiteKey } = useSiteStore();
+  const currentSiteKey = useStore((state) => state.currentSiteKey);
 
   useEffect(() => {
     const loadData = async () => {
