@@ -5,6 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import SearchBox from '@/components/SearchBox';
 import { useStore } from '@/components/providers/StoreProvider';
+import { fetchCategories, fetchPosts } from '@/lib/api';
+import { config } from '@/lib/config';
 
 interface Post {
   id: number;
@@ -29,16 +31,11 @@ interface Category {
   slug: string;
 }
 
-interface PostsClientProps {
-  initialPosts: Post[];
-  initialCategories: Category[];
-}
-
-export default function PostsClient({ initialPosts, initialCategories }: PostsClientProps) {
-  const [posts, setPosts] = useState(initialPosts);
-  const [categories, setCategories] = useState(initialCategories);
+export default function Posts() {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const currentSiteKey = useStore((state) => state.currentSiteKey);
 
   useEffect(() => {
@@ -46,8 +43,8 @@ export default function PostsClient({ initialPosts, initialCategories }: PostsCl
       setLoading(true);
       try {
         const [categoriesData, postsData] = await Promise.all([
-          fetchCategories(currentSiteKey),
-          fetchPosts({ _embed: '1', _fields: 'id,slug,title,excerpt,_links,_embedded' }, currentSiteKey)
+          fetchCategories(currentSiteKey || config.defaultSite),
+          fetchPosts({ _embed: '1', _fields: 'id,slug,title,excerpt,_links,_embedded' }, currentSiteKey || config.defaultSite)
         ]);
         
         setCategories(categoriesData);
