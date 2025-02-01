@@ -22,6 +22,11 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    // This will enable static rendering for dynamic routes
+    workerThreads: false,
+    cpus: 1
+  }
 }
 
 module.exports = nextConfig
