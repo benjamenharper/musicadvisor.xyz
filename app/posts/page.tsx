@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import SearchBox from '@/components/SearchBox';
+import { useSiteStore } from '@/lib/store';
 
 interface Post {
   id: number;
@@ -38,7 +39,7 @@ export default function PostsClient({ initialPosts, initialCategories }: PostsCl
   const [categories, setCategories] = useState(initialCategories);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [loading, setLoading] = useState(false);
-  const currentSiteKey = useStore((state) => state.currentSiteKey);
+  const currentSiteKey = useSiteStore((state) => state.currentSiteKey);
 
   useEffect(() => {
     const loadData = async () => {
