@@ -38,82 +38,57 @@ export async function searchProperties(
     console.log('Raw Zillow API Response:', response);
 
     // Extract properties from response
-    const properties = [];
+    let properties = [];
     
     if (response && Array.isArray(response)) {
-      properties.push(...response);
+      properties = response;
     } else if (response && Array.isArray(response.props)) {
-      properties.push(...response.props);
+      properties = response.props;
     } else if (response && Array.isArray(response.results)) {
-      properties.push(...response.results);
+      properties = response.results;
     }
 
-    console.log('Extracted properties:', properties);
+    // Transform the properties to match our Property interface
+    const transformedProperties: Property[] = properties.map((prop: any) => {
+      // Parse the price string to get numeric value
+      const priceString = prop.price || '0';
+      const numericPrice = parseInt(priceString.replace(/[^0-9]/g, '')) || 0;
 
-    if (properties.length === 0) {
-      console.log('No properties found in response');
-      return [];
-    }
+      // Get city and island from address
+      const addressParts = (prop.address || '').split(',');
+      const city = addressParts[0]?.trim() || 'Unknown';
+      const island = addressParts[1]?.includes('HI') ? addressParts[1].replace('HI', '').trim() : 'Hawaii';
 
-    // Map the properties to our Property type
-    let mappedProperties = properties.map((prop: any) => {
-      // Parse the price value from Zillow API
-      const priceStr = prop.price || prop.listPrice || '';
-      const numericPrice = typeof prop.price === 'number' 
-        ? prop.price 
-        : parseInt(priceStr.replace(/[$,]/g, '')) || 0;
-
-      // Extract city and island from address
-      const address = prop.address || prop.streetAddress || '';
-      const addressParts = address.split(',').map(part => part.trim());
-      const city = addressParts[1] || '';
-      const stateZip = addressParts[2] || '';
-      const islandMap: Record<string, string> = {
-        'Honolulu': 'Oahu',
-        'Kapolei': 'Oahu',
-        'Kailua': 'Oahu',
-        'Kahului': 'Maui',
-        'Kihei': 'Maui',
-        'Lahaina': 'Maui',
-        'Hilo': 'Big Island',
-        'Kailua-Kona': 'Big Island',
-        'Lihue': 'Kauai',
-        'Kapaa': 'Kauai',
-      };
-      const island = islandMap[city] || location.split(',')[0].trim();
-      
       return {
-        id: prop.zpid?.toString() || prop.id?.toString() || '',
-        title: prop.statusText || prop.address || '',
-        price: priceStr,
-        description: `${prop.beds || prop.bedrooms || 0} beds, ${prop.baths || prop.bathrooms || 0} baths`,
-        image: prop.imgSrc || prop.imageUrl || 'https://via.placeholder.com/800x600?text=Property+Image',
-        location: address,
+        id: prop.zpid?.toString() || Math.random().toString(36).substr(2, 9),
+        title: prop.name || 'Hawaii Property',
+        price: prop.price || '$0',
+        description: prop.description || 'Beautiful property in Hawaii',
+        image: prop.imgSrc || 'https://via.placeholder.com/800x600?text=Property+Image',
+        location: prop.address || 'Hawaii',
         city,
         island,
-        beds: prop.beds || prop.bedrooms || 0,
-        baths: prop.baths || prop.bathrooms || 0,
-        sqft: prop.area || prop.livingArea || 0,
-        propertyType: prop.homeType || prop.propertyType || zillowPropertyType,
-        zillowUrl: prop.zpid ? `https://www.zillow.com/homedetails/${prop.zpid}_zpid/` : '',
-        numericPrice
+        beds: prop.beds || 0,
+        baths: prop.baths || 0,
+        sqft: prop.sqft || 0,
+        propertyType: prop.propertyType || zillowPropertyType,
+        zillowUrl: prop.detailUrl || undefined,
+        numericPrice: numericPrice
       };
     });
 
-    // Filter by price range if specified
+    // Apply price range filter if specified
     if (priceRange) {
-      const [minStr, maxStr] = priceRange.split('-');
-      const min = parseInt(minStr);
-      const max = parseInt(maxStr);
-
-      mappedProperties = mappedProperties.filter(prop => {
-        return prop.numericPrice >= min && prop.numericPrice <= max;
+      const [minPrice, maxPrice] = priceRange.split('-').map(p => parseInt(p) || 0);
+      return transformedProperties.filter(p => {
+        return (!minPrice || p.numericPrice >= minPrice) && 
+               (!maxPrice || p.numericPrice <= maxPrice);
       });
     }
 
-    // Sort properties based on sortBy parameter
+    // Sort properties
     if (sortBy) {
-      mappedProperties = mappedProperties.sort((a, b) => {
+      transformedProperties.sort((a, b) => {
         switch (sortBy) {
           case 'price-asc':
             return a.numericPrice - b.numericPrice;
@@ -125,39 +100,26 @@ export async function searchProperties(
       });
     }
 
-    console.log('Mapped and sorted properties:', mappedProperties);
-    return mappedProperties;
-
+    return transformedProperties;
   } catch (error) {
-    console.error('Error fetching properties:', error);
-    throw error;
+    console.error('Error in searchProperties:', error);
+    return [];
   }
 }
 
 export async function getPropertyById(id: string): Promise<Property | null> {
   try {
-    // Search in all locations to find the property
-    const locations = ['oahu', 'maui', 'hawaii', 'kauai'];
+    const allProperties = await searchProperties();
+    const property = allProperties.find(p => p.id === id);
     
-    for (const location of locations) {
-      const properties = await searchProperties(
-        location,
-        'For Sale',
-        undefined,
-        undefined,
-        'price-asc'
-      );
-      
-      const property = properties.find(p => p.id === id);
-      if (property) {
-        return property;
-      }
+    if (!property) {
+      console.log('Property not found:', id);
+      return null;
     }
-
-    console.log('Property not found with ID:', id);
-    return null;
+    
+    return property;
   } catch (error) {
-    console.error('Error fetching property by ID:', error);
-    throw error;
+    console.error('Error in getPropertyById:', error);
+    return null;
   }
 }
