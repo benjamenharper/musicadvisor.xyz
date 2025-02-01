@@ -1,26 +1,17 @@
 'use client';
 
-import { createStore } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from 'zustand';
 import { config } from './config';
 
-export interface SiteStore {
+interface SiteStore {
   currentSiteKey: string;
   setCurrentSiteKey: (key: string) => void;
 }
 
-export const createSiteStore = () =>
-  createStore<SiteStore>()(
-    persist(
-      (set) => ({
-        currentSiteKey: config.defaultSite,
-        setCurrentSiteKey: (key: string) => set({ currentSiteKey: key }),
-      }),
-      {
-        name: 'site-storage',
-      }
-    )
-  );
+export const useSiteStore = create<SiteStore>((set) => ({
+  currentSiteKey: config.defaultSite,
+  setCurrentSiteKey: (key) => set({ currentSiteKey: key }),
+}));
 
 // StoreProvider component for hydration
 export function StoreProvider({ children }: { children: React.ReactNode }) {

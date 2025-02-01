@@ -1,79 +1,26 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { searchProperties } from '@/lib/api/properties';
 import PropertyCard from '@/components/properties/PropertyCard';
 import PropertyFilters from '@/components/properties/PropertyFilters';
-import { searchProperties } from '@/lib/api/properties';
-import { Property } from '@/types/property';
 
-export default function PropertiesPage() {
-  const searchParams = useSearchParams();
-  const [properties, setProperties] = useState<Property[]>([]);
-  const [loading, setLoading] = useState(true);
+interface PageProps {
+  searchParams: {
+    island?: string;
+    type?: string;
+    price?: string;
+    sort?: string;
+  };
+}
 
-  useEffect(() => {
-    const fetchProperties = async () => {
-      setLoading(true);
-      try {
-        const island = searchParams.get('island') || 'oahu';
-        const type = searchParams.get('type');
-        const price = searchParams.get('price');
-        const sort = searchParams.get('sort') || 'date-desc';
-
-        // Convert price range to min/max values
-        let minPrice = 0;
-        let maxPrice = Number.MAX_SAFE_INTEGER;
-        if (price) {
-          const [min, max] = price.split('-').map(Number);
-          if (!isNaN(min)) minPrice = min;
-          if (!isNaN(max)) maxPrice = max;
-        }
-
-        const results = await searchProperties(island, 'sale');
-        
-        // Apply filters
-        let filteredResults = results;
-        
-        if (type) {
-          filteredResults = filteredResults.filter(p => 
-            p.propertyType.toLowerCase() === type.toLowerCase()
-          );
-        }
-        
-        if (minPrice !== undefined && maxPrice !== undefined) {
-          filteredResults = filteredResults.filter(p => 
-            p.price >= minPrice && p.price <= maxPrice
-          );
-        }
-
-        // Apply sorting
-        filteredResults.sort((a, b) => {
-          switch (sort) {
-            case 'price-asc':
-              return a.price - b.price;
-            case 'price-desc':
-              return b.price - a.price;
-            case 'date-desc':
-              return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-            case 'date-asc':
-              return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-            default:
-              return 0;
-          }
-        });
-
-        setProperties(filteredResults);
-      } catch (error) {
-        console.error('Error fetching properties:', error);
-        setProperties([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProperties();
-  }, [searchParams]);
+export default async function PropertiesPage({ searchParams }: PageProps) {
+  const { island, type, price, sort } = searchParams;
+  
+  const properties = await searchProperties(
+    island || 'all',
+    'For Sale',
+    type,
+    price,
+    sort || 'price-asc'
+  );
 
   return (
     <div className="bg-background">
@@ -88,20 +35,16 @@ export default function PropertiesPage() {
 
           {/* Filters */}
           <div className="mb-8">
-            <PropertyFilters />
+            <PropertyFilters defaultSort="price-asc" />
           </div>
 
-          {/* Loading State */}
-          {loading ? (
-            <div className="flex justify-center items-center py-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
-            </div>
-          ) : properties.length === 0 ? (
+          {properties.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-muted-foreground">No properties found matching your criteria.</p>
+              <p className="text-xl text-gray-600">No properties found.</p>
+              <p className="text-gray-500 mt-2">Try adjusting your filters or check back later.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {properties.map((property) => (
                 <PropertyCard key={property.id} property={property} />
               ))}

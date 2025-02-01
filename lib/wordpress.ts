@@ -25,44 +25,36 @@ const getSiteUrl = (siteKey: string = config.defaultSite) => {
 };
 
 export function getWordPressAPI(endpoint: string, siteKey: string = config.defaultSite): string {
-  const baseUrl = getBaseUrl(siteKey);
-  
+  const site = config.sites[siteKey];
   // Remove leading slash if present
   const cleanEndpoint = endpoint.replace(/^\//, '');
-  
-  return `${baseUrl}/${cleanEndpoint}`;
+  return `${site.url}/wp-json/wp/v2/${cleanEndpoint}`;
 }
 
 // Utility functions for common API calls
 export async function fetchPosts(params: Record<string, string> = {}, siteKey: string = config.defaultSite) {
+  const endpoint = 'posts';
+  const url = new URL(getWordPressAPI(endpoint, siteKey));
+  // Add _embed parameter
+  url.searchParams.append('_embed', '1');
+
+  console.log('fetchPosts: Fetching posts from URL:', url.toString());
+
+  const response = await fetch(url.toString(), {
+    next: { revalidate: 3600 }
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error('fetchPosts: Error response', response.status, response.statusText, errorText);
+    throw new Error(`WordPress API error: ${response.status} ${response.statusText}`);
+  }
+
   try {
-    // Ensure we have the required environment variables
-    const baseUrl = getBaseUrl(siteKey);
-    
-    // Build the URL with proper error handling
-    const url = new URL(`${baseUrl}/posts`);
-    
-    // Add query parameters
-    Object.entries(params).forEach(([key, value]) => {
-      url.searchParams.append(key, value);
-    });
-
-    // Add _embed parameter to get featured images
-    url.searchParams.append('_embed', '1');
-
-    const response = await fetch(url.toString(), {
-      next: { revalidate: 3600 }
-    });
-
-    if (!response.ok) {
-      throw new Error(`WordPress API error: ${response.status} ${response.statusText}`);
-    }
-
-    const posts = await response.json();
-    return posts;
+    return await response.json();
   } catch (error) {
-    console.error('Error fetching posts:', error);
-    return []; // Return empty array instead of throwing to prevent page crash
+    console.error('fetchPosts: Error parsing JSON:', error);
+    throw error;
   }
 }
 
@@ -87,40 +79,45 @@ export async function fetchCategories(siteKey: string = config.defaultSite) {
 }
 
 export async function fetchContentBySlug(slug: string, siteKey: string = config.defaultSite) {
-  try {
-    // First try to find it as a post
-    const postUrl = new URL(`${getBaseUrl(siteKey)}/posts`);
-    postUrl.searchParams.append('slug', slug);
-    postUrl.searchParams.append('_embed', '1');
+  // Try fetching from posts
+  const postsUrl = new URL(getWordPressAPI('posts', siteKey));
+  postsUrl.searchParams.append('slug', slug);
+  postsUrl.searchParams.append('_embed', '1');
+  console.log('fetchContentBySlug (posts): Fetching post with slug:', slug, 'from URL:', postsUrl.toString());
 
-    const postResponse = await fetch(postUrl.toString(), {
-      next: { revalidate: 3600 }
-    });
-
-    if (postResponse.ok) {
-      const posts = await postResponse.json();
-      if (posts.length > 0) return posts[0];
+  let response = await fetch(postsUrl.toString(), { next: { revalidate: 60 } });
+  if (response.ok) {
+    const postsData = await response.json();
+    console.log('fetchContentBySlug (posts): Received data:', postsData);
+    if (postsData.length > 0) {
+      console.log('fetchContentBySlug: Found post for slug:', slug);
+      return postsData[0];
     }
-
-    // If not found as a post, try as a page
-    const pageUrl = new URL(`${getBaseUrl(siteKey)}/pages`);
-    pageUrl.searchParams.append('slug', slug);
-    pageUrl.searchParams.append('_embed', '1');
-
-    const pageResponse = await fetch(pageUrl.toString(), {
-      next: { revalidate: 3600 }
-    });
-
-    if (pageResponse.ok) {
-      const pages = await pageResponse.json();
-      if (pages.length > 0) return pages[0];
-    }
-
-    throw new Error(`Content not found: ${slug}`);
-  } catch (error) {
-    console.error('Error fetching content:', error);
-    return null;
+  } else {
+    const errorText = await response.text();
+    console.error('fetchContentBySlug (posts): Error response', response.status, response.statusText, errorText);
   }
+
+  // If not found in posts, try pages
+  const pagesUrl = new URL(getWordPressAPI('pages', siteKey));
+  pagesUrl.searchParams.append('slug', slug);
+  pagesUrl.searchParams.append('_embed', '1');
+  console.log('fetchContentBySlug (pages): Fetching page with slug:', slug, 'from URL:', pagesUrl.toString());
+
+  response = await fetch(pagesUrl.toString(), { next: { revalidate: 60 } });
+  if (response.ok) {
+    const pagesData = await response.json();
+    console.log('fetchContentBySlug (pages): Received data:', pagesData);
+    if (pagesData.length > 0) {
+      console.log('fetchContentBySlug: Found page for slug:', slug);
+      return pagesData[0];
+    }
+  } else {
+    const errorText = await response.text();
+    console.error('fetchContentBySlug (pages): Error response', response.status, response.statusText, errorText);
+  }
+
+  throw new Error('Content not found for slug: ' + slug);
 }
 
 export async function fetchPages(params: Record<string, string> = {}, siteKey: string = config.defaultSite) {

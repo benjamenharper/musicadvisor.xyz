@@ -1,31 +1,37 @@
 'use client';
 
-import { createContext, type ReactNode, useContext, useRef } from 'react';
-import { type StoreApi } from 'zustand';
-import { createSiteStore, type SiteStore } from '@/lib/store';
+import { type ReactNode } from 'react';
+import { createStore } from 'zustand';
+import { createContext, useContext } from 'react';
+import { useStore as useZustandStore } from 'zustand';
 
-const StoreContext = createContext<StoreApi<SiteStore> | null>(null);
+interface SiteStore {
+  currentSiteKey: string;
+  setCurrentSiteKey: (key: string) => void;
+}
 
-export function useStore<T>(selector: (store: SiteStore) => T): T {
+const createSiteStore = () =>
+  createStore<SiteStore>((set) => ({
+    currentSiteKey: '',
+    setCurrentSiteKey: (key) => set({ currentSiteKey: key }),
+  }));
+
+type StoreType = ReturnType<typeof createSiteStore>;
+
+const StoreContext = createContext<StoreType | null>(null);
+
+export const useStore = <T,>(selector: (store: SiteStore) => T): T => {
   const store = useContext(StoreContext);
-  if (!store) throw new Error('useSiteStore must be used within a StoreProvider');
-  return selector(store.getState());
-}
+  if (!store) throw new Error('Store not found');
+  return useZustandStore(store, selector);
+};
 
-interface StoreProviderProps {
-  children: ReactNode;
-}
+export function StoreProvider({ children }: { children: ReactNode }) {
+  const store = createSiteStore();
 
-export function StoreProvider({ children }: StoreProviderProps) {
-  const storeRef = useRef<StoreApi<SiteStore>>();
-  if (!storeRef.current) {
-    storeRef.current = createSiteStore();
-  }
   return (
-    <StoreContext.Provider value={storeRef.current}>
+    <StoreContext.Provider value={store}>
       {children}
     </StoreContext.Provider>
   );
 }
-
-export default StoreProvider;

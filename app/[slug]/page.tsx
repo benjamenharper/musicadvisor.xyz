@@ -7,48 +7,32 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { format } from 'date-fns';
 import RelatedContent from '@/components/RelatedContent';
-import { fetchContentBySlug } from '@/lib/wordpress';
 import { useStore } from '@/components/providers/StoreProvider';
 
-interface ContentPageProps {
-  params: {
-    slug: string;
-  };
+interface SlugClientProps {
+  initialContent: any;
 }
 
-export default function ContentPage() {
+export default function SlugClient({ initialContent }: SlugClientProps) {
   const params = useParams();
   const currentSiteKey = useStore((state) => state.currentSiteKey);
-  const [content, setContent] = useState<any>(null);
+  const [content, setContent] = useState(initialContent);
   const [recentPosts, setRecentPosts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const slug = params?.slug as string;
+  const [loading, setLoading] = useState(false);
+  const slug = Array.isArray(params.slug) ? params.slug.join('/') : params.slug;
 
   useEffect(() => {
-    const loadContent = async () => {
-      setLoading(true);
+    const loadRecentPosts = async () => {
       try {
-        const result = await fetchContentBySlug(slug);
-        if (result) {
-          setContent(result);
-          // Fetch recent posts after content is loaded
-          const recentResult = await fetch(`/api/posts/recent`);
-          const recentData = await recentResult.json();
-          setRecentPosts(recentData.posts || []);
-        } else {
-          notFound();
-        }
+        const recentResult = await fetch(`/api/posts/recent`);
+        const recentData = await recentResult.json();
+        setRecentPosts(recentData.posts || []);
       } catch (error) {
-        console.error('Error fetching content:', error);
-        notFound();
-      } finally {
-        setLoading(false);
+        console.error('Error fetching recent posts:', error);
       }
     };
 
-    if (slug) {
-      loadContent();
-    }
+    loadRecentPosts();
   }, [slug, currentSiteKey]);
 
   if (loading) {
@@ -132,7 +116,7 @@ export default function ContentPage() {
             {recentPosts?.length > 0 && (
               <RelatedContent 
                 posts={recentPosts} 
-                currentSlug={Array.isArray(params.slug) ? params.slug[0] : params.slug} 
+                currentSlug={Array.isArray(params.slug) ? params.slug.join('/') : params.slug} 
               />
             )}
           </div>

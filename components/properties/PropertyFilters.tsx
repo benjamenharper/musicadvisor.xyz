@@ -5,16 +5,16 @@ import { useRouter, useSearchParams } from 'next/navigation';
 const islands = [
   { value: 'oahu', label: 'Oahu' },
   { value: 'maui', label: 'Maui' },
-  { value: 'kauai', label: 'Kauai' },
   { value: 'hawaii', label: 'Big Island' },
+  { value: 'kauai', label: 'Kauai' },
 ];
 
 const propertyTypes = [
-  { value: 'single-family', label: 'Single Family' },
+  { value: 'single_family', label: 'Single Family' },
   { value: 'condo', label: 'Condo' },
   { value: 'townhouse', label: 'Townhouse' },
-  { value: 'land', label: 'Land' },
-  { value: 'multi-family', label: 'Multi-Family' },
+  { value: 'multi_family', label: 'Multi-family' },
+  { value: 'land', label: 'Land' }
 ];
 
 const priceRanges = [
@@ -32,15 +32,15 @@ const sortOptions = [
   { value: 'date-asc', label: 'Oldest First' },
 ];
 
-export default function PropertyFilters() {
+export default function PropertyFilters({ defaultSort = 'price-asc' }: { defaultSort?: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   
   // Get current filter values from URL or use defaults
-  const currentIsland = searchParams.get('island') || 'oahu';
+  const currentIsland = searchParams.get('island') || 'oahu';  
   const currentType = searchParams.get('type') || '';
   const currentPrice = searchParams.get('price') || '';
-  const currentSort = searchParams.get('sort') || 'date-desc';
+  const currentSort = searchParams.get('sort') || defaultSort;
 
   const updateFilters = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());

@@ -14,6 +14,7 @@ const nextConfig = {
   },
   output: 'standalone',
   images: {
+    domains: ['via.placeholder.com', 'photos.zillowstatic.com'],
     remotePatterns: [
       {
         protocol: 'https',

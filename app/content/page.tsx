@@ -1,10 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { fetchPosts, fetchPages } from '@/lib/wordpress';
-import { useStore } from '@/components/providers/StoreProvider';
 import SearchBox from '@/components/SearchBox';
 
 interface ContentItem {
@@ -26,20 +24,25 @@ interface ContentItem {
   };
 }
 
-export default function Content() {
+interface ContentClientProps {
+  initialPosts: ContentItem[];
+  initialPages: ContentItem[];
+}
+
+export default function ContentClient({ initialPosts, initialPages }: ContentClientProps) {
   const [content, setContent] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'posts' | 'pages'>('all');
-  const currentSiteKey = useStore((state) => state.currentSiteKey);
 
   useEffect(() => {
     const loadContent = async () => {
       setLoading(true);
       try {
-        const [posts, pages] = await Promise.all([
-          fetchPosts({ _embed: '1' }, currentSiteKey),
-          fetchPages({ _embed: '1' }, currentSiteKey)
-        ]);
+        // Dynamically import fetchPosts and fetchPages
+        const { fetchPosts, fetchPages } = await import('@/lib/wordpress');
+
+        const posts = await fetchPosts();
+        const pages = await fetchPages();
 
         const combinedContent = [
           ...posts.map((post: any) => ({ ...post, type: 'post' as const })),
@@ -48,7 +51,7 @@ export default function Content() {
 
         setContent(combinedContent);
       } catch (error) {
-        console.error('Error fetching content:', error);
+        console.error('Error loading content:', error);
         setContent([]);
       } finally {
         setLoading(false);
@@ -56,7 +59,7 @@ export default function Content() {
     };
 
     loadContent();
-  }, [currentSiteKey]);
+  }, []);
 
   const filteredContent = content.filter(item => {
     if (filter === 'all') return true;

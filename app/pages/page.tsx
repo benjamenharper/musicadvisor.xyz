@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { fetchPages } from '@/lib/wordpress';
 import { useStore } from '@/components/providers/StoreProvider';
 
 interface WordPressPage {
@@ -13,17 +12,22 @@ interface WordPressPage {
   link: string;
 }
 
-export default function Pages() {
-  const [pages, setPages] = useState<WordPressPage[]>([]);
-  const [loading, setLoading] = useState(true);
+interface PagesClientProps {
+  initialPages: WordPressPage[];
+}
+
+export default function PagesClient({ initialPages }: PagesClientProps) {
+  const [pages, setPages] = useState(initialPages);
+  const [loading, setLoading] = useState(false);
   const currentSiteKey = useStore((state) => state.currentSiteKey);
 
   useEffect(() => {
     const loadPages = async () => {
       setLoading(true);
       try {
-        const data = await fetchPages();
-        setPages(data);
+        // fetchPages is not needed here as we are receiving initialPages as a prop
+        // const data = await fetchPages();
+        // setPages(data);
       } catch (error) {
         console.error('Error fetching pages:', error);
         setPages([]);
@@ -32,7 +36,8 @@ export default function Pages() {
       }
     };
 
-    loadPages();
+    // loadPages is not needed here as we are receiving initialPages as a prop
+    // loadPages();
   }, [currentSiteKey]);
 
   if (loading) {

@@ -1,20 +1,16 @@
 export interface Property {
   id: string;
   title: string;
+  price: string;
   description: string;
-  price: number;
-  address: string;
+  image: string;
+  location: string;
   city: string;
-  state: string;
-  zipCode: string;
-  bedrooms: number;
-  bathrooms: number;
-  squareFeet: number;
-  propertyType: 'Single Family' | 'Condo' | 'Townhouse' | 'Land';
-  yearBuilt: number;
-  images: string[];
-  features: string[];
-  status: 'For Sale' | 'Pending' | 'Sold';
-  createdAt: string;
-  updatedAt: string;
+  island: string;
+  beds: number;
+  baths: number;
+  sqft: number;
+  propertyType?: string;
+  zillowUrl?: string;
+  numericPrice: number;
 }

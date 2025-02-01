@@ -1,230 +1,163 @@
-import axios from 'axios';
 import { Property } from '@/types/property';
+import { getExtendedSearchResults } from '@/lib/zillowAPI';
 
-const RAPIDAPI_KEY = '72b25b9609mshf22de8083b9ef4bp18d5b9jsn2b059ddfdc06';
-const RAPIDAPI_HOST = 'redfin-com-data.p.rapidapi.com';
-
-// Redfin region IDs
-const REGION_IDS = {
-  OAHU: '6_2446',
-  MAUI: '6_2447',
-  KAUAI: '6_2448',
-  HAWAII: '6_2449', // Big Island
-};
-
-// Mock properties for development
-const MOCK_PROPERTIES: Property[] = [
-  {
-    id: '1',
-    title: 'Luxury Ocean View Villa',
-    description: 'Beautiful ocean view villa with modern amenities and stunning views of the Pacific. This exclusive property features an infinity pool, gourmet kitchen, and spacious lanai.',
-    price: 4250000,
-    address: '123 Beach Road',
-    city: 'Honolulu',
-    state: 'HI',
-    zipCode: '96815',
-    bedrooms: 4,
-    bathrooms: 3,
-    squareFeet: 2724,
-    propertyType: 'Single Family',
-    yearBuilt: 2010,
-    images: [
-      'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&auto=format&fit=crop&q=60',
-      'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=800&auto=format&fit=crop&q=60',
-      'https://images.unsplash.com/photo-1613977257592-4871e5fcd7c4?w=800&auto=format&fit=crop&q=60'
-    ],
-    features: ['Ocean Views', 'Infinity Pool', 'Gourmet Kitchen', 'Private Beach Access'],
-    status: 'For Sale',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: '2',
-    title: 'Modern Downtown Condo',
-    description: 'Luxurious high-floor condo with panoramic city and ocean views. Features high-end finishes, floor-to-ceiling windows, and world-class amenities.',
-    price: 1750000,
-    address: '456 City Avenue',
-    city: 'Honolulu',
-    state: 'HI',
-    zipCode: '96813',
-    bedrooms: 2,
-    bathrooms: 2,
-    squareFeet: 1200,
-    propertyType: 'Condo',
-    yearBuilt: 2015,
-    images: [
-      'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&auto=format&fit=crop&q=60',
-      'https://images.unsplash.com/photo-1502005097973-6a7082348e28?w=800&auto=format&fit=crop&q=60',
-      'https://images.unsplash.com/photo-1617104678098-de229db51175?w=800&auto=format&fit=crop&q=60'
-    ],
-    features: ['Ocean Views', 'Modern Appliances', 'Parking', '24/7 Security'],
-    status: 'For Sale',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: '3',
-    title: 'Beachfront Paradise Estate',
-    description: 'Rare beachfront estate offering the ultimate Hawaiian lifestyle. Features a private pool, expansive outdoor living spaces, and direct beach access.',
-    price: 8950000,
-    address: '789 Oceanfront Drive',
-    city: 'Kailua',
-    state: 'HI',
-    zipCode: '96734',
-    bedrooms: 5,
-    bathrooms: 4.5,
-    squareFeet: 4500,
-    propertyType: 'Estate',
-    yearBuilt: 2018,
-    images: [
-      'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&auto=format&fit=crop&q=60',
-      'https://images.unsplash.com/photo-1613553507747-5f8d62ad5904?w=800&auto=format&fit=crop&q=60',
-      'https://images.unsplash.com/photo-1613553497126-a44624272024?w=800&auto=format&fit=crop&q=60'
-    ],
-    features: ['Beachfront', 'Private Pool', 'Guest House', 'Outdoor Kitchen'],
-    status: 'For Sale',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  }
-];
-
-interface RedfinProperty {
-  propertyId: string;
-  mlsId: string;
-  price: number;
-  address: {
-    streetAddress: string;
-    city: string;
-    state: string;
-    zipcode: string;
-  };
-  description: string;
-  propertyType: string;
-  beds: number;
-  baths: number;
-  sqFt: number;
-  yearBuilt: number;
-  amenities: string[];
-  status: string;
-  photos: string[];
-}
-
-interface SearchPropertiesResponse {
-  status: string;
-  data: RedfinProperty[];
-}
-
-const apiOptions = {
-  headers: {
-    'x-rapidapi-key': RAPIDAPI_KEY,
-    'x-rapidapi-host': RAPIDAPI_HOST,
-  },
-};
+/* Updated searchProperties function to use Zillow Extended Search API for island queries */
 
 export async function searchProperties(
-  island: string = 'oahu',
-  status: string = 'sale',
+  island: string = 'all',
+  status: string = 'For Sale',
+  propertyType?: string,
+  priceRange?: string,
+  sortBy: string = 'price-asc'
 ): Promise<Property[]> {
-  // In development, return mock data
-  if (process.env.NODE_ENV === 'development') {
-    return MOCK_PROPERTIES;
-  }
-
   try {
-    const regionId = REGION_IDS[island.toUpperCase()];
-    if (!regionId) {
-      throw new Error('Invalid island specified');
+    console.log('searchProperties called with:', { island, status, propertyType, priceRange, sortBy });
+
+    // Map island to location string
+    const islandMapping: Record<string, string> = {
+      maui: 'Maui, HI',
+      oahu: 'Honolulu, HI',
+      hawaii: 'Hawaii Island, HI',
+      kauai: 'Kauai, HI'
+    };
+
+    const location = islandMapping[island.toLowerCase()] || 'Hawaii';
+    console.log('Searching for properties in location:', location);
+
+    // Map our property types to Zillow's property types
+    const propertyTypeMapping: Record<string, string> = {
+      'single_family': 'Houses',
+      'condo': 'Condos',
+      'townhouse': 'Townhomes',
+      'multi_family': 'Multi-family',
+      'land': 'Lots/Land'
+    };
+
+    const zillowPropertyType = propertyType ? propertyTypeMapping[propertyType] || 'Houses' : 'Houses';
+    const response = await getExtendedSearchResults(location, 'ForSale', zillowPropertyType);
+    console.log('Raw Zillow API Response:', response);
+
+    // Extract properties from response
+    const properties = [];
+    
+    if (response && Array.isArray(response)) {
+      properties.push(...response);
+    } else if (response && Array.isArray(response.props)) {
+      properties.push(...response.props);
+    } else if (response && Array.isArray(response.results)) {
+      properties.push(...response.results);
     }
 
-    const response = await axios.get('https://redfin-com-data.p.rapidapi.com/properties/list', {
-      params: {
-        region_id: regionId,
-        status: status,
-        offset: '0',
-        limit: '42',
-      },
-      headers: {
-        'X-RapidAPI-Key': RAPIDAPI_KEY,
-        'X-RapidAPI-Host': RAPIDAPI_HOST,
-      },
+    console.log('Extracted properties:', properties);
+
+    if (properties.length === 0) {
+      console.log('No properties found in response');
+      return [];
+    }
+
+    // Map the properties to our Property type
+    let mappedProperties = properties.map((prop: any) => {
+      // Parse the price value from Zillow API
+      const priceStr = prop.price || prop.listPrice || '';
+      const numericPrice = typeof prop.price === 'number' 
+        ? prop.price 
+        : parseInt(priceStr.replace(/[$,]/g, '')) || 0;
+
+      // Extract city and island from address
+      const address = prop.address || prop.streetAddress || '';
+      const addressParts = address.split(',').map(part => part.trim());
+      const city = addressParts[1] || '';
+      const stateZip = addressParts[2] || '';
+      const islandMap: Record<string, string> = {
+        'Honolulu': 'Oahu',
+        'Kapolei': 'Oahu',
+        'Kailua': 'Oahu',
+        'Kahului': 'Maui',
+        'Kihei': 'Maui',
+        'Lahaina': 'Maui',
+        'Hilo': 'Big Island',
+        'Kailua-Kona': 'Big Island',
+        'Lihue': 'Kauai',
+        'Kapaa': 'Kauai',
+      };
+      const island = islandMap[city] || location.split(',')[0].trim();
+      
+      return {
+        id: prop.zpid?.toString() || prop.id?.toString() || '',
+        title: prop.statusText || prop.address || '',
+        price: priceStr,
+        description: `${prop.beds || prop.bedrooms || 0} beds, ${prop.baths || prop.bathrooms || 0} baths`,
+        image: prop.imgSrc || prop.imageUrl || 'https://via.placeholder.com/800x600?text=Property+Image',
+        location: address,
+        city,
+        island,
+        beds: prop.beds || prop.bedrooms || 0,
+        baths: prop.baths || prop.bathrooms || 0,
+        sqft: prop.area || prop.livingArea || 0,
+        propertyType: prop.homeType || prop.propertyType || zillowPropertyType,
+        zillowUrl: prop.zpid ? `https://www.zillow.com/homedetails/${prop.zpid}_zpid/` : '',
+        numericPrice
+      };
     });
 
-    return response.data.data.homes.map((home: any) => ({
-      id: home.id.toString(),
-      title: home.description.title,
-      description: home.description.text,
-      price: home.price.value,
-      address: home.location.address.line,
-      city: home.location.address.city,
-      state: home.location.address.state,
-      zipCode: home.location.address.postalCode,
-      bedrooms: home.details.beds,
-      bathrooms: home.details.baths,
-      squareFeet: home.details.sqft,
-      propertyType: home.propertyType,
-      yearBuilt: home.details.yearBuilt,
-      images: home.photos.map((photo: any) => photo.url),
-      features: home.details.features,
-      status: home.status,
-      createdAt: home.listed,
-      updatedAt: home.updated,
-    }));
+    // Filter by price range if specified
+    if (priceRange) {
+      const [minStr, maxStr] = priceRange.split('-');
+      const min = parseInt(minStr);
+      const max = parseInt(maxStr);
+
+      mappedProperties = mappedProperties.filter(prop => {
+        return prop.numericPrice >= min && prop.numericPrice <= max;
+      });
+    }
+
+    // Sort properties based on sortBy parameter
+    if (sortBy) {
+      mappedProperties = mappedProperties.sort((a, b) => {
+        switch (sortBy) {
+          case 'price-asc':
+            return a.numericPrice - b.numericPrice;
+          case 'price-desc':
+            return b.numericPrice - a.numericPrice;
+          default:
+            return 0;
+        }
+      });
+    }
+
+    console.log('Mapped and sorted properties:', mappedProperties);
+    return mappedProperties;
+
   } catch (error) {
     console.error('Error fetching properties:', error);
-    // Return mock data as fallback
-    return MOCK_PROPERTIES;
+    throw error;
   }
 }
 
-export async function getProperty(propertyId: string): Promise<Property | null> {
-  // In development, return mock property
-  if (process.env.NODE_ENV === 'development') {
-    const mockProperty = MOCK_PROPERTIES.find(p => p.id === propertyId);
-    return mockProperty || null;
-  }
-
+export async function getPropertyById(id: string): Promise<Property | null> {
   try {
-    const response = await axios.request({
-      ...apiOptions,
-      method: 'GET',
-      url: `https://${RAPIDAPI_HOST}/properties/detail`,
-      params: {
-        propertyId,
-      },
-    });
-
-    if (response.data.status === 'success' && response.data.data) {
-      return transformRedfinProperty(response.data.data);
+    // Search in all locations to find the property
+    const locations = ['oahu', 'maui', 'hawaii', 'kauai'];
+    
+    for (const location of locations) {
+      const properties = await searchProperties(
+        location,
+        'For Sale',
+        undefined,
+        undefined,
+        'price-asc'
+      );
+      
+      const property = properties.find(p => p.id === id);
+      if (property) {
+        return property;
+      }
     }
 
-    throw new Error('Property not found');
+    console.log('Property not found with ID:', id);
+    return null;
   } catch (error) {
-    console.error('Error fetching property:', error);
-    // Fallback to mock data in case of API error
-    const mockProperty = MOCK_PROPERTIES.find(p => p.id === propertyId);
-    return mockProperty || null;
+    console.error('Error fetching property by ID:', error);
+    throw error;
   }
-}
-
-function transformRedfinProperty(apiProperty: RedfinProperty): Property {
-  return {
-    id: apiProperty.propertyId,
-    title: `${apiProperty.propertyType} in ${apiProperty.address.city}`,
-    description: apiProperty.description || '',
-    price: apiProperty.price,
-    address: apiProperty.address.streetAddress,
-    city: apiProperty.address.city,
-    state: apiProperty.address.state,
-    zipCode: apiProperty.address.zipcode,
-    bedrooms: apiProperty.beds,
-    bathrooms: apiProperty.baths,
-    squareFeet: apiProperty.sqFt,
-    propertyType: apiProperty.propertyType,
-    yearBuilt: apiProperty.yearBuilt || 0,
-    images: apiProperty.photos || [],
-    features: apiProperty.amenities || [],
-    status: apiProperty.status || 'For Sale',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
 }
