@@ -4,6 +4,7 @@ import { type ReactNode } from 'react';
 import { createStore } from 'zustand';
 import { createContext, useContext } from 'react';
 import { useStore as useZustandStore } from 'zustand';
+import { config } from '@/lib/config';
 
 interface SiteStore {
   currentSiteKey: string;
@@ -12,7 +13,7 @@ interface SiteStore {
 
 const createSiteStore = () =>
   createStore<SiteStore>((set) => ({
-    currentSiteKey: '',
+    currentSiteKey: config.defaultSite,
     setCurrentSiteKey: (key) => set({ currentSiteKey: key }),
   }));
 
