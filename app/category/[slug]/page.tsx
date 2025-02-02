@@ -2,6 +2,7 @@ import { fetchPosts, fetchCategories } from '@/lib/wordpress';
 import { decodeHTML } from '@/lib/utils';
 import { format } from 'date-fns';
 import { notFound } from 'next/navigation';
+import AuthorAttribution from '@/components/AuthorAttribution';
 
 export default async function CategoryPage({ params }: { params: { slug: string } }) {
   try {
@@ -68,19 +69,20 @@ export default async function CategoryPage({ params }: { params: { slug: string 
                   </div>
                 )}
                 <div className="p-6">
-                  <div className="flex flex-col gap-2">
-                    <h2 className="text-xl font-bold text-gray-900">
-                      <a href={`/${post.slug}`} className="hover:text-indigo-600 transition-colors">
-                        {decodeHTML(post.title.rendered || '')}
-                      </a>
-                    </h2>
+                  <h2 className="text-xl font-bold text-gray-900 mb-3">
+                    <a href={`/${post.slug}`} className="hover:text-indigo-600 transition-colors">
+                      {decodeHTML(post.title.rendered || '')}
+                    </a>
+                  </h2>
+                  <div className="flex items-center justify-between mb-4">
+                    <AuthorAttribution category={category.slug} compact />
                     <time className="text-sm text-gray-500">
                       {format(new Date(post.date), 'MMMM d, yyyy')}
                     </time>
                   </div>
                   {post.excerpt.rendered && (
                     <div 
-                      className="mt-4 text-gray-600 line-clamp-3"
+                      className="text-gray-600 line-clamp-3"
                       dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
                     />
                   )}

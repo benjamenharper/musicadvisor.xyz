@@ -14,11 +14,13 @@ const nextConfig = {
   },
   output: 'standalone',
   images: {
-    domains: ['via.placeholder.com', 'photos.zillowstatic.com'],
+    domains: ['musicadvisor.xyz'],
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: 'musicadvisor.xyz',
+        port: '',
+        pathname: '/**',
       },
     ],
   },
@@ -26,7 +28,16 @@ const nextConfig = {
     // This will enable static rendering for dynamic routes
     workerThreads: false,
     cpus: 1
-  }
+  },
+  async redirects() {
+    return [
+      {
+        source: '/category/music-promotion',
+        destination: '/category/promotion',
+        permanent: true,
+      },
+    ];
+  },
 }
 
 module.exports = nextConfig

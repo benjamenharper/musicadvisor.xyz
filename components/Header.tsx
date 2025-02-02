@@ -44,10 +44,10 @@ export default function Header() {
                 News
               </Link>
               <Link
-                href="/category/music-promotion"
+                href="/category/promotion"
                 className="text-sm font-medium text-muted-foreground hover:text-foreground"
               >
-                Music Promotion
+                Promotion
               </Link>
               <Link
                 href="/about"
