@@ -6,6 +6,7 @@ import ClientSideProvider from "@/components/providers/ClientSideProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from 'next/link';
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -28,6 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans antialiased min-h-screen flex flex-col bg-background text-foreground`}>
+        <GoogleAnalytics />
         <ClientSideProvider>
           <ClientLayout>
             <div className="min-h-screen bg-background flex flex-col">
