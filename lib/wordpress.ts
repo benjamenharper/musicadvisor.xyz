@@ -4,10 +4,6 @@ import { postAuthorManager } from './utils/postAuthorManager';
 const getBaseUrl = (siteKey: string = config.defaultSite) => {
   const site = config.sites[siteKey];
   if (!site?.domain) {
-    // In development/test, return mock data
-    if (process.env.NODE_ENV === 'development') {
-      return 'https://demo.wordpress.com/wp-json/wp/v2';
-    }
     throw new Error(`Invalid site key or missing domain: ${siteKey}`);
   }
   return `${site.domain}/wp-json/wp/v2`.replace(/\/+$/, ''); // Remove trailing slashes
@@ -16,10 +12,6 @@ const getBaseUrl = (siteKey: string = config.defaultSite) => {
 const getSiteUrl = (siteKey: string = config.defaultSite) => {
   const site = config.sites[siteKey];
   if (!site?.domain) {
-    // In development/test, return mock data
-    if (process.env.NODE_ENV === 'development') {
-      return 'https://demo.wordpress.com';
-    }
     throw new Error(`Invalid site key or missing domain: ${siteKey}`);
   }
   return site.domain.replace(/\/+$/, ''); // Remove trailing slashes
@@ -29,7 +21,7 @@ export function getWordPressAPI(endpoint: string, siteKey: string = config.defau
   const site = config.sites[siteKey];
   // Remove leading slash if present
   const cleanEndpoint = endpoint.replace(/^\//, '');
-  return `${site.url}/wp-json/wp/v2/${cleanEndpoint}`;
+  return `${site.domain}/wp-json/wp/v2/${cleanEndpoint}`;
 }
 
 // Utility functions for common API calls
@@ -44,35 +36,35 @@ export async function fetchPosts(params: Record<string, string> = {}, siteKey: s
 
   // Always include _embed for media
   url.searchParams.append('_embed', '1');
+  
+  // Add cache-busting
+  url.searchParams.append('_', Date.now().toString());
 
-  console.log('fetchPosts: Request URL:', url.toString());
-  console.log('fetchPosts: Request params:', params);
+  console.log('fetchPosts: Starting request to URL:', url.toString());
 
   try {
+    console.log('fetchPosts: Sending request...');
     const response = await fetch(url.toString(), {
-      next: { revalidate: 3600 },
+      cache: 'no-store',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache'
       }
     });
+    console.log('fetchPosts: Response status:', response.status, response.statusText);
+    console.log('fetchPosts: Response headers:', Object.fromEntries(response.headers.entries()));
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('fetchPosts: Error response', {
-        status: response.status,
-        statusText: response.statusText,
-        headers: Object.fromEntries(response.headers.entries()),
-        error: errorText
-      });
-      throw new Error(`WordPress API error: ${response.status} ${response.statusText}`);
+      console.error('fetchPosts: Error response:', errorText);
+      throw new Error(`Failed to fetch posts: ${response.statusText}`);
     }
 
-    const data = await response.json();
-    console.log('fetchPosts: Response data:', JSON.stringify(data, null, 2));
-    return Array.isArray(data) ? data : [];
+    const posts = await response.json();
+    console.log('fetchPosts: Successfully fetched', posts.length, 'posts');
+    console.log('fetchPosts: First post:', posts[0]?.title?.rendered);
+    return posts;
   } catch (error) {
-    console.error('fetchPosts: Fetch error:', error);
+    console.error('Error fetching posts:', error);
     return [];
   }
 }
@@ -86,25 +78,10 @@ export async function fetchCategories(siteKey: string = config.defaultSite) {
   console.log('fetchCategories: Request URL:', url.toString());
 
   try {
-    const response = await fetch(url.toString(), {
-      next: { revalidate: 3600 },
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      }
-    });
-
+    const response = await fetch(url.toString());
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('fetchCategories: Error response', {
-        status: response.status,
-        statusText: response.statusText,
-        headers: Object.fromEntries(response.headers.entries()),
-        error: errorText
-      });
-      throw new Error(`WordPress API error: ${response.status} ${response.statusText}`);
+      throw new Error(`Failed to fetch categories: ${response.statusText}`);
     }
-
     const data = await response.json();
     console.log('fetchCategories: Response data:', JSON.stringify(data, null, 2));
     
@@ -129,7 +106,7 @@ export async function fetchContentBySlug(slug: string, siteKey: string = config.
   postsUrl.searchParams.append('_embed', '1');
   console.log('fetchContentBySlug (posts): Fetching post with slug:', slug, 'from URL:', postsUrl.toString());
 
-  let response = await fetch(postsUrl.toString(), { next: { revalidate: 60 } });
+  let response = await fetch(postsUrl.toString());
   if (response.ok) {
     const postsData = await response.json();
     console.log('fetchContentBySlug (posts): Received data:', postsData);
@@ -148,7 +125,7 @@ export async function fetchContentBySlug(slug: string, siteKey: string = config.
   pagesUrl.searchParams.append('_embed', '1');
   console.log('fetchContentBySlug (pages): Fetching page with slug:', slug, 'from URL:', pagesUrl.toString());
 
-  response = await fetch(pagesUrl.toString(), { next: { revalidate: 60 } });
+  response = await fetch(pagesUrl.toString());
   if (response.ok) {
     const pagesData = await response.json();
     console.log('fetchContentBySlug (pages): Received data:', pagesData);
@@ -179,16 +156,10 @@ export async function fetchPages(params: Record<string, string> = {}, siteKey: s
     console.log('fetchPages: Request URL:', url.toString());
     console.log('fetchPages: Request params:', params);
 
-    const response = await fetch(url.toString(), {
-      next: { revalidate: 3600 }
-    });
-
+    const response = await fetch(url.toString());
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('fetchPages: Error response', response.status, response.statusText, errorText);
-      throw new Error(`WordPress API error: ${response.status} ${response.statusText}`);
+      throw new Error(`Failed to fetch pages: ${response.statusText}`);
     }
-
     const data = await response.json();
     console.log('fetchPages: Response data:', JSON.stringify(data, null, 2));
     return data;
@@ -204,11 +175,9 @@ export async function searchPosts(searchTerm: string, siteKey: string = config.d
     const [postsResponse, pagesResponse] = await Promise.all([
       fetch(
         `${getWordPressAPI('posts', siteKey)}?search=${encodeURIComponent(searchTerm)}&_embed=1&per_page=5`,
-        { next: { revalidate: 3600 } }
       ),
       fetch(
         `${getWordPressAPI('pages', siteKey)}?search=${encodeURIComponent(searchTerm)}&_embed=1&per_page=5`,
-        { next: { revalidate: 3600 } }
       )
     ]);
 
@@ -316,16 +285,10 @@ export async function fetchPostBySlug(slug: string) {
 
     console.log('fetchPostBySlug: Request URL:', url.toString());
 
-    const response = await fetch(url.toString(), {
-      next: { revalidate: 3600 }
-    });
-
+    const response = await fetch(url.toString());
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('fetchPostBySlug: Error response', response.status, response.statusText, errorText);
-      throw new Error(`WordPress API error: ${response.status} ${response.statusText}`);
+      throw new Error(`Failed to fetch post: ${response.statusText}`);
     }
-
     const posts = await response.json();
     console.log('fetchPostBySlug: Response data:', JSON.stringify(posts, null, 2));
     
@@ -344,16 +307,10 @@ export async function fetchPageBySlug(slug: string) {
 
     console.log('fetchPageBySlug: Request URL:', url.toString());
 
-    const response = await fetch(url.toString(), {
-      next: { revalidate: 3600 }
-    });
-
+    const response = await fetch(url.toString());
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('fetchPageBySlug: Error response', response.status, response.statusText, errorText);
-      throw new Error(`WordPress API error: ${response.status} ${response.statusText}`);
+      throw new Error(`Failed to fetch page: ${response.statusText}`);
     }
-
     const pages = await response.json();
     console.log('fetchPageBySlug: Response data:', JSON.stringify(pages, null, 2));
     return pages.length > 0 ? pages[0] : null;
@@ -371,16 +328,10 @@ export async function fetchRecentPosts(count: number = 5) {
 
     console.log('fetchRecentPosts: Request URL:', url.toString());
 
-    const response = await fetch(url.toString(), {
-      next: { revalidate: 3600 }
-    });
-
+    const response = await fetch(url.toString());
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('fetchRecentPosts: Error response', response.status, response.statusText, errorText);
-      throw new Error(`WordPress API error: ${response.status} ${response.statusText}`);
+      throw new Error(`Failed to fetch recent posts: ${response.statusText}`);
     }
-
     const posts = await response.json();
     console.log('fetchRecentPosts: Response data:', JSON.stringify(posts, null, 2));
     return posts;
@@ -412,16 +363,10 @@ export async function fetchRelatedPosts(currentSlug: string) {
 
     console.log('fetchRelatedPosts: Request URL:', url.toString());
 
-    const response = await fetch(url.toString(), {
-      next: { revalidate: 3600 }
-    });
-
+    const response = await fetch(url.toString());
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('fetchRelatedPosts: Error response', response.status, response.statusText, errorText);
-      throw new Error(`WordPress API error: ${response.status} ${response.statusText}`);
+      throw new Error(`Failed to fetch related posts: ${response.statusText}`);
     }
-
     const posts = await response.json();
     console.log('fetchRelatedPosts: Response data:', JSON.stringify(posts, null, 2));
     return posts;
