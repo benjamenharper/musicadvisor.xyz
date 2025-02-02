@@ -4,6 +4,7 @@ import { decodeHTML } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import AuthorAttribution from '@/components/AuthorAttribution';
+import SidebarWrapper from '@/components/sidebar/SidebarWrapper';
 
 export default async function PostPage({ params }: { params: { slug: string } }) {
   try {
@@ -60,6 +61,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
 
             {/* Sidebar */}
             <aside className="lg:w-80 space-y-8">
+              <SidebarWrapper />
               {/* Recent Posts */}
               <div className="bg-white rounded-lg shadow-lg p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Posts</h2>

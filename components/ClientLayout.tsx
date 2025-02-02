@@ -45,12 +45,6 @@ export default function ClientLayout({
           >
             Music Promotion
           </Link>
-          <Link
-            href="/about"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground"
-          >
-            About
-          </Link>
         </div>
       </Header>
       {children}
