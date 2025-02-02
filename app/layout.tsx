@@ -12,6 +12,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "MusicAdvisor - Music Promotion and News",
   description: "Helping Artists Thrive - Music Industry News and Promotion Tips",
+  verification: {
+    google: 'IzPak72Ui3pU-C9bh-jWxuAhvJMRhDWxPuUxhM0DGoA',
+  },
 };
 
 export default function RootLayout({
