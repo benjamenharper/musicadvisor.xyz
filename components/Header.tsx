@@ -16,7 +16,7 @@ export default function Header() {
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-4">
               <Image
-                src="/malogo2.png"
+                src="/musicadvisorlogonew.png"
                 alt="MusicAdvisor Logo"
                 width={48}
                 height={48}
