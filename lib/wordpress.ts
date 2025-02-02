@@ -1,5 +1,6 @@
 import { config } from './config';
 import { postAuthorManager } from './utils/postAuthorManager';
+import { calculateReadingTime } from './utils/calculateReadingTime';
 
 const getBaseUrl = (siteKey: string = config.defaultSite) => {
   const site = config.sites[siteKey];
@@ -29,40 +30,24 @@ export async function fetchPosts(params: Record<string, string> = {}, siteKey: s
   const endpoint = 'posts';
   const url = new URL(getWordPressAPI(endpoint, siteKey));
   
-  // Add all params to URL
+  // Add parameters to URL
   Object.entries(params).forEach(([key, value]) => {
-    if (value) url.searchParams.append(key, value);
+    url.searchParams.append(key, value);
   });
 
-  // Always include _embed for media
-  url.searchParams.append('_embed', '1');
-  
-  // Add cache-busting
-  url.searchParams.append('_', Date.now().toString());
-
-  console.log('fetchPosts: Starting request to URL:', url.toString());
+  // Always embed media and terms
+  url.searchParams.append('_embed', '');
 
   try {
-    console.log('fetchPosts: Sending request...');
-    const response = await fetch(url.toString(), {
-      cache: 'no-store',
-      headers: {
-        'Cache-Control': 'no-cache'
-      }
-    });
-    console.log('fetchPosts: Response status:', response.status, response.statusText);
-    console.log('fetchPosts: Response headers:', Object.fromEntries(response.headers.entries()));
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('fetchPosts: Error response:', errorText);
-      throw new Error(`Failed to fetch posts: ${response.statusText}`);
-    }
-
+    const response = await fetch(url.toString());
+    if (!response.ok) throw new Error('Network response was not ok');
     const posts = await response.json();
-    console.log('fetchPosts: Successfully fetched', posts.length, 'posts');
-    console.log('fetchPosts: First post:', posts[0]?.title?.rendered);
-    return posts;
+
+    // Process each post to add reading time
+    return posts.map((post: any) => ({
+      ...post,
+      readingTime: calculateReadingTime(post.content.rendered)
+    }));
   } catch (error) {
     console.error('Error fetching posts:', error);
     return [];
@@ -279,22 +264,17 @@ export async function searchAllContent(searchTerm: string) {
 
 export async function fetchPostBySlug(slug: string) {
   try {
-    const url = new URL(`${getBaseUrl()}/posts`);
-    url.searchParams.append('slug', slug);
-    url.searchParams.append('_embed', '1');
-
-    console.log('fetchPostBySlug: Request URL:', url.toString());
-
-    const response = await fetch(url.toString());
-    if (!response.ok) {
-      throw new Error(`Failed to fetch post: ${response.statusText}`);
+    const posts = await fetchPosts({ slug });
+    if (posts && posts.length > 0) {
+      const post = posts[0];
+      return {
+        ...post,
+        readingTime: calculateReadingTime(post.content.rendered)
+      };
     }
-    const posts = await response.json();
-    console.log('fetchPostBySlug: Response data:', JSON.stringify(posts, null, 2));
-    
-    return posts.length > 0 ? posts[0] : null;
+    return null;
   } catch (error) {
-    console.error('Error fetching post:', error);
+    console.error('Error fetching post by slug:', error);
     return null;
   }
 }

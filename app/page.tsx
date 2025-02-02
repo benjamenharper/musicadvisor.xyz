@@ -75,11 +75,12 @@ export default async function Home() {
                   </div>
                 )}
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">
                     <Link href={`/${post.slug}`} className="hover:text-indigo-600 transition-colors">
                       {decodeHTML(post.title.rendered || '')}
                     </Link>
                   </h3>
+                  <div className="text-sm text-gray-500 mb-3">{post.readingTime}m read</div>
                   <div className="flex items-center justify-between mb-4">
                     <AuthorAttribution articleId={post.id.toString()} compact />
                     <time className="text-sm text-gray-500">
