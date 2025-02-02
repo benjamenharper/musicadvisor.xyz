@@ -134,7 +134,7 @@ export default async function AuthorPage({ params }: { params: { slug: string } 
                     {decodeHTML(post.title.rendered)}
                   </Link>
                 </h2>
-                <div className="text-sm text-gray-500 mb-3">{post.readingTime}m read</div>
+                <div className="text-sm text-gray-500 mb-3">{post.readingTime} mins read</div>
                 <div className="flex items-center justify-between mb-4">
                   <time className="text-sm text-gray-500">
                     {format(new Date(post.date), 'MMMM d, yyyy')}

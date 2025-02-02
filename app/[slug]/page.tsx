@@ -43,7 +43,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
                     className="text-4xl font-bold text-gray-900 mb-3"
                   >{decodeHTML(post.title.rendered)}</h1>
                 )}
-                <div className="text-sm text-gray-500 mb-6">{post.readingTime}m read</div>
+                <div className="text-sm text-gray-500 mb-6">{post.readingTime} mins read</div>
                 <div className="flex items-center justify-between mb-8">
                   <AuthorAttribution articleId={post.id.toString()} />
                   <time className="text-sm text-gray-500">
