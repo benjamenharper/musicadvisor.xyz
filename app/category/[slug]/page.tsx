@@ -35,7 +35,7 @@ export default async function CategoryPage({ params }: { params: { slug: string 
               <div className="p-6">
                 <div className="flex flex-col gap-2">
                   <h2 className="text-xl font-bold text-gray-900">
-                    <a href={`/post/${post.slug}`} className="hover:text-indigo-600 transition-colors">
+                    <a href={`/${post.slug}`} className="hover:text-indigo-600 transition-colors">
                       {post.title.rendered || ''}
                     </a>
                   </h2>
@@ -51,7 +51,7 @@ export default async function CategoryPage({ params }: { params: { slug: string 
                 )}
                 <div className="mt-4">
                   <a
-                    href={`/post/${post.slug}`}
+                    href={`/${post.slug}`}
                     className="text-indigo-600 hover:text-indigo-700 font-medium"
                   >
                     Read More →

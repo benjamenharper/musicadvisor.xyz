@@ -115,7 +115,7 @@ export default function SlugClient({ initialContent }: SlugClientProps) {
             {/* Recent Posts */}
             {recentPosts?.length > 0 && (
               <RelatedContent 
-                posts={recentPosts} 
+                posts={recentPosts.map(post => ({...post, slug: `/${post.slug}`}))} 
                 currentSlug={Array.isArray(params.slug) ? params.slug.join('/') : params.slug} 
               />
             )}
