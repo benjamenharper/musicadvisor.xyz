@@ -3,6 +3,7 @@ import { decodeHTML } from '@/lib/utils';
 import { format } from 'date-fns';
 import { notFound } from 'next/navigation';
 import AuthorAttribution from '@/components/AuthorAttribution';
+import Link from 'next/link';
 
 export default async function CategoryPage({ params }: { params: { slug: string } }) {
   try {
@@ -69,11 +70,12 @@ export default async function CategoryPage({ params }: { params: { slug: string 
                   </div>
                 )}
                 <div className="p-6">
-                  <h2 className="text-xl font-bold text-gray-900 mb-3">
-                    <a href={`/${post.slug}`} className="hover:text-indigo-600 transition-colors">
-                      {decodeHTML(post.title.rendered || '')}
-                    </a>
+                  <h2 className="text-xl font-bold text-gray-900 mb-2">
+                    <Link href={`/${post.slug}`} className="hover:text-indigo-600 transition-colors">
+                      {decodeHTML(post.title.rendered)}
+                    </Link>
                   </h2>
+                  <div className="text-sm text-gray-500 mb-3">{post.readingTime}m read</div>
                   <div className="flex items-center justify-between mb-4">
                     <AuthorAttribution articleId={post.id.toString()} compact />
                     <time className="text-sm text-gray-500">
@@ -87,12 +89,12 @@ export default async function CategoryPage({ params }: { params: { slug: string 
                     />
                   )}
                   <div className="mt-4">
-                    <a
+                    <Link
                       href={`/${post.slug}`}
                       className="text-indigo-600 hover:text-indigo-700 font-medium"
                     >
                       Read More →
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </article>

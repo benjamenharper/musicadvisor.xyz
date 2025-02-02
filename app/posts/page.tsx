@@ -7,12 +7,17 @@ import SearchBox from '@/components/SearchBox';
 import { useStore } from '@/components/providers/StoreProvider';
 import { fetchCategories, fetchPosts } from '@/lib/api';
 import { config } from '@/lib/config';
+import { decodeHTML } from '@/lib/utils';
+import { format } from 'date-fns';
+import AuthorAttribution from '@/components/AuthorAttribution';
 
 interface Post {
   id: number;
   slug: string;
   title: { rendered: string };
   excerpt: { rendered: string };
+  date: string;
+  readingTime: number;
   _embedded?: {
     'wp:featuredmedia'?: Array<{
       source_url: string;
@@ -44,7 +49,7 @@ export default function Posts() {
       try {
         const [categoriesData, postsData] = await Promise.all([
           fetchCategories(currentSiteKey || config.defaultSite),
-          fetchPosts({ _embed: '1', _fields: 'id,slug,title,excerpt,_links,_embedded' }, currentSiteKey || config.defaultSite)
+          fetchPosts({ _embed: '1', _fields: 'id,slug,title,excerpt,date,_links,_embedded' }, currentSiteKey || config.defaultSite)
         ]);
         
         setCategories(categoriesData);
@@ -142,10 +147,18 @@ export default function Posts() {
                 </div>
               )}
               <div className="p-6">
-                <h2
-                  className="text-xl font-semibold text-gray-900 mb-2"
-                  dangerouslySetInnerHTML={{ __html: post.title.rendered }}
-                />
+                <h2 className="text-xl font-bold text-gray-900 mb-2">
+                  <Link href={`/${post.slug}`} className="hover:text-indigo-600 transition-colors">
+                    {decodeHTML(post.title.rendered)}
+                  </Link>
+                </h2>
+                <div className="text-sm text-gray-500 mb-3">{post.readingTime}m read</div>
+                <div className="flex items-center justify-between mb-4">
+                  <AuthorAttribution articleId={post.id.toString()} compact />
+                  <time className="text-sm text-gray-500">
+                    {format(new Date(post.date), 'MMMM d, yyyy')}
+                  </time>
+                </div>
                 {/* Categories */}
                 <div className="mb-4">
                   {post._embedded?.['wp:term']?.[0]?.map((term) => (
