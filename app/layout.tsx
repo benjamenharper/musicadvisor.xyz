@@ -10,8 +10,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Hawaii Elite Real Estate",
-  description: "Luxury real estate in Hawaii",
+  title: "MusicAdvisor - Music Promotion and News",
+  description: "Helping Artists Thrive - Music Industry News and Promotion Tips",
 };
 
 export default function RootLayout({
@@ -21,9 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inter.variable} font-sans antialiased min-h-screen flex flex-col bg-background text-foreground`}
-      >
+      <body className={`${inter.variable} font-sans antialiased min-h-screen flex flex-col bg-background text-foreground`}>
         <ClientSideProvider>
           <ClientLayout>{children}</ClientLayout>
         </ClientSideProvider>

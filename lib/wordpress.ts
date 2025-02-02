@@ -253,16 +253,28 @@ export async function fetchPostBySlug(slug: string) {
     url.searchParams.append('slug', slug);
     url.searchParams.append('_embed', '1');
 
+    console.log('Fetching post with URL:', url.toString());
+
     const response = await fetch(url.toString(), {
       next: { revalidate: 3600 }
     });
 
     if (!response.ok) {
+      console.error('Error response:', response.status, response.statusText);
       throw new Error(`WordPress API error: ${response.status} ${response.statusText}`);
     }
 
     const posts = await response.json();
-    return posts.length > 0 ? posts[0] : null;
+    
+    if (!posts || !Array.isArray(posts) || posts.length === 0) {
+      console.log('No post found for slug:', slug);
+      return null;
+    }
+
+    const post = posts[0];
+    console.log('Found post:', post.id, post.title?.rendered);
+    
+    return post;
   } catch (error) {
     console.error('Error fetching post:', error);
     return null;

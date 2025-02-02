@@ -18,27 +18,20 @@ interface Config {
 }
 
 export const config: Config = {
-  defaultSite: 'hawaii',
+  defaultSite: 'musicadvisor',
   sites: {
-    hawaii: {
-      name: 'Hawaii Elite Real Estate',
-      url: 'https://hawaiieliterealestate.com',
-      domain: 'https://hawaiieliterealestate.com',
-      description: 'Luxury Real Estate in Hawaii',
-      primaryColor: '#2563eb', // blue-600
-    },
-    trading: {
-      name: 'Trading Onramp',
-      url: 'https://tradingonramp.com',
-      domain: 'https://tradingonramp.com',
-      description: 'Your Gateway to Trading Success',
-      primaryColor: '#7c3aed', // purple-600
+    musicadvisor: {
+      name: 'Music Advisor',
+      url: 'https://musicadvisor.xyz',
+      domain: 'https://musicadvisor.xyz',
+      description: 'Music Promotion and News',
+      primaryColor: '#6366f1', // indigo-500
     },
   },
   megaSite: {
-    name: 'Content Hub',
-    description: 'All your favorite content in one place',
-    sources: ['hawaii', 'trading']
+    name: 'Music Advisor',
+    description: 'Music Promotion and News',
+    sources: ['musicadvisor'],
   }
 } as const;
 
