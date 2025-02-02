@@ -1,5 +1,6 @@
 import { fetchPostBySlug, fetchRecentPosts } from '@/lib/wordpress';
 import { format } from 'date-fns';
+import { decodeHTML } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 
@@ -33,9 +34,8 @@ export default async function PostPage({ params }: { params: { slug: string } })
             <header className="mb-8">
               {post.title.rendered && (
                 <h1 
-                  className="text-4xl font-bold text-gray-900 mb-4" 
-                  dangerouslySetInnerHTML={{ __html: post.title.rendered }} 
-                />
+                  className="text-4xl font-bold text-gray-900 mb-4"
+                >{decodeHTML(post.title.rendered)}</h1>
               )}
               <time className="text-gray-500">
                 {format(new Date(post.date), 'MMMM d, yyyy')}
