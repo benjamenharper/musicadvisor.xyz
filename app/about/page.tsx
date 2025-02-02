@@ -23,11 +23,11 @@ export default function AboutPage() {
           </section>
 
           {/* Featured Author */}
-          <section className="bg-white rounded-lg shadow-lg p-8">
+          <section className="bg-white rounded-lg shadow-lg p-8 mb-8">
             <div className="flex flex-col md:flex-row gap-8 items-start">
               <div className="w-48 h-48 relative flex-shrink-0 mx-auto md:mx-0">
                 <Image
-                  src="/musicianscropped.png"
+                  src="/angelica-peterson.jpg"
                   alt="Angelica Peterson"
                   width={192}
                   height={192}
@@ -54,6 +54,39 @@ export default function AboutPage() {
                   <p>
                     When she&apos;s not writing for MusicAdvisor, Angelica consults with independent 
                     artists and conducts workshops on music marketing and brand development.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* News Contributor */}
+          <section className="bg-white rounded-lg shadow-lg p-8 mb-8">
+            <div className="flex flex-col md:flex-row gap-8 items-start">
+              <div className="w-48 h-48 relative flex-shrink-0 mx-auto md:mx-0">
+                <Image
+                  src="/markjackson.jpg"
+                  alt="Mark Jackson"
+                  width={192}
+                  height={192}
+                  className="rounded-lg object-cover"
+                  priority
+                />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Mark Jackson</h2>
+                <h3 className="text-lg text-indigo-600 mb-4">News Contributor</h3>
+                <div className="prose prose-lg">
+                  <p>
+                    Mark Jackson brings fresh perspectives and timely insights to MusicAdvisor&apos;s news 
+                    coverage. With his finger on the pulse of the music industry, Mark covers breaking 
+                    news, emerging trends, and significant developments that impact artists and music 
+                    professionals.
+                  </p>
+                  <p>
+                    His coverage spans from major industry shifts to grassroots movements in the music 
+                    scene. Mark&apos;s writing style combines journalistic precision with accessible 
+                    explanations that help our readers understand complex industry developments.
                   </p>
                 </div>
               </div>

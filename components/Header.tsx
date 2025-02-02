@@ -30,24 +30,32 @@ export default function Header() {
           </div>
 
           <nav className="hidden md:flex items-center space-x-8">
-            <Link
-              href="/category/news"
-              className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              News
-            </Link>
-            <Link
-              href="/category/featured"
-              className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              Featured
-            </Link>
-            <Link
-              href="/category/promotion"
-              className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              Promotion
-            </Link>
+            <div className="flex items-center gap-4">
+              <Link
+                href="/category/featured"
+                className="text-sm font-medium text-muted-foreground hover:text-foreground"
+              >
+                Featured
+              </Link>
+              <Link
+                href="/category/news"
+                className="text-sm font-medium text-muted-foreground hover:text-foreground"
+              >
+                News
+              </Link>
+              <Link
+                href="/category/music-promotion"
+                className="text-sm font-medium text-muted-foreground hover:text-foreground"
+              >
+                Music Promotion
+              </Link>
+              <Link
+                href="/about"
+                className="text-sm font-medium text-muted-foreground hover:text-foreground"
+              >
+                About
+              </Link>
+            </div>
           </nav>
         </div>
       </div>

@@ -6,6 +6,7 @@ import { useStore } from '@/components/providers/StoreProvider';
 import { config } from '@/lib/config';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Link from 'next/link';
 
 export default function ClientLayout({
   children,
@@ -24,7 +25,34 @@ export default function ClientLayout({
       defaultTheme="dark"
       disableTransitionOnChange
     >
-      <Header />
+      <Header>
+        <div className="flex items-center gap-4">
+          <Link
+            href="/category/featured"
+            className="text-sm font-medium text-muted-foreground hover:text-foreground"
+          >
+            Featured
+          </Link>
+          <Link
+            href="/category/news"
+            className="text-sm font-medium text-muted-foreground hover:text-foreground"
+          >
+            News
+          </Link>
+          <Link
+            href="/category/music-promotion"
+            className="text-sm font-medium text-muted-foreground hover:text-foreground"
+          >
+            Music Promotion
+          </Link>
+          <Link
+            href="/about"
+            className="text-sm font-medium text-muted-foreground hover:text-foreground"
+          >
+            About
+          </Link>
+        </div>
+      </Header>
       {children}
       <Footer />
     </ThemeProvider>

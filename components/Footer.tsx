@@ -69,6 +69,12 @@ export default function Footer() {
         {/* Bottom Section */}
         <div className="mt-12 pt-8 border-t border-gray-200">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div className="flex flex-wrap gap-4 mb-4 md:mb-0">
+              <Link href="/category/featured" className="text-sm text-muted-foreground hover:text-foreground">Featured</Link>
+              <Link href="/category/news" className="text-sm text-muted-foreground hover:text-foreground">News</Link>
+              <Link href="/category/music-promotion" className="text-sm text-muted-foreground hover:text-foreground">Music Promotion</Link>
+              <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground">About</Link>
+            </div>
             <p className="text-sm text-gray-600">
               &copy; {new Date().getFullYear()} MusicAdvisor. All Rights Reserved.
             </p>
