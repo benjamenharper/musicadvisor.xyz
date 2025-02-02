@@ -2,6 +2,7 @@ import Image from 'next/image';
 import angelicaImage from '@/public/angelica-peterson.jpg';
 import markImage from '@/public/markjackson.jpg';
 import alisonImage from '@/public/alisonjenks.jpg';
+import conorImage from '@/public/conormurphy.png';
 
 export default function AboutPage() {
   return (
@@ -21,6 +22,61 @@ export default function AboutPage() {
               in today&apos;s digital music industry. Whether you&apos;re an emerging artist or an established 
               performer, our content is designed to help you reach your goals and connect with your audience.
             </p>
+          </div>
+        </section>
+
+        {/* Conor Murphy */}
+        <section id="conor-murphy" className="bg-white rounded-lg shadow-lg p-8 mb-8 scroll-mt-20">
+          <div className="flex flex-col md:flex-row gap-8 items-start">
+            <div className="w-48 h-48 relative flex-shrink-0 mx-auto md:mx-0">
+              <Image
+                src={conorImage}
+                alt="Conor Murphy"
+                className="rounded-lg object-cover"
+                priority
+                placeholder="blur"
+              />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                <a href="#conor-murphy" className="hover:text-indigo-600">
+                  Conor Murphy
+                </a>
+              </h2>
+              <h3 className="text-lg text-indigo-600 mb-4">Music Industry Consultant</h3>
+              <div className="prose prose-lg">
+                <p>
+                  Conor Murphy is a seasoned music industry consultant with a proven track record 
+                  in artist management and strategic growth. His expertise spans across business 
+                  strategy, career development, and industry consulting, helping artists make 
+                  informed decisions about their careers.
+                </p>
+                <p>
+                  With years of hands-on experience in the music industry, Conor provides valuable 
+                  insights into artist management, business development, and strategic planning. His 
+                  practical approach helps artists build sustainable careers in today&apos;s competitive 
+                  music landscape.
+                </p>
+              </div>
+              <div className="mt-6 flex gap-4">
+                <a
+                  href="https://linkedin.com/in/conor-murphy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-500 hover:text-indigo-600"
+                >
+                  LinkedIn
+                </a>
+                <a
+                  href="https://conormurphy.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-500 hover:text-indigo-600"
+                >
+                  Website
+                </a>
+              </div>
+            </div>
           </div>
         </section>
 

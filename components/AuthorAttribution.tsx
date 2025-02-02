@@ -1,60 +1,76 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
-import angelicaImage from '@/public/angelica-peterson.jpg';
-import markImage from '@/public/markjackson.jpg';
-import alisonImage from '@/public/alisonjenks.jpg';
-
-type Author = {
-  name: string;
-  role: string;
-  image: any;
-  shortBio: string;
-};
-
-const authors: Record<string, Author> = {
-  'featured': {
-    name: 'Angelica Peterson',
-    role: 'Featured Author',
-    image: angelicaImage,
-    shortBio: 'Music industry veteran with over a decade of experience in artist development and digital marketing.'
-  },
-  'news': {
-    name: 'Mark Jackson',
-    role: 'News Contributor',
-    image: markImage,
-    shortBio: 'Music industry journalist covering breaking news and emerging trends.'
-  },
-  'promotion': {
-    name: 'Alison Jenks',
-    role: 'Promotion Strategist',
-    image: alisonImage,
-    shortBio: 'Digital marketing specialist with expertise in music promotion and audience growth strategies.'
-  }
-};
+import { authors } from '@/lib/data/authors';
+import { useEffect, useState } from 'react';
 
 interface AuthorAttributionProps {
-  category: string;
+  articleId: string;
   compact?: boolean;
 }
 
-export default function AuthorAttribution({ category, compact = false }: AuthorAttributionProps) {
-  const author = authors[category];
-  
+export default function AuthorAttribution({ articleId, compact = false }: AuthorAttributionProps) {
+  const [author, setAuthor] = useState<typeof authors[0] | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchAuthor() {
+      if (!articleId) return;
+      
+      setIsLoading(true);
+      try {
+        const response = await fetch(`/api/authors?postId=${articleId}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        if (data.authorId) {
+          const foundAuthor = authors.find(a => a.id === data.authorId);
+          setAuthor(foundAuthor || null);
+        }
+      } catch (error) {
+        console.error('Error fetching author:', error);
+        setAuthor(null);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchAuthor();
+  }, [articleId]);
+
+  if (isLoading) {
+    return (
+      <div className={`flex items-${compact ? 'center' : 'start'} gap-${compact ? '2' : '4'} animate-pulse`}>
+        <div className={`relative w-${compact ? '8' : '12'} h-${compact ? '8' : '12'} flex-shrink-0 bg-gray-200 rounded-full`} />
+        <div className="flex-1">
+          <div className="h-4 bg-gray-200 rounded w-24" />
+          {!compact && (
+            <>
+              <div className="h-3 bg-gray-200 rounded w-32 mt-2" />
+              <div className="h-3 bg-gray-200 rounded w-48 mt-2" />
+            </>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   if (!author) return null;
 
   if (compact) {
     return (
-      <Link href={`/about#${author.name.toLowerCase().replace(' ', '-')}`} className="flex items-center gap-2 group">
-        <div className="relative w-6 h-6 flex-shrink-0">
+      <Link href={`/authors/${author.id}`} className="flex items-center gap-2 group">
+        <div className="relative w-8 h-8 flex-shrink-0">
           <Image
             src={author.image}
             alt={author.name}
-            className="rounded-full object-cover"
+            className="rounded-full"
             fill
-            sizes="24px"
+            sizes="32px"
           />
         </div>
-        <span className="text-sm text-gray-600 group-hover:text-indigo-600 truncate">
+        <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
           {author.name}
         </span>
       </Link>
@@ -62,24 +78,22 @@ export default function AuthorAttribution({ category, compact = false }: AuthorA
   }
 
   return (
-    <Link href={`/about#${author.name.toLowerCase().replace(' ', '-')}`} className="flex items-center gap-4 group">
+    <Link href={`/authors/${author.id}`} className="flex items-start gap-4 group">
       <div className="relative w-12 h-12 flex-shrink-0">
         <Image
           src={author.image}
           alt={author.name}
-          className="rounded-full object-cover"
+          className="rounded-full"
           fill
           sizes="48px"
         />
       </div>
-      <div>
-        <div className="font-medium text-gray-900 group-hover:text-indigo-600">
+      <div className="flex-1">
+        <h3 className="font-medium group-hover:text-primary transition-colors">
           {author.name}
-        </div>
-        <div className="text-sm text-gray-500">{author.role}</div>
-        <div className="text-sm text-gray-600 mt-1 line-clamp-2">
-          {author.shortBio}
-        </div>
+        </h3>
+        <p className="text-sm text-muted-foreground">{author.role}</p>
+        <p className="text-sm mt-1">{author.shortBio}</p>
       </div>
     </Link>
   );

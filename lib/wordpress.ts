@@ -1,4 +1,5 @@
 import { config } from './config';
+import { postAuthorManager } from './utils/postAuthorManager';
 
 const getBaseUrl = (siteKey: string = config.defaultSite) => {
   const site = config.sites[siteKey];
@@ -69,7 +70,7 @@ export async function fetchPosts(params: Record<string, string> = {}, siteKey: s
 
     const data = await response.json();
     console.log('fetchPosts: Response data:', JSON.stringify(data, null, 2));
-    return data;
+    return Array.isArray(data) ? data : [];
   } catch (error) {
     console.error('fetchPosts: Fetch error:', error);
     return [];
@@ -328,15 +329,7 @@ export async function fetchPostBySlug(slug: string) {
     const posts = await response.json();
     console.log('fetchPostBySlug: Response data:', JSON.stringify(posts, null, 2));
     
-    if (!posts || !Array.isArray(posts) || posts.length === 0) {
-      console.log('No post found for slug:', slug);
-      return null;
-    }
-
-    const post = posts[0];
-    console.log('Found post:', post.id, post.title?.rendered);
-    
-    return post;
+    return posts.length > 0 ? posts[0] : null;
   } catch (error) {
     console.error('Error fetching post:', error);
     return null;
