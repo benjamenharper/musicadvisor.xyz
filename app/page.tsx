@@ -8,9 +8,17 @@ export default async function Home() {
   try {
     // Get the categories we need
     const categories = await fetchCategories();
+    console.log('Home: All categories:', categories.map(c => ({ id: c.id, name: c.name, slug: c.slug })));
+    
     const featuredCategory = categories.find(cat => cat.slug === 'featured');
     const newsCategory = categories.find(cat => cat.slug === 'news');
     const promotionCategory = categories.find(cat => cat.slug === 'promotion');
+
+    console.log('Home: Found categories:', {
+      featured: featuredCategory?.id,
+      news: newsCategory?.id,
+      promotion: promotionCategory?.id
+    });
 
     if (!featuredCategory || !newsCategory || !promotionCategory) {
       console.error('Required categories not found:', { 
@@ -22,11 +30,23 @@ export default async function Home() {
     }
 
     // Fetch posts for each category
+    console.log('Home: Fetching posts for categories:', {
+      featured: featuredCategory.id,
+      news: newsCategory.id,
+      promotion: promotionCategory.id
+    });
+
     const [featuredPosts, newsPosts, promotionPosts] = await Promise.all([
       fetchPosts({ categories: featuredCategory.id.toString(), per_page: '6', _embed: 'true' }),
       fetchPosts({ categories: newsCategory.id.toString(), per_page: '6', _embed: 'true' }),
       fetchPosts({ categories: promotionCategory.id.toString(), per_page: '6', _embed: 'true' })
     ]);
+
+    console.log('Home: Post counts:', {
+      featured: featuredPosts?.length || 0,
+      news: newsPosts?.length || 0,
+      promotion: promotionPosts?.length || 0
+    });
 
     const renderPostGrid = (posts: any[], category: any) => {
       if (!posts || posts.length === 0) return null;
