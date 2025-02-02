@@ -1,127 +1,127 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-import Image from 'next/image';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { fetchPostBySlug, fetchRecentPosts } from '@/lib/wordpress';
 import { format } from 'date-fns';
-import RelatedContent from '@/components/RelatedContent';
-import { useStore } from '@/components/providers/StoreProvider';
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
 
-interface SlugClientProps {
-  initialContent: any;
-}
-
-export default function SlugClient({ initialContent }: SlugClientProps) {
-  const params = useParams();
-  const currentSiteKey = useStore((state) => state.currentSiteKey);
-  const [content, setContent] = useState(initialContent);
-  const [recentPosts, setRecentPosts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-  const slug = Array.isArray(params.slug) ? params.slug.join('/') : params.slug;
-
-  useEffect(() => {
-    const loadRecentPosts = async () => {
-      try {
-        const recentResult = await fetch(`/api/posts/recent`);
-        const recentData = await recentResult.json();
-        setRecentPosts(recentData.posts || []);
-      } catch (error) {
-        console.error('Error fetching recent posts:', error);
-      }
-    };
-
-    loadRecentPosts();
-  }, [slug, currentSiteKey]);
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
-  if (!content) {
+export default async function PostPage({ params }: { params: { slug: string } }) {
+  const [post, recentPosts] = await Promise.all([
+    fetchPostBySlug(params.slug),
+    fetchRecentPosts(5)
+  ]);
+  
+  if (!post) {
     notFound();
   }
 
-  const isPost = content.type === 'post';
-  const date = content.date ? new Date(content.date) : new Date();
-  const title = content?.title?.rendered || '';
-  const contentHtml = content?.content?.rendered || '';
-  const featuredImage = content?._embedded?.['wp:featuredmedia']?.[0]?.source_url;
-
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="flex flex-col lg:flex-row lg:gap-12">
-        {/* Main Content */}
-        <main className="flex-1 min-w-0">
-          {/* Featured Image */}
-          {featuredImage && (
-            <div className="relative h-[400px] mb-8 rounded-lg overflow-hidden">
-              <Image
-                src={featuredImage}
-                alt={title}
-                fill
-                className="object-cover"
-                priority
-              />
-            </div>
-          )}
+    <main className="bg-background min-h-screen py-12">
+      {/* Featured Image - Full Width */}
+      {post._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
+        <div className="relative h-[400px] mb-8">
+          <img 
+            src={post._embedded['wp:featuredmedia'][0].source_url}
+            alt={post.title.rendered || ''}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      )}
 
-          {/* Content Header */}
-          <div className="mb-8">
-            {isPost && date && (
-              <div className="flex items-center gap-4 mb-4 text-sm text-muted-foreground">
-                <time dateTime={date.toISOString()}>
-                  {format(date, 'MMMM d, yyyy')}
-                </time>
-                {content.categories && content.categories.length > 0 && (
-                  <div className="flex gap-2">
-                    {content.categories.map((category: any) => (
-                      <span
-                        key={category.id}
-                        className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary text-secondary-foreground"
-                      >
-                        {category.name}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-            {title && (
-              <h1 
-                className="text-4xl font-bold text-foreground mb-4"
-                dangerouslySetInnerHTML={{ __html: title }}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row gap-12">
+          {/* Main Content */}
+          <article className="flex-1">
+            <header className="mb-8">
+              {post.title.rendered && (
+                <h1 
+                  className="text-4xl font-bold text-gray-900 mb-4" 
+                  dangerouslySetInnerHTML={{ __html: post.title.rendered }} 
+                />
+              )}
+              <time className="text-gray-500">
+                {format(new Date(post.date), 'MMMM d, yyyy')}
+              </time>
+            </header>
+
+            {post.content.rendered && (
+              <div 
+                className="prose prose-lg max-w-none"
+                dangerouslySetInnerHTML={{ __html: post.content.rendered }}
               />
             )}
-          </div>
+          </article>
 
-          {/* Content Body */}
-          {contentHtml && (
-            <div 
-              className="prose dark:prose-invert max-w-none"
-              dangerouslySetInnerHTML={{ __html: contentHtml }}
-            />
-          )}
-        </main>
-
-        {/* Sidebar */}
-        <aside className="lg:w-80 flex-none mt-12 lg:mt-0">
-          <div className="sticky top-8 space-y-8">
+          {/* Sidebar */}
+          <aside className="lg:w-80 space-y-8">
             {/* Recent Posts */}
-            {recentPosts?.length > 0 && (
-              <RelatedContent 
-                posts={recentPosts.map(post => ({...post, slug: `/${post.slug}`}))} 
-                currentSlug={Array.isArray(params.slug) ? params.slug.join('/') : params.slug} 
-              />
-            )}
-          </div>
-        </aside>
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Posts</h2>
+              <div className="space-y-4">
+                {recentPosts.filter(p => p.id !== post.id).slice(0, 4).map((recentPost) => (
+                  <div key={recentPost.id} className="border-b border-gray-100 last:border-0 pb-4 last:pb-0">
+                    <Link 
+                      href={`/${recentPost.slug}`}
+                      className="block hover:text-indigo-600 transition-colors"
+                    >
+                      <h3 className="font-medium text-gray-900 line-clamp-2" 
+                        dangerouslySetInnerHTML={{ __html: recentPost.title.rendered || '' }}
+                      />
+                      <time className="text-sm text-gray-500">
+                        {format(new Date(recentPost.date), 'MMMM d, yyyy')}
+                      </time>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Categories */}
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Categories</h2>
+              <div className="space-y-2">
+                <Link 
+                  href="/category/news"
+                  className="block text-gray-600 hover:text-indigo-600 transition-colors"
+                >
+                  News
+                </Link>
+                <Link 
+                  href="/category/featured"
+                  className="block text-gray-600 hover:text-indigo-600 transition-colors"
+                >
+                  Featured
+                </Link>
+                <Link 
+                  href="/category/promotion"
+                  className="block text-gray-600 hover:text-indigo-600 transition-colors"
+                >
+                  Promotion
+                </Link>
+              </div>
+            </div>
+
+            {/* Newsletter Signup */}
+            <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg shadow-lg p-6 text-white">
+              <h2 className="text-xl font-bold mb-4">Stay Updated</h2>
+              <p className="text-sm mb-4 text-indigo-100">
+                Get the latest music industry news and promotion tips delivered to your inbox.
+              </p>
+              <form className="space-y-3">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/40"
+                />
+                <button
+                  type="submit"
+                  className="w-full px-4 py-2 bg-white text-indigo-600 rounded-lg font-medium hover:bg-indigo-50 transition-colors"
+                >
+                  Subscribe
+                </button>
+              </form>
+            </div>
+          </aside>
+        </div>
       </div>
-    </div>
+    </main>
   );
 }

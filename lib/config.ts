@@ -21,9 +21,9 @@ export const config: Config = {
   defaultSite: 'musicadvisor',
   sites: {
     musicadvisor: {
-      name: 'Music Advisor',
-      url: 'https://musicadvisor.xyz',
-      domain: 'https://musicadvisor.xyz',
+      name: 'MusicAdvisor',
+      url: process.env.NEXT_PUBLIC_WORDPRESS_URL || 'https://musicadvisor.xyz',
+      domain: process.env.NEXT_PUBLIC_WORDPRESS_URL || 'https://musicadvisor.xyz',
       description: 'Music Promotion and News',
       primaryColor: '#6366f1', // indigo-500
     },
