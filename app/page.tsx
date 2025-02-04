@@ -58,9 +58,12 @@ export default async function Home() {
                   className="text-gray-600 mb-4 line-clamp-3"
                   dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
                 />
-                <div className="flex justify-between items-center text-sm text-gray-500">
-                  <span>{format(new Date(post.date), 'MMM d, yyyy')}</span>
-                  <span>{post.readingTime} min read</span>
+                <div className="flex flex-col space-y-2">
+                  <AuthorAttribution postId={post.id.toString()} />
+                  <div className="flex justify-between items-center text-sm text-gray-500">
+                    <span>{format(new Date(post.date), 'MMM d, yyyy')}</span>
+                    <span>{post.readingTime} min read</span>
+                  </div>
                 </div>
               </div>
             </div>
