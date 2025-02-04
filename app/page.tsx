@@ -34,50 +34,53 @@ export default async function Home() {
       if (!posts || posts.length === 0) return null;
 
       return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {posts.map((post: any) => (
-            <div key={post.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-              {post._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
-                <Link href={`/posts/${post.slug}`}>
-                  <div className="relative h-48 overflow-hidden">
-                    <img
-                      src={post._embedded['wp:featuredmedia'][0].source_url}
-                      alt={decodeHTML(post.title.rendered)}
-                      className="object-cover w-full h-full transform hover:scale-105 transition-transform duration-200"
-                    />
-                  </div>
-                </Link>
-              )}
-              <div className="p-4">
-                <Link href={`/posts/${post.slug}`}>
-                  <h3 className="text-xl font-semibold mb-2 hover:text-blue-600 transition-colors duration-200">
-                    {decodeHTML(post.title.rendered)}
-                  </h3>
-                </Link>
-                <div 
-                  className="text-gray-600 mb-4 line-clamp-3"
-                  dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
-                />
-                <div className="flex flex-col space-y-2">
-                  <AuthorAttribution postId={post.id.toString()} />
-                  <div className="flex justify-between items-center text-sm text-gray-500">
-                    <span>{format(new Date(post.date), 'MMM d, yyyy')}</span>
-                    <span>{post.readingTime} min read</span>
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold mb-8 text-gray-900">{category.name}</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {posts.map((post: any) => (
+              <div key={post.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+                {post._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
+                  <Link href={`/posts/${post.slug}`}>
+                    <div className="relative h-48 overflow-hidden">
+                      <img
+                        src={post._embedded['wp:featuredmedia'][0].source_url}
+                        alt={decodeHTML(post.title.rendered)}
+                        className="object-cover w-full h-full transform hover:scale-105 transition-transform duration-200"
+                      />
+                    </div>
+                  </Link>
+                )}
+                <div className="p-4">
+                  <Link href={`/posts/${post.slug}`}>
+                    <h3 className="text-xl font-semibold mb-2 hover:text-blue-600 transition-colors duration-200">
+                      {decodeHTML(post.title.rendered)}
+                    </h3>
+                  </Link>
+                  <div 
+                    className="text-gray-600 mb-4 line-clamp-3"
+                    dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
+                  />
+                  <div className="flex flex-col space-y-2">
+                    <AuthorAttribution articleId={post.id.toString()} />
+                    <div className="flex justify-between items-center text-sm text-gray-500">
+                      <span>{format(new Date(post.date), 'MMM d, yyyy')}</span>
+                      <span>{post.readingTime} min read</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </section>
       );
     };
 
     return (
       <main className="bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          {renderPostGrid(featuredPosts, featuredCategory)}
-          {renderPostGrid(newsPosts, newsCategory)}
-          {renderPostGrid(promotionPosts, promotionCategory)}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+          {featuredPosts?.length > 0 && renderPostGrid(featuredPosts, featuredCategory)}
+          {newsPosts?.length > 0 && renderPostGrid(newsPosts, newsCategory)}
+          {promotionPosts?.length > 0 && renderPostGrid(promotionPosts, promotionCategory)}
 
           {/* Show debug info if no posts are found */}
           {!featuredPosts?.length && !newsPosts?.length && !promotionPosts?.length && (
