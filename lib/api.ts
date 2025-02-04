@@ -1,6 +1,7 @@
 import { mockProperties } from './mockData';
 import { config } from './config';
 import axios from 'axios';
+import { calculateReadingTime } from './utils/calculateReadingTime';
 
 export const fetchProperties = async () => {
   // Return mock data instead of making API call
@@ -30,7 +31,7 @@ export const fetchPosts = async (siteKey: string, category?: string) => {
     per_page: '100',
     orderby: 'date',
     order: 'desc',
-    _fields: 'id,title,excerpt,date,modified,slug,_links,_embedded'
+    _fields: 'id,title,excerpt,content,date,modified,slug,_links,_embedded'
   });
 
   if (category && category !== 'all') {
@@ -65,13 +66,18 @@ export const fetchPosts = async (siteKey: string, category?: string) => {
       throw new Error('Invalid response from WordPress API');
     }
 
-    const posts = response.data;
+    const posts = response.data.map(post => ({
+      ...post,
+      readingTime: calculateReadingTime(post.content.rendered)
+    }));
+
     console.log('Posts fetched successfully:', {
       total: posts.length,
       latest: posts[0] ? {
         id: posts[0].id,
         title: posts[0].title?.rendered,
-        date: posts[0].date
+        date: posts[0].date,
+        readingTime: posts[0].readingTime
       } : 'No posts',
       responseHeaders: response.headers
     });
