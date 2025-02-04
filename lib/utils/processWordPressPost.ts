@@ -1,12 +1,21 @@
 import { postAuthorManager } from './postAuthorManager';
+import { calculateReadingTime } from './calculateReadingTime';
 
 export function processWordPressPost(post: any) {
-  // Get or assign an author for this post
+  if (!post) return null;
+
   const authorId = postAuthorManager.assignAuthorToPost(post.id.toString());
   
-  // Add the author ID to the post
+  const content = post.content?.rendered || '';
+  const readingTime = calculateReadingTime(content);
+
   return {
     ...post,
-    authorId
+    authorId,
+    readingTime,
+    content: {
+      ...post.content,
+      rendered: content
+    }
   };
 }

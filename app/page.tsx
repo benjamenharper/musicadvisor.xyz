@@ -14,45 +14,21 @@ export default async function Home() {
   try {
     // Get the categories we need
     const categories = await fetchCategories(config.defaultSite);
-    console.log('Home: All categories:', categories.map(c => ({ id: c.id, name: c.name, slug: c.slug })));
     
     const featuredCategory = categories.find(cat => cat.slug === 'featured');
     const newsCategory = categories.find(cat => cat.slug === 'news');
     const promotionCategory = categories.find(cat => cat.slug === 'promotion');
 
-    console.log('Home: Found categories:', {
-      featured: featuredCategory?.id,
-      news: newsCategory?.id,
-      promotion: promotionCategory?.id
-    });
-
     if (!featuredCategory || !newsCategory || !promotionCategory) {
-      console.error('Required categories not found:', { 
-        featured: featuredCategory, 
-        news: newsCategory, 
-        promotion: promotionCategory 
-      });
       throw new Error('Required categories not found');
     }
 
-    // Fetch posts for each category
-    console.log('Home: Fetching posts for categories:', {
-      featured: featuredCategory.id,
-      news: newsCategory.id,
-      promotion: promotionCategory.id
-    });
-
+    // Fetch posts for each category (limited to 9 posts each)
     const [featuredPosts, newsPosts, promotionPosts] = await Promise.all([
-      fetchPosts(config.defaultSite, featuredCategory.id.toString(), { per_page: '6', _embed: 'true' }),
-      fetchPosts(config.defaultSite, newsCategory.id.toString(), { per_page: '6', _embed: 'true' }),
-      fetchPosts(config.defaultSite, promotionCategory.id.toString(), { per_page: '6', _embed: 'true' })
+      fetchPosts(config.defaultSite, featuredCategory.id.toString(), { per_page: '9', _embed: 'true' }),
+      fetchPosts(config.defaultSite, newsCategory.id.toString(), { per_page: '9', _embed: 'true' }),
+      fetchPosts(config.defaultSite, promotionCategory.id.toString(), { per_page: '9', _embed: 'true' })
     ]);
-
-    console.log('Home: Post counts:', {
-      featured: featuredPosts?.length || 0,
-      news: newsPosts?.length || 0,
-      promotion: promotionPosts?.length || 0
-    });
 
     const renderPostGrid = (posts: any[], category: any) => {
       if (!posts || posts.length === 0) return null;
