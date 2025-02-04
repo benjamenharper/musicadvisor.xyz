@@ -29,6 +29,10 @@ const nextConfig = {
     workerThreads: false,
     cpus: 1
   },
+  // Add revalidation settings
+  revalidate: 0, // Revalidate at most once per second
+  swcMinify: true,
+  reactStrictMode: true,
   async redirects() {
     return [
       {
