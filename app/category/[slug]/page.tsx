@@ -75,12 +75,15 @@ export default async function CategoryPage({ params }: { params: { slug: string 
                       {decodeHTML(post.title.rendered)}
                     </Link>
                   </h2>
-                  <div className="text-sm text-gray-500 mb-3">{post.readingTime} mins read</div>
-                  <div className="flex items-center justify-between mb-4">
-                    <AuthorAttribution articleId={post.id.toString()} compact />
-                    <time className="text-sm text-gray-500">
-                      {format(new Date(post.date), 'MMMM d, yyyy')}
-                    </time>
+                  <div className="flex justify-between items-center text-sm text-gray-500 mt-4">
+                    <AuthorAttribution postId={post.id.toString()} compact />
+                    <div className="flex items-center gap-2">
+                      <time dateTime={post.date}>
+                        {format(new Date(post.date), 'MMM d, yyyy')}
+                      </time>
+                      <span>·</span>
+                      <span>{post.readingTime} min read</span>
+                    </div>
                   </div>
                   {post.excerpt.rendered && (
                     <div 

@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import angelicaImage from '@/public/angelica-peterson.jpg';
 import markImage from '@/public/markjackson.jpg';
 import alisonImage from '@/public/alisonjenks.jpg';
@@ -39,9 +40,9 @@ export default function AboutPage() {
             </div>
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                <a href="#conor-murphy" className="hover:text-indigo-600">
+                <Link href="/authors/conor-murphy" className="hover:text-indigo-600">
                   Conor Murphy
-                </a>
+                </Link>
               </h2>
               <h3 className="text-lg text-indigo-600 mb-4">Music Industry Consultant</h3>
               <div className="prose prose-lg">
@@ -94,17 +95,16 @@ export default function AboutPage() {
             </div>
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                <a href="#angelica-peterson" className="hover:text-indigo-600">
+                <Link href="/authors/angelica-peterson" className="hover:text-indigo-600">
                   Angelica Peterson
-                </a>
+                </Link>
               </h2>
-              <h3 className="text-lg text-indigo-600 mb-4">Featured Author</h3>
+              <h3 className="text-lg text-indigo-600 mb-4">Industry Analyst</h3>
               <div className="prose prose-lg">
                 <p>
-                  Angelica Peterson is a music industry veteran with over a decade of experience 
-                  in artist development and digital marketing. As our featured author, she brings 
-                  her extensive knowledge and practical insights to help artists navigate their 
-                  musical journey.
+                  Angelica Peterson is our resident industry analyst, bringing data-driven insights 
+                  to our content. Her expertise in market trends and industry analytics helps artists 
+                  understand and navigate the complex music business landscape.
                 </p>
                 <p>
                   With a background in both classical music and digital marketing, Angelica 
@@ -135,17 +135,16 @@ export default function AboutPage() {
             </div>
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                <a href="#mark-jackson" className="hover:text-indigo-600">
+                <Link href="/authors/mark-jackson" className="hover:text-indigo-600">
                   Mark Jackson
-                </a>
+                </Link>
               </h2>
-              <h3 className="text-lg text-indigo-600 mb-4">News Contributor</h3>
+              <h3 className="text-lg text-indigo-600 mb-4">Marketing Specialist</h3>
               <div className="prose prose-lg">
                 <p>
-                  Mark Jackson brings fresh perspectives and timely insights to MusicAdvisor&apos;s news 
-                  coverage. With his finger on the pulse of the music industry, Mark covers breaking 
-                  news, emerging trends, and significant developments that impact artists and music 
-                  professionals.
+                  Mark Jackson brings over a decade of experience in music marketing and digital strategy. 
+                  His innovative approaches to artist promotion and brand development have helped numerous 
+                  musicians build strong, engaged audiences across multiple platforms.
                 </p>
                 <p>
                   His coverage spans from major industry shifts to grassroots movements in the music 
@@ -171,17 +170,16 @@ export default function AboutPage() {
             </div>
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                <a href="#alison-jenks" className="hover:text-indigo-600">
+                <Link href="/authors/alison-jenks" className="hover:text-indigo-600">
                   Alison Jenks
-                </a>
+                </Link>
               </h2>
-              <h3 className="text-lg text-indigo-600 mb-4">Promotion Strategist</h3>
+              <h3 className="text-lg text-indigo-600 mb-4">Content Strategist</h3>
               <div className="prose prose-lg">
                 <p>
-                  Alison Jenks is a digital marketing specialist with a passion for helping musicians 
-                  build their online presence. Her expertise in social media strategy, content marketing, 
-                  and audience engagement has helped numerous artists expand their reach and connect with 
-                  their target audience.
+                  Alison Jenks specializes in content strategy and digital storytelling. Her background 
+                  in music journalism and social media management gives her unique insights into creating 
+                  compelling narratives that resonate with audiences and drive engagement.
                 </p>
                 <p>
                   With a background in both music business and digital marketing, Alison provides 
