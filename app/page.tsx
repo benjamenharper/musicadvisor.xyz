@@ -1,13 +1,19 @@
-import { fetchPosts, fetchCategories } from '@/lib/wordpress';
+import { fetchPosts, fetchCategories } from '@/lib/api';
 import { format } from 'date-fns';
 import { decodeHTML } from '@/lib/utils';
 import Link from 'next/link';
 import AuthorAttribution from '@/components/AuthorAttribution';
+import { config } from '@/lib/config';
+
+// Force dynamic rendering at runtime
+export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+export const revalidate = 0;
 
 export default async function Home() {
   try {
     // Get the categories we need
-    const categories = await fetchCategories();
+    const categories = await fetchCategories(config.defaultSite);
     console.log('Home: All categories:', categories.map(c => ({ id: c.id, name: c.name, slug: c.slug })));
     
     const featuredCategory = categories.find(cat => cat.slug === 'featured');
@@ -37,9 +43,9 @@ export default async function Home() {
     });
 
     const [featuredPosts, newsPosts, promotionPosts] = await Promise.all([
-      fetchPosts({ categories: featuredCategory.id.toString(), per_page: '6', _embed: 'true' }),
-      fetchPosts({ categories: newsCategory.id.toString(), per_page: '6', _embed: 'true' }),
-      fetchPosts({ categories: promotionCategory.id.toString(), per_page: '6', _embed: 'true' })
+      fetchPosts(config.defaultSite, featuredCategory.id.toString(), { per_page: '6', _embed: 'true' }),
+      fetchPosts(config.defaultSite, newsCategory.id.toString(), { per_page: '6', _embed: 'true' }),
+      fetchPosts(config.defaultSite, promotionCategory.id.toString(), { per_page: '6', _embed: 'true' })
     ]);
 
     console.log('Home: Post counts:', {
