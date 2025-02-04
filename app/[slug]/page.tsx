@@ -45,7 +45,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
                 )}
                 <div className="text-sm text-gray-500 mb-6">{post.readingTime} mins read</div>
                 <div className="flex items-center justify-between mb-8">
-                  <AuthorAttribution articleId={post.id.toString()} />
+                  <AuthorAttribution postId={post.id.toString()} />
                   <time className="text-sm text-gray-500">
                     {format(new Date(post.date), 'MMMM d, yyyy')}
                   </time>
