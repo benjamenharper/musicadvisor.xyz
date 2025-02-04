@@ -70,7 +70,7 @@ export default async function CategoryPage({ params }: { params: { slug: string 
                   </div>
                 )}
                 <div className="p-4">
-                  <Link href={`/posts/${post.slug}`}>
+                  <Link href={`/${post.slug}`}>
                     <h2 className="text-xl font-semibold hover:text-blue-600 transition-colors duration-200">
                       {decodeHTML(post.title.rendered)}
                     </h2>

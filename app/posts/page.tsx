@@ -58,7 +58,7 @@ async function PostsList({ selectedCategory = 'all' }) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {posts.map((post) => (
           <article key={post.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-            <Link href={`/posts/${post.slug}`}>
+            <Link href={`/${post.slug}`} className="block">
               {post._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
                 <div className="relative h-48 w-full">
                   <Image
@@ -70,7 +70,7 @@ async function PostsList({ selectedCategory = 'all' }) {
                 </div>
               )}
               <div className="p-4">
-                <Link href={`/posts/${post.slug}`}>
+                <Link href={`/${post.slug}`}>
                   <h2 className="text-xl font-semibold hover:text-blue-600 transition-colors duration-200">
                     {decodeHTML(post.title.rendered)}
                   </h2>
@@ -113,7 +113,7 @@ async function Categories() {
     <div className="mb-8">
       <div className="flex flex-wrap gap-2">
         <Link
-          href="/posts"
+          href="/"
           className="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
         >
           All
@@ -121,7 +121,7 @@ async function Categories() {
         {categories.map((category) => (
           <Link
             key={category.id}
-            href={`/posts?category=${category.slug}`}
+            href={`/?category=${category.slug}`}
             className="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
           >
             {category.name}
@@ -138,7 +138,7 @@ export default async function Posts({ searchParams }: { searchParams: { category
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="flex items-center justify-between mb-8">
-        <Link href="/posts" className="group">
+        <Link href="/" className="group">
           <h1 className="text-4xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
             Articles & News
           </h1>

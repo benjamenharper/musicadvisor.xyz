@@ -40,7 +40,7 @@ export default async function Home() {
             {posts.map((post: any) => (
               <div key={post.id} className="bg-white rounded-lg shadow-md overflow-hidden">
                 {post._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
-                  <Link href={`/posts/${post.slug}`}>
+                  <Link href={`/${post.slug}`}>
                     <div className="relative h-48 overflow-hidden">
                       <img
                         src={post._embedded['wp:featuredmedia'][0].source_url}
@@ -51,7 +51,7 @@ export default async function Home() {
                   </Link>
                 )}
                 <div className="p-4">
-                  <Link href={`/posts/${post.slug}`}>
+                  <Link href={`/${post.slug}`}>
                     <h2 className="text-xl font-semibold hover:text-blue-600 transition-colors duration-200">
                       {decodeHTML(post.title.rendered)}
                     </h2>
