@@ -19,16 +19,28 @@ export function decodeHTML(html: string): string {
     '&quot;': '"',
     '&#39;': "'",
     '&#x27;': "'",
-    '&#x2F;': '/',
-    '&#8216;': "'",
-    '&#8217;': "'",
+    '&#038;': '&',
+    '&#38;': '&',
+    '&nbsp;': ' ',
+    '&copy;': '©',
+    '&reg;': '®',
+    '&trade;': '™',
+    '&mdash;': '—',
+    '&ndash;': '–',
+    '&ldquo;': '"',
+    '&rdquo;': '"',
+    '&lsquo;': ''',
+    '&rsquo;': ''',
+    '&bull;': '•',
+    '&hellip;': '…',
+    '&#8211;': '–',
+    '&#8212;': '—',
+    '&#8216;': ''',
+    '&#8217;': ''',
     '&#8220;': '"',
     '&#8221;': '"',
-    '&#8211;': '-',
-    '&#8212;': '--',
+    '&#8230;': '…'
   };
-
-  return html.replace(/&[#\w]+;/g, entity => 
-    entities[entity] || entity
-  );
+  
+  return html.replace(/&[#\w]+;/g, entity => entities[entity] || entity);
 }
