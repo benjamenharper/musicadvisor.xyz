@@ -49,66 +49,78 @@ async function PostsList({ selectedCategory = 'all' }) {
   headers();
   const timestamp = getTimestamp();
   
-  console.log(`[${timestamp}] Fetching posts for category:`, selectedCategory);
-  const posts = await fetchPosts(config.defaultSite, selectedCategory);
-  console.log(`[${timestamp}] Fetched ${posts?.length} posts. Latest post:`, 
-    posts?.[0] ? {
-      id: posts[0].id,
-      title: posts[0].title.rendered,
-      date: posts[0].date
-    } : 'No posts'
-  );
-  
-  if (!posts || posts.length === 0) {
+  try {
+    console.log(`[${timestamp}] Fetching posts for category:`, selectedCategory);
+    const posts = await fetchPosts(config.defaultSite, selectedCategory);
+    console.log(`[${timestamp}] Fetched ${posts?.length} posts`);
+    
+    if (!posts || posts.length === 0) {
+      return (
+        <div className="text-center py-12">
+          <p className="text-gray-500">No posts found. New posts should appear here within a few seconds of publishing.</p>
+          <p className="text-gray-400 text-sm mt-2">Last checked: {new Date(timestamp).toLocaleTimeString()}</p>
+        </div>
+      );
+    }
+
+    // Add debug info at the top
+    return (
+      <div className="space-y-8">
+        <div className="bg-gray-50 p-4 rounded-lg text-xs font-mono">
+          <h3 className="font-semibold mb-2">Debug Info:</h3>
+          <div>Total Posts: {posts.length}</div>
+          <div>Latest Post: {posts[0]?.title.rendered} ({new Date(posts[0]?.date).toLocaleString()})</div>
+          <div>Oldest Post: {posts[posts.length - 1]?.title.rendered} ({new Date(posts[posts.length - 1]?.date).toLocaleString()})</div>
+          <div className="mt-2">All Post Dates:</div>
+          <div className="text-xs overflow-x-auto whitespace-pre">
+            {posts.map((post: any) => `\n${new Date(post.date).toLocaleString()} - ${post.title.rendered}`)}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {posts.map((post) => (
+            <article key={post.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+              <Link href={`/posts/${post.slug}`}>
+                {post._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
+                  <div className="relative h-48 w-full">
+                    <Image
+                      src={post._embedded['wp:featuredmedia'][0].source_url}
+                      alt={decodeHTML(post.title.rendered)}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                )}
+                <div className="p-6">
+                  <h2 className="text-xl font-semibold mb-2 hover:text-blue-600 transition-colors">
+                    {decodeHTML(post.title.rendered)}
+                  </h2>
+                  <div 
+                    className="text-gray-600 mb-4 line-clamp-3"
+                    dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
+                  />
+                  <div className="flex justify-between items-center text-sm text-gray-500">
+                    <AuthorAttribution postId={post.id.toString()} />
+                    <time dateTime={post.date} className="font-mono">
+                      {format(new Date(post.date), 'MMM d, yyyy HH:mm')}
+                    </time>
+                  </div>
+                </div>
+              </Link>
+            </article>
+          ))}
+        </div>
+      </div>
+    );
+  } catch (error) {
+    console.error('Error rendering posts:', error);
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500">No posts found. New posts should appear here within a few seconds of publishing.</p>
-        <p className="text-gray-400 text-sm mt-2">Last checked: {new Date(timestamp).toLocaleTimeString()}</p>
+        <p className="text-red-500">Error loading posts. Please try again later.</p>
+        <p className="text-gray-400 text-sm mt-2">{error.message}</p>
       </div>
     );
   }
-
-  return (
-    <>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {posts.map((post) => (
-          <article key={post.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-            <Link href={`/posts/${post.slug}`}>
-              {post._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
-                <div className="relative h-48 w-full">
-                  <Image
-                    src={post._embedded['wp:featuredmedia'][0].source_url}
-                    alt={decodeHTML(post.title.rendered)}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              )}
-              <div className="p-6">
-                <h2 className="text-xl font-semibold mb-2 hover:text-blue-600 transition-colors">
-                  {decodeHTML(post.title.rendered)}
-                </h2>
-                <div 
-                  className="text-gray-600 mb-4 line-clamp-3"
-                  dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
-                />
-                <div className="flex justify-between items-center text-sm text-gray-500">
-                  <AuthorAttribution postId={post.id.toString()} />
-                  <time dateTime={post.date} className="font-mono">
-                    {format(new Date(post.date), 'MMM d, yyyy HH:mm')}
-                  </time>
-                </div>
-              </div>
-            </Link>
-          </article>
-        ))}
-      </div>
-      <div className="text-center text-xs text-gray-400 mt-4">
-        <div>Last updated: {new Date(timestamp).toLocaleTimeString()}</div>
-        <div className="mt-1">Latest post: {posts[0]?.title.rendered} ({format(new Date(posts[0]?.date), 'MMM d, yyyy HH:mm')})</div>
-      </div>
-    </>
-  );
 }
 
 async function Categories() {

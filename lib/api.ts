@@ -10,17 +10,24 @@ export const fetchPosts = async (siteKey: string, category?: string) => {
   const site = config.sites[siteKey];
   const baseUrl = `${site.url}/wp-json/wp/v2/posts`;
   const timestamp = Date.now();
-  const uniqueId = Math.random().toString(36).substring(7);
   
-  // Build query parameters
+  // First, get the total number of posts
+  const countResponse = await fetch(`${baseUrl}?per_page=1`, {
+    cache: 'no-store',
+    headers: {
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+    }
+  });
+  
+  const totalPosts = parseInt(countResponse.headers.get('X-WP-Total') || '0');
+  console.log('Total posts available:', totalPosts);
+
+  // Build query parameters for full fetch
   const params = new URLSearchParams({
     _embed: '1',
     timestamp: timestamp.toString(),
-    unique: uniqueId,
-    nocache: 'true',
-    per_page: '100',
-    orderby: 'date',
-    order: 'desc',
+    per_page: totalPosts.toString(), // Fetch all posts at once
     _fields: 'id,title,excerpt,date,slug,_links,_embedded'
   });
   
@@ -29,43 +36,53 @@ export const fetchPosts = async (siteKey: string, category?: string) => {
   }
 
   const url = `${baseUrl}?${params.toString()}`;
-  console.log('Fetching posts from:', url);
+  console.log('Fetching all posts from:', url);
 
   try {
     const response = await fetch(url, {
       cache: 'no-store',
       headers: {
-        'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
         'Pragma': 'no-cache',
-        'Expires': '0',
-        'If-None-Match': '', // Prevent 304 responses
-        'If-Modified-Since': ''
       },
-      next: {
-        revalidate: 0,
-        tags: ['posts']
-      }
+      next: { revalidate: 0 }
     });
 
     if (!response.ok) {
-      console.error('Failed to fetch posts:', response.status, response.statusText);
+      console.error('Failed to fetch posts:', {
+        status: response.status,
+        statusText: response.statusText,
+        headers: Object.fromEntries(response.headers.entries())
+      });
       throw new Error(`Failed to fetch posts: ${response.status} ${response.statusText}`);
     }
 
     const posts = await response.json();
-    console.log('Successfully fetched posts. Count:', posts.length);
     
-    // Log the first post for debugging
-    if (posts.length > 0) {
-      console.log('Latest post:', {
-        id: posts[0].id,
-        title: posts[0].title.rendered,
-        date: posts[0].date,
-        url: url
-      });
-    }
+    // Sort posts manually by date
+    const sortedPosts = posts.sort((a: any, b: any) => {
+      const dateA = new Date(a.date).getTime();
+      const dateB = new Date(b.date).getTime();
+      return dateB - dateA;
+    });
+
+    // Log details about the posts we received
+    console.log('Posts fetched:', {
+      total: sortedPosts.length,
+      newest: sortedPosts[0] ? {
+        id: sortedPosts[0].id,
+        title: sortedPosts[0].title.rendered,
+        date: sortedPosts[0].date
+      } : null,
+      oldest: sortedPosts[sortedPosts.length - 1] ? {
+        id: sortedPosts[sortedPosts.length - 1].id,
+        title: sortedPosts[sortedPosts.length - 1].title.rendered,
+        date: sortedPosts[sortedPosts.length - 1].date
+      } : null,
+      dates: sortedPosts.map((p: any) => p.date).join(', ')
+    });
     
-    return posts;
+    return sortedPosts;
   } catch (error) {
     console.error('Error in fetchPosts:', error);
     throw error;
@@ -75,8 +92,7 @@ export const fetchPosts = async (siteKey: string, category?: string) => {
 export const fetchCategories = async (siteKey: string) => {
   const site = config.sites[siteKey];
   const timestamp = Date.now();
-  const uniqueId = Math.random().toString(36).substring(7);
-  const url = `${site.url}/wp-json/wp/v2/categories?per_page=100&_fields=id,name,slug,description,count&timestamp=${timestamp}&unique=${uniqueId}&nocache=true`;
+  const url = `${site.url}/wp-json/wp/v2/categories?per_page=100&_fields=id,name,slug,description,count&timestamp=${timestamp}`;
 
   console.log('Fetching categories from:', url);
 
@@ -84,26 +100,28 @@ export const fetchCategories = async (siteKey: string) => {
     const response = await fetch(url, {
       cache: 'no-store',
       headers: {
-        'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
         'Pragma': 'no-cache',
-        'Expires': '0',
-        'If-None-Match': '', // Prevent 304 responses
-        'If-Modified-Since': ''
       },
-      next: {
-        revalidate: 0,
-        tags: ['categories']
-      }
+      next: { revalidate: 0 }
     });
 
     if (!response.ok) {
-      console.error('Failed to fetch categories:', response.status, response.statusText);
+      console.error('Failed to fetch categories:', {
+        status: response.status,
+        statusText: response.statusText,
+        headers: Object.fromEntries(response.headers.entries())
+      });
       throw new Error(`Failed to fetch categories: ${response.status} ${response.statusText}`);
     }
 
     const categories = await response.json();
     const activeCategories = categories.filter((cat: any) => cat.count > 0);
-    console.log('Successfully fetched categories. Active count:', activeCategories.length);
+    console.log('Categories fetched:', {
+      total: categories.length,
+      active: activeCategories.length,
+      categories: activeCategories.map((c: any) => `${c.name} (${c.count})`).join(', ')
+    });
     return activeCategories;
   } catch (error) {
     console.error('Error in fetchCategories:', error);
