@@ -98,11 +98,19 @@ async function PostsList({ selectedCategory = 'all' }) {
                 {JSON.stringify(posts[0], null, 2)}
               </pre>
             </div>
-            <form action="/api/revalidate" className="mt-0">
-              <button type="submit" className="text-xs bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
-                Force Refresh
-              </button>
-            </form>
+            <div className="flex space-x-2">
+              <form action="/api/revalidate" className="mt-0">
+                <button type="submit" className="text-xs bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
+                  Force Refresh
+                </button>
+              </form>
+              <a href="/api/debug-fetch" target="_blank" className="text-xs bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded">
+                Debug Fetch
+              </a>
+              <a href="/api/test-posts" target="_blank" className="text-xs bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 rounded">
+                Test Posts
+              </a>
+            </div>
           </div>
           <div className="mt-2">All Post Dates:</div>
           <div className="text-xs overflow-x-auto whitespace-pre">
