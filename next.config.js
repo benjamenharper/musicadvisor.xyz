@@ -14,11 +14,17 @@ const nextConfig = {
   },
   output: 'standalone',
   images: {
-    domains: ['musicadvisor.xyz'],
+    domains: ['musicadvisor.xyz', 'benh155.sg-host.com'],
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'musicadvisor.xyz',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'benh155.sg-host.com',
         port: '',
         pathname: '/**',
       },
@@ -29,8 +35,6 @@ const nextConfig = {
     workerThreads: false,
     cpus: 1
   },
-  // Add revalidation settings
-  revalidate: 0, // Revalidate at most once per second
   swcMinify: true,
   reactStrictMode: true,
   async redirects() {

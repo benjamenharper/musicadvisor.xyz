@@ -3,7 +3,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import SearchBox from '@/components/SearchBox';
 import { fetchCategories, fetchPosts } from '@/lib/api';
-import { config } from '@/lib/config';
 import { decodeHTML } from '@/lib/utils';
 import { format } from 'date-fns';
 import AuthorAttribution from '@/components/AuthorAttribution';
@@ -33,11 +32,11 @@ interface Category {
   slug: string;
 }
 
-// This enables ISR - revalidate every 10 seconds
+export const dynamic = 'force-dynamic';
 export const revalidate = 10;
 
 async function PostsList({ selectedCategory = 'all' }) {
-  const posts = await fetchPosts(config.defaultSite);
+  const posts = await fetchPosts();
   const filteredPosts = selectedCategory === 'all'
     ? posts
     : posts.filter(post => 
@@ -82,7 +81,7 @@ async function PostsList({ selectedCategory = 'all' }) {
 }
 
 async function Categories() {
-  const categories = await fetchCategories(config.defaultSite);
+  const categories = await fetchCategories();
   
   return (
     <div className="mb-8">
