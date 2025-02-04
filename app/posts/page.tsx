@@ -62,9 +62,15 @@ async function PostsList({ selectedCategory = 'all' }) {
   try {
     console.log(`[${timestamp}] Fetching posts for category:`, selectedCategory);
     const posts = await fetchPosts(config.defaultSite, selectedCategory);
+    
+    if (!posts || !Array.isArray(posts)) {
+      console.error('Invalid posts data:', posts);
+      throw new Error('Invalid response from API');
+    }
+
     console.log(`[${timestamp}] Fetched ${posts?.length} posts`);
     
-    if (!posts || posts.length === 0) {
+    if (posts.length === 0) {
       return (
         <div className="text-center py-12">
           <p className="text-gray-500">No posts found. New posts should appear here within a few seconds of publishing.</p>
@@ -72,11 +78,19 @@ async function PostsList({ selectedCategory = 'all' }) {
             Last checked: {new Date(timestamp).toLocaleTimeString()}<br/>
             Build time: {process.env.BUILD_TIMESTAMP}
           </p>
-          <form action="/api/revalidate" className="mt-4">
-            <button type="submit" className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
-              Force Refresh
-            </button>
-          </form>
+          <div className="flex justify-center space-x-2 mt-4">
+            <form action="/api/revalidate">
+              <button type="submit" className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                Force Refresh
+              </button>
+            </form>
+            <a href="/api/debug-fetch" target="_blank" className="text-sm bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+              Debug Fetch
+            </a>
+            <a href="/api/test-posts" target="_blank" className="text-sm bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded">
+              Test Posts
+            </a>
+          </div>
         </div>
       );
     }
@@ -85,36 +99,30 @@ async function PostsList({ selectedCategory = 'all' }) {
     return (
       <div className="space-y-8">
         <div className="bg-gray-50 p-4 rounded-lg text-xs font-mono">
-          <div className="flex justify-between items-start">
-            <div>
-              <h3 className="font-semibold mb-2">Debug Info:</h3>
-              <div>Total Posts: {posts.length}</div>
-              <div>Build Time: {process.env.BUILD_TIMESTAMP}</div>
-              <div>Current Time: {new Date(timestamp).toISOString()}</div>
-              <div className="text-red-500 font-bold">Latest Post: {posts[0]?.title.rendered} ({new Date(posts[0]?.date).toLocaleString()})</div>
-              <div>Oldest Post: {posts[posts.length - 1]?.title.rendered} ({new Date(posts[posts.length - 1]?.date).toLocaleString()})</div>
-              <div className="mt-4 text-red-500">Raw Latest Post Data:</div>
-              <pre className="overflow-x-auto">
-                {JSON.stringify(posts[0], null, 2)}
-              </pre>
-            </div>
-            <div className="flex space-x-2">
-              <form action="/api/revalidate" className="mt-0">
-                <button type="submit" className="text-xs bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
-                  Force Refresh
-                </button>
-              </form>
-              <a href="/api/debug-fetch" target="_blank" className="text-xs bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded">
-                Debug Fetch
-              </a>
-              <a href="/api/test-posts" target="_blank" className="text-xs bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 rounded">
-                Test Posts
-              </a>
-            </div>
+          <div>
+            <h3 className="font-semibold mb-2">Debug Info:</h3>
+            <div>Total Posts: {posts.length}</div>
+            <div>Build Time: {process.env.BUILD_TIMESTAMP}</div>
+            <div>Current Time: {new Date(timestamp).toISOString()}</div>
+            <div className="text-red-500 font-bold">Latest Post: {posts[0]?.title?.rendered} ({new Date(posts[0]?.date).toLocaleString()})</div>
+            <div>Oldest Post: {posts[posts.length - 1]?.title?.rendered} ({new Date(posts[posts.length - 1]?.date).toLocaleString()})</div>
+            <div className="mt-4 text-red-500">Raw Latest Post Data:</div>
+            <pre className="overflow-x-auto whitespace-pre-wrap">
+              {JSON.stringify(posts[0], null, 2)}
+            </pre>
           </div>
-          <div className="mt-2">All Post Dates:</div>
-          <div className="text-xs overflow-x-auto whitespace-pre">
-            {posts.map((post: any) => `\n${new Date(post.date).toLocaleString()} - ${post.title.rendered}`)}
+          <div className="flex space-x-2 mt-4">
+            <form action="/api/revalidate">
+              <button type="submit" className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                Force Refresh
+              </button>
+            </form>
+            <a href="/api/debug-fetch" target="_blank" className="text-sm bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+              Debug Fetch
+            </a>
+            <a href="/api/test-posts" target="_blank" className="text-sm bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded">
+              Test Posts
+            </a>
           </div>
         </div>
 
@@ -163,11 +171,19 @@ async function PostsList({ selectedCategory = 'all' }) {
           Build time: {process.env.BUILD_TIMESTAMP}<br/>
           Current time: {new Date(timestamp).toISOString()}
         </p>
-        <form action="/api/revalidate" className="mt-4">
-          <button type="submit" className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
-            Force Refresh
-          </button>
-        </form>
+        <div className="flex justify-center space-x-2 mt-4">
+          <form action="/api/revalidate">
+            <button type="submit" className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+              Force Refresh
+            </button>
+          </form>
+          <a href="/api/debug-fetch" target="_blank" className="text-sm bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+            Debug Fetch
+          </a>
+          <a href="/api/test-posts" target="_blank" className="text-sm bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded">
+            Test Posts
+          </a>
+        </div>
       </div>
     );
   }
