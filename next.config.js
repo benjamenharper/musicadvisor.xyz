@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  env: {
+    BUILD_TIMESTAMP: new Date().toISOString(),
+  },
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
@@ -27,7 +30,9 @@ const nextConfig = {
   experimental: {
     // This will enable static rendering for dynamic routes
     workerThreads: false,
-    cpus: 1
+    cpus: 1,
+    // Force everything to be dynamic
+    isrMemoryCacheSize: 0,
   },
   swcMinify: true,
   reactStrictMode: true,
@@ -61,6 +66,11 @@ const nextConfig = {
       },
     ];
   },
+  // Force dynamic rendering
+  unstable_runtimeJS: true,
+  unstable_JsPreload: false,
+  // Disable static optimization
+  unstable_staticGeneration: false,
 }
 
 module.exports = nextConfig

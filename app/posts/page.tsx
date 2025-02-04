@@ -44,10 +44,20 @@ function getTimestamp() {
   return new Date().getTime();
 }
 
-async function PostsList({ selectedCategory = 'all' }) {
-  // Force dynamic rendering by reading headers
-  headers();
+// Force refresh mechanism
+async function forceRefresh() {
   const timestamp = getTimestamp();
+  const buildTime = process.env.BUILD_TIMESTAMP;
+  console.log('Build timestamp:', buildTime);
+  console.log('Current timestamp:', new Date(timestamp).toISOString());
+  
+  // Always treat as fresh
+  headers();
+  return timestamp;
+}
+
+async function PostsList({ selectedCategory = 'all' }) {
+  const timestamp = await forceRefresh();
   
   try {
     console.log(`[${timestamp}] Fetching posts for category:`, selectedCategory);
@@ -58,7 +68,15 @@ async function PostsList({ selectedCategory = 'all' }) {
       return (
         <div className="text-center py-12">
           <p className="text-gray-500">No posts found. New posts should appear here within a few seconds of publishing.</p>
-          <p className="text-gray-400 text-sm mt-2">Last checked: {new Date(timestamp).toLocaleTimeString()}</p>
+          <p className="text-gray-400 text-sm mt-2">
+            Last checked: {new Date(timestamp).toLocaleTimeString()}<br/>
+            Build time: {process.env.BUILD_TIMESTAMP}
+          </p>
+          <form action="/api/revalidate" className="mt-4">
+            <button type="submit" className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+              Force Refresh
+            </button>
+          </form>
         </div>
       );
     }
@@ -67,10 +85,21 @@ async function PostsList({ selectedCategory = 'all' }) {
     return (
       <div className="space-y-8">
         <div className="bg-gray-50 p-4 rounded-lg text-xs font-mono">
-          <h3 className="font-semibold mb-2">Debug Info:</h3>
-          <div>Total Posts: {posts.length}</div>
-          <div>Latest Post: {posts[0]?.title.rendered} ({new Date(posts[0]?.date).toLocaleString()})</div>
-          <div>Oldest Post: {posts[posts.length - 1]?.title.rendered} ({new Date(posts[posts.length - 1]?.date).toLocaleString()})</div>
+          <div className="flex justify-between items-start">
+            <div>
+              <h3 className="font-semibold mb-2">Debug Info:</h3>
+              <div>Total Posts: {posts.length}</div>
+              <div>Build Time: {process.env.BUILD_TIMESTAMP}</div>
+              <div>Current Time: {new Date(timestamp).toISOString()}</div>
+              <div>Latest Post: {posts[0]?.title.rendered} ({new Date(posts[0]?.date).toLocaleString()})</div>
+              <div>Oldest Post: {posts[posts.length - 1]?.title.rendered} ({new Date(posts[posts.length - 1]?.date).toLocaleString()})</div>
+            </div>
+            <form action="/api/revalidate" className="mt-0">
+              <button type="submit" className="text-xs bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
+                Force Refresh
+              </button>
+            </form>
+          </div>
           <div className="mt-2">All Post Dates:</div>
           <div className="text-xs overflow-x-auto whitespace-pre">
             {posts.map((post: any) => `\n${new Date(post.date).toLocaleString()} - ${post.title.rendered}`)}
@@ -118,6 +147,15 @@ async function PostsList({ selectedCategory = 'all' }) {
       <div className="text-center py-12">
         <p className="text-red-500">Error loading posts. Please try again later.</p>
         <p className="text-gray-400 text-sm mt-2">{error.message}</p>
+        <p className="text-gray-400 text-sm mt-2">
+          Build time: {process.env.BUILD_TIMESTAMP}<br/>
+          Current time: {new Date(timestamp).toISOString()}
+        </p>
+        <form action="/api/revalidate" className="mt-4">
+          <button type="submit" className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+            Force Refresh
+          </button>
+        </form>
       </div>
     );
   }
