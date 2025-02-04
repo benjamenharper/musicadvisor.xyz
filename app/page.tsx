@@ -25,9 +25,9 @@ export default async function Home() {
 
     // Fetch posts for each category (limited to 9 posts each)
     const [featuredPosts, newsPosts, promotionPosts] = await Promise.all([
-      fetchPosts(config.defaultSite, featuredCategory.id.toString(), { per_page: '9', _embed: 'true' }),
-      fetchPosts(config.defaultSite, newsCategory.id.toString(), { per_page: '9', _embed: 'true' }),
-      fetchPosts(config.defaultSite, promotionCategory.id.toString(), { per_page: '9', _embed: 'true' })
+      fetchPosts(config.defaultSite, featuredCategory.id.toString(), { per_page: '9', _embed: 'true', categories: featuredCategory.id.toString() }),
+      fetchPosts(config.defaultSite, newsCategory.id.toString(), { per_page: '9', _embed: 'true', categories: newsCategory.id.toString() }),
+      fetchPosts(config.defaultSite, promotionCategory.id.toString(), { per_page: '9', _embed: 'true', categories: promotionCategory.id.toString() })
     ]);
 
     const renderPostGrid = (posts: any[], category: any) => {

@@ -8,7 +8,7 @@ export const fetchProperties = async () => {
   return mockProperties;
 };
 
-export const fetchPosts = async (siteKey: string, category?: string) => {
+export const fetchPosts = async (siteKey: string, category?: string, options: { per_page?: string; _embed?: string; categories?: string } = {}) => {
   const site = config.sites[siteKey];
   if (!site) {
     console.error('Site not found:', siteKey);
@@ -18,28 +18,23 @@ export const fetchPosts = async (siteKey: string, category?: string) => {
   const baseUrl = `${site.url}/wp-json/wp/v2/posts`;
   const timestamp = Date.now();
 
-  console.log('Starting fetchPosts:', {
-    siteKey,
-    baseUrl,
-    timestamp: new Date(timestamp).toISOString()
-  });
-
   // Build URL with all necessary parameters
   const params = new URLSearchParams({
-    _embed: '1',
+    _embed: options._embed || '1',
     timestamp: timestamp.toString(),
-    per_page: '100',
+    per_page: options.per_page || '100',
     orderby: 'date',
     order: 'desc',
     _fields: 'id,title,excerpt,content,date,modified,slug,_links,_embedded'
   });
 
-  if (category && category !== 'all') {
+  if (options.categories) {
+    params.append('categories', options.categories);
+  } else if (category && category !== 'all') {
     params.append('categories', category);
   }
 
   const url = `${baseUrl}?${params.toString()}`;
-  console.log('Fetching posts from:', url);
 
   try {
     console.log('Making request with headers:', {
