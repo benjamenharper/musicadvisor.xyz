@@ -7,6 +7,7 @@ import { config } from '@/lib/config';
 import { decodeHTML } from '@/lib/utils';
 import { format } from 'date-fns';
 import AuthorAttribution from '@/components/AuthorAttribution';
+import { headers } from 'next/headers';
 
 interface Post {
   id: number;
@@ -35,18 +36,28 @@ interface Category {
 
 // Force dynamic rendering at runtime
 export const dynamic = 'force-dynamic';
-// Disable static generation
 export const fetchCache = 'force-no-store';
-// Disable caching of fetch requests
 export const revalidate = 0;
 
+// This forces a new render on every request
+function getTimestamp() {
+  return new Date().getTime();
+}
+
 async function PostsList({ selectedCategory = 'all' }) {
+  // Force dynamic rendering by reading headers
+  headers();
+  const timestamp = getTimestamp();
+  
+  console.log('Fetching posts at timestamp:', timestamp);
   const posts = await fetchPosts(config.defaultSite, selectedCategory);
+  console.log('Fetched posts count:', posts?.length);
   
   if (!posts || posts.length === 0) {
     return (
       <div className="text-center py-12">
         <p className="text-gray-500">No posts found. New posts should appear here within a few seconds of publishing.</p>
+        <p className="text-gray-400 text-sm mt-2">Last checked: {new Date().toLocaleTimeString()}</p>
       </div>
     );
   }
@@ -84,12 +95,21 @@ async function PostsList({ selectedCategory = 'all' }) {
           </Link>
         </article>
       ))}
+      <div className="col-span-full text-center text-xs text-gray-400 mt-4">
+        Last updated: {new Date().toLocaleTimeString()}
+      </div>
     </div>
   );
 }
 
 async function Categories() {
+  // Force dynamic rendering by reading headers
+  headers();
+  const timestamp = getTimestamp();
+  
+  console.log('Fetching categories at timestamp:', timestamp);
   const categories = await fetchCategories(config.defaultSite);
+  console.log('Fetched categories count:', categories?.length);
   
   return (
     <div className="mb-8">
@@ -116,6 +136,7 @@ async function Categories() {
 
 export default async function Posts({ searchParams }: { searchParams: { category?: string } }) {
   const selectedCategory = searchParams.category || 'all';
+  const timestamp = getTimestamp();
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -144,6 +165,11 @@ export default async function Posts({ searchParams }: { searchParams: { category
       >
         <PostsList selectedCategory={selectedCategory} />
       </Suspense>
+
+      {/* Debug info */}
+      <div className="text-xs text-gray-400 mt-8 text-center">
+        Page rendered at: {new Date(timestamp).toLocaleTimeString()}
+      </div>
     </div>
   );
 }
