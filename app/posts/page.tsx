@@ -91,8 +91,12 @@ async function PostsList({ selectedCategory = 'all' }) {
               <div>Total Posts: {posts.length}</div>
               <div>Build Time: {process.env.BUILD_TIMESTAMP}</div>
               <div>Current Time: {new Date(timestamp).toISOString()}</div>
-              <div>Latest Post: {posts[0]?.title.rendered} ({new Date(posts[0]?.date).toLocaleString()})</div>
+              <div className="text-red-500 font-bold">Latest Post: {posts[0]?.title.rendered} ({new Date(posts[0]?.date).toLocaleString()})</div>
               <div>Oldest Post: {posts[posts.length - 1]?.title.rendered} ({new Date(posts[posts.length - 1]?.date).toLocaleString()})</div>
+              <div className="mt-4 text-red-500">Raw Latest Post Data:</div>
+              <pre className="overflow-x-auto">
+                {JSON.stringify(posts[0], null, 2)}
+              </pre>
             </div>
             <form action="/api/revalidate" className="mt-0">
               <button type="submit" className="text-xs bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
