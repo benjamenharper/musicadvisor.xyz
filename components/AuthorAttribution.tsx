@@ -6,21 +6,21 @@ import { authors } from '@/lib/data/authors';
 import { useEffect, useState } from 'react';
 
 interface AuthorAttributionProps {
-  articleId: string;
+  postId: string;
   compact?: boolean;
 }
 
-export default function AuthorAttribution({ articleId, compact = false }: AuthorAttributionProps) {
+export default function AuthorAttribution({ postId, compact = false }: AuthorAttributionProps) {
   const [author, setAuthor] = useState<typeof authors[0] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchAuthor() {
-      if (!articleId) return;
+      if (!postId) return;
       
       setIsLoading(true);
       try {
-        const response = await fetch(`/api/authors?postId=${articleId}`);
+        const response = await fetch(`/api/authors?postId=${postId}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -37,7 +37,7 @@ export default function AuthorAttribution({ articleId, compact = false }: Author
       }
     }
     fetchAuthor();
-  }, [articleId]);
+  }, [postId]);
 
   if (isLoading) {
     return (

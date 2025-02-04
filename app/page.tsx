@@ -61,7 +61,7 @@ export default async function Home() {
                     dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
                   />
                   <div className="flex flex-col space-y-2">
-                    <AuthorAttribution articleId={post.id.toString()} />
+                    <AuthorAttribution postId={post.id.toString()} compact />
                     <div className="flex justify-between items-center text-sm text-gray-500">
                       <span>{format(new Date(post.date), 'MMM d, yyyy')}</span>
                       <span>{post.readingTime} min read</span>
