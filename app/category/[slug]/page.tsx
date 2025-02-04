@@ -69,36 +69,29 @@ export default async function CategoryPage({ params }: { params: { slug: string 
                     />
                   </div>
                 )}
-                <div className="p-6">
-                  <h2 className="text-xl font-bold text-gray-900 mb-2">
-                    <Link href={`/${post.slug}`} className="hover:text-indigo-600 transition-colors">
+                <div className="p-4">
+                  <Link href={`/posts/${post.slug}`}>
+                    <h2 className="text-xl font-semibold hover:text-blue-600 transition-colors duration-200">
                       {decodeHTML(post.title.rendered)}
-                    </Link>
-                  </h2>
-                  <div className="flex justify-between items-center text-sm text-gray-500 mt-4">
+                    </h2>
+                  </Link>
+                  <div className="flex items-center gap-2 text-sm text-gray-500 mt-2">
+                    <span>{post.readingTime} min read</span>
+                  </div>
+                  <div className="mt-2">
                     <AuthorAttribution postId={post.id.toString()} compact />
-                    <div className="flex items-center gap-2">
-                      <time dateTime={post.date}>
-                        {format(new Date(post.date), 'MMM d, yyyy')}
-                      </time>
-                      <span>·</span>
-                      <span>{post.readingTime} min read</span>
-                    </div>
+                  </div>
+                  <div className="text-sm text-gray-500 mt-2">
+                    <time dateTime={post.date}>
+                      {format(new Date(post.date), 'MMM d, yyyy')}
+                    </time>
                   </div>
                   {post.excerpt.rendered && (
                     <div 
-                      className="text-gray-600 line-clamp-3"
+                      className="mt-3 text-gray-600 line-clamp-3"
                       dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
                     />
                   )}
-                  <div className="mt-4">
-                    <Link
-                      href={`/${post.slug}`}
-                      className="text-indigo-600 hover:text-indigo-700 font-medium"
-                    >
-                      Read More →
-                    </Link>
-                  </div>
                 </div>
               </article>
             ))}

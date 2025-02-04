@@ -52,21 +52,25 @@ export default async function Home() {
                 )}
                 <div className="p-4">
                   <Link href={`/posts/${post.slug}`}>
-                    <h3 className="text-xl font-semibold mb-2 hover:text-blue-600 transition-colors duration-200">
+                    <h2 className="text-xl font-semibold hover:text-blue-600 transition-colors duration-200">
                       {decodeHTML(post.title.rendered)}
-                    </h3>
+                    </h2>
                   </Link>
+                  <div className="flex items-center gap-2 text-sm text-gray-500 mt-2">
+                    <span>{post.readingTime} min read</span>
+                  </div>
+                  <div className="mt-2">
+                    <AuthorAttribution postId={post.id.toString()} compact />
+                  </div>
+                  <div className="text-sm text-gray-500 mt-2">
+                    <time dateTime={post.date}>
+                      {format(new Date(post.date), 'MMM d, yyyy')}
+                    </time>
+                  </div>
                   <div 
-                    className="text-gray-600 mb-4 line-clamp-3"
+                    className="mt-3 text-gray-600 line-clamp-3"
                     dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
                   />
-                  <div className="flex flex-col space-y-2">
-                    <AuthorAttribution postId={post.id.toString()} compact />
-                    <div className="flex justify-between items-center text-sm text-gray-500">
-                      <span>{format(new Date(post.date), 'MMM d, yyyy')}</span>
-                      <span>{post.readingTime} min read</span>
-                    </div>
-                  </div>
                 </div>
               </div>
             ))}

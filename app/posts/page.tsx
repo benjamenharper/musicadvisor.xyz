@@ -69,20 +69,27 @@ async function PostsList({ selectedCategory = 'all' }) {
                   />
                 </div>
               )}
-              <div className="p-6">
-                <h2 className="text-xl font-semibold mb-2 hover:text-blue-600 transition-colors">
-                  {decodeHTML(post.title.rendered)}
-                </h2>
-                <div 
-                  className="text-gray-600 mb-4 line-clamp-3"
-                  dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
-                />
-                <div className="flex justify-between items-center text-sm text-gray-500">
-                  <AuthorAttribution postId={post.id.toString()} />
-                  <time dateTime={post.date} className="font-mono">
-                    {format(new Date(post.date), 'MMM d, yyyy HH:mm')}
+              <div className="p-4">
+                <Link href={`/posts/${post.slug}`}>
+                  <h2 className="text-xl font-semibold hover:text-blue-600 transition-colors duration-200">
+                    {decodeHTML(post.title.rendered)}
+                  </h2>
+                </Link>
+                <div className="flex items-center gap-2 text-sm text-gray-500 mt-2">
+                  <span>{post.readingTime} min read</span>
+                </div>
+                <div className="mt-2">
+                  <AuthorAttribution postId={post.id.toString()} compact />
+                </div>
+                <div className="text-sm text-gray-500 mt-2">
+                  <time dateTime={post.date}>
+                    {format(new Date(post.date), 'MMM d, yyyy')}
                   </time>
                 </div>
+                <div 
+                  className="mt-3 text-gray-600 line-clamp-3"
+                  dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
+                />
               </div>
             </Link>
           </article>
