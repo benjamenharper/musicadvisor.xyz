@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { config } from '@/lib/config';
+import axios from 'axios';
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
@@ -8,34 +9,33 @@ export async function GET() {
   const site = config.sites[config.defaultSite];
   const baseUrl = `${site.url}/wp-json/wp/v2/posts`;
   const timestamp = Date.now();
-  const url = `${baseUrl}?_embed&timestamp=${timestamp}&per_page=1`;
-
-  console.log('Testing WordPress API:', url);
-
+  
   try {
-    const response = await fetch(url, {
-      cache: 'no-store',
+    const { data: posts, headers } = await axios.get(baseUrl, {
+      params: {
+        _embed: '1',
+        timestamp,
+        per_page: '1',
+        nocache: Math.random()
+      },
       headers: {
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Accept': 'application/json',
+        'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
         'Pragma': 'no-cache',
         'Expires': '0'
       },
-      next: {
-        revalidate: 0,
-        tags: ['posts']
-      }
+      transformRequest: [(data, headers) => {
+        headers['If-None-Match'] = '';
+        headers['If-Modified-Since'] = '';
+        return data;
+      }]
     });
 
-    if (!response.ok) {
-      throw new Error(`WordPress API returned ${response.status}`);
-    }
-
-    const posts = await response.json();
-    
     return NextResponse.json({
       success: true,
       timestamp: new Date().toISOString(),
-      requestUrl: url,
+      requestUrl: baseUrl,
+      headers: headers,
       postCount: posts.length,
       latestPost: posts[0] ? {
         id: posts[0].id,
@@ -45,11 +45,25 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Error fetching posts:', error);
+    if (axios.isAxiosError(error)) {
+      return NextResponse.json({
+        success: false,
+        error: error.message,
+        timestamp: new Date().toISOString(),
+        requestUrl: baseUrl,
+        response: {
+          status: error.response?.status,
+          statusText: error.response?.statusText,
+          headers: error.response?.headers,
+          data: error.response?.data
+        }
+      }, { status: 500 });
+    }
     return NextResponse.json({
       success: false,
-      error: error.message,
+      error: 'Unknown error occurred',
       timestamp: new Date().toISOString(),
-      requestUrl: url
+      requestUrl: baseUrl
     }, { status: 500 });
   }
 }
