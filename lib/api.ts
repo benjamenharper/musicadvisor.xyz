@@ -9,23 +9,33 @@ export const fetchProperties = async () => {
 export const fetchPosts = async (siteKey: string, category?: string) => {
   const site = config.sites[siteKey];
   const baseUrl = `${site.url}/wp-json/wp/v2/posts`;
+  const timestamp = Date.now(); // Add timestamp to bypass cache
   const url = category && category !== 'all' 
-    ? `${baseUrl}?categories=${category}&_embed` 
-    : `${baseUrl}?_embed`;
+    ? `${baseUrl}?categories=${category}&_embed&timestamp=${timestamp}` 
+    : `${baseUrl}?_embed&timestamp=${timestamp}`;
+
+  console.log('Fetching posts from:', url);
 
   const response = await fetch(url, {
+    cache: 'no-store',
     headers: {
-      'Cache-Control': 'no-cache',
-      'Pragma': 'no-cache'
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
     },
-    next: { revalidate: 0 } // Disable caching for this request
+    next: {
+      revalidate: 0,
+      tags: ['posts']
+    }
   });
 
   if (!response.ok) {
+    console.error('Failed to fetch posts:', response.status, response.statusText);
     throw new Error('Failed to fetch posts');
   }
 
   const posts = await response.json();
+  console.log('Fetched posts count:', posts.length);
   return posts;
 };
 

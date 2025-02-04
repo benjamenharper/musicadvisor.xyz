@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import SearchBox from '@/components/SearchBox';
 import { fetchCategories, fetchPosts } from '@/lib/api';
+import { config } from '@/lib/config';
 import { decodeHTML } from '@/lib/utils';
 import { format } from 'date-fns';
 import AuthorAttribution from '@/components/AuthorAttribution';
@@ -32,20 +33,27 @@ interface Category {
   slug: string;
 }
 
+// Force dynamic rendering at runtime
 export const dynamic = 'force-dynamic';
-export const revalidate = 10;
+// Disable static generation
+export const fetchCache = 'force-no-store';
+// Disable caching of fetch requests
+export const revalidate = 0;
 
 async function PostsList({ selectedCategory = 'all' }) {
-  const posts = await fetchPosts();
-  const filteredPosts = selectedCategory === 'all'
-    ? posts
-    : posts.filter(post => 
-        post._embedded?.['wp:term']?.[0]?.some(term => term.slug === selectedCategory)
-      );
+  const posts = await fetchPosts(config.defaultSite, selectedCategory);
+  
+  if (!posts || posts.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-500">No posts found. New posts should appear here within a few seconds of publishing.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {filteredPosts.map((post) => (
+      {posts.map((post) => (
         <article key={post.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
           <Link href={`/posts/${post.slug}`}>
             {post._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
@@ -81,11 +89,17 @@ async function PostsList({ selectedCategory = 'all' }) {
 }
 
 async function Categories() {
-  const categories = await fetchCategories();
+  const categories = await fetchCategories(config.defaultSite);
   
   return (
     <div className="mb-8">
       <div className="flex flex-wrap gap-2">
+        <Link
+          href="/posts"
+          className="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+        >
+          All
+        </Link>
         {categories.map((category) => (
           <Link
             key={category.id}
@@ -100,7 +114,9 @@ async function Categories() {
   );
 }
 
-export default async function Posts() {
+export default async function Posts({ searchParams }: { searchParams: { category?: string } }) {
+  const selectedCategory = searchParams.category || 'all';
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="flex items-center justify-between mb-8">
@@ -126,7 +142,7 @@ export default async function Posts() {
           </div>
         }
       >
-        <PostsList />
+        <PostsList selectedCategory={selectedCategory} />
       </Suspense>
     </div>
   );
