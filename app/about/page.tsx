@@ -1,9 +1,28 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import angelicaImage from '@/public/angelica-peterson.jpg';
 import markImage from '@/public/markjackson.jpg';
 import alisonImage from '@/public/alisonjenks.jpg';
 import conorImage from '@/public/conormurphy.png';
+
+export const metadata: Metadata = {
+  title: 'About Our Music Industry Experts',
+  description: 'Meet the team behind MusicAdvisor. Industry experts providing guidance and strategies to help artists succeed in today\'s music industry.',
+  keywords: ['music industry experts', 'music consultants', 'music industry professionals', 'music advisors', 'artist development team'],
+  openGraph: {
+    title: 'About Our Music Industry Experts',
+    description: 'Meet the team behind MusicAdvisor. Industry experts providing guidance and strategies to help artists succeed.',
+    images: [
+      {
+        url: '/holty.png',
+        width: 1200,
+        height: 630,
+        alt: 'MusicAdvisor Team'
+      }
+    ]
+  }
+};
 
 export default function AboutPage() {
   return (

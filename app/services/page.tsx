@@ -1,5 +1,24 @@
 import Link from 'next/link';
 import { Music, Radio, TrendingUp, Users, MessageSquare, Target } from 'lucide-react';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Music Promotion & Distribution Services',
+  description: 'Professional music promotion and distribution services to help artists reach their target audience. Get expert help with marketing, playlist pitching, and digital distribution.',
+  keywords: ['music promotion', 'music distribution', 'playlist pitching', 'music marketing', 'digital distribution', 'artist promotion'],
+  openGraph: {
+    title: 'Music Promotion & Distribution Services',
+    description: 'Professional music promotion and distribution services to help artists reach their target audience.',
+    images: [
+      {
+        url: '/musicianscropped.png',
+        width: 1200,
+        height: 630,
+        alt: 'Music Promotion Services'
+      }
+    ]
+  }
+};
 
 export default function ServicesPage() {
   return (

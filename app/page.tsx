@@ -10,6 +10,26 @@ export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 export const revalidate = 0;
 
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'MusicAdvisor - Expert Music Industry Guidance',
+  description: 'Get expert guidance on music promotion, marketing, and distribution. Stay informed with the latest music industry trends, news, and strategies for success.',
+  keywords: ['music industry guidance', 'music promotion tips', 'music marketing advice', 'artist development', 'music industry news', 'music business strategy'],
+  openGraph: {
+    title: 'MusicAdvisor - Expert Music Industry Guidance',
+    description: 'Get expert guidance on music promotion, marketing, and distribution. Stay informed with the latest music industry trends.',
+    images: [
+      {
+        url: '/musicianscropped.png',
+        width: 1200,
+        height: 630,
+        alt: 'MusicAdvisor - Music Industry Guidance'
+      }
+    ]
+  }
+};
+
 export default async function Home() {
   try {
     // Get the categories we need
