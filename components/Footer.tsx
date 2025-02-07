@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useStore } from '@/components/providers/StoreProvider';
 import { config } from '@/lib/config';
 
@@ -16,6 +17,18 @@ export default function Footer() {
           <p className="text-sm text-gray-600">
             Helping Artists Thrive
           </p>
+        </div>
+
+        {/* Links */}
+        <div className="flex justify-center mb-8">
+          <a
+            href="https://hotly.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-primary hover:text-primary/90 transition-colors"
+          >
+            Visit Hotly.com
+          </a>
         </div>
 
         {/* Bottom Section */}
