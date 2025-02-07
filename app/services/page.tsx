@@ -49,7 +49,7 @@ export default function ServicesPage() {
                   </div>
                 </div>
                 <Link 
-                  href="/contact?service=marketing"
+                  href={`mailto:ben@musicadvisor.xyz?subject=Music Marketing Inquiry&body=I'm interested in your music marketing services. I would like to learn more about your services.`}
                   className="inline-block mt-4 px-6 py-3 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
                 >
                   Start Marketing
@@ -92,7 +92,7 @@ export default function ServicesPage() {
                   </div>
                 </div>
                 <Link 
-                  href="/contact?service=distribution"
+                  href={`mailto:ben@musicadvisor.xyz?subject=Music Distribution Inquiry&body=I'm interested in your music distribution services. I would like to learn more about your services.`}
                   className="inline-block mt-4 px-6 py-3 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
                 >
                   Start Distribution
