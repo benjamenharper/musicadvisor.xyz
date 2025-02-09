@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { fetchPosts } from '@/lib/api';
+import { fetchPosts, fetchCategories } from '@/lib/api';
 import { config } from '@/lib/config';
 import { decodeHTML } from '@/lib/utils';
 import { format } from 'date-fns';
@@ -32,7 +32,19 @@ export const revalidate = 0;
 
 async function PostsList() {
   try {
-    const posts = await fetchPosts(config.defaultSite, 'ai-music');
+    // First get the category ID
+    const categories = await fetchCategories(config.defaultSite);
+    const aiMusicCategory = categories.find(cat => cat.slug === 'aimusic');
+    
+    if (!aiMusicCategory) {
+      return (
+        <div className="text-center py-12">
+          <p className="text-gray-500">AI Music category not found.</p>
+        </div>
+      );
+    }
+
+    const posts = await fetchPosts(config.defaultSite, aiMusicCategory.id.toString());
 
     if (!posts || !Array.isArray(posts)) {
       console.error('Invalid posts data:', posts);
