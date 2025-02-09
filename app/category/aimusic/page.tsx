@@ -63,16 +63,18 @@ async function PostsList() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {posts.map((post) => (
           <article key={post.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-            <Link href={`/${post.slug}`} className="block">
+            <div>
               {post._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
-                <div className="relative h-48 w-full">
-                  <Image
-                    src={post._embedded['wp:featuredmedia'][0].source_url}
-                    alt={decodeHTML(post.title.rendered)}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
+                <Link href={`/${post.slug}`}>
+                  <div className="relative h-48 w-full">
+                    <Image
+                      src={post._embedded['wp:featuredmedia'][0].source_url}
+                      alt={decodeHTML(post.title.rendered)}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                </Link>
               )}
               <div className="p-4">
                 <Link href={`/${post.slug}`}>
@@ -96,7 +98,7 @@ async function PostsList() {
                   dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
                 />
               </div>
-            </Link>
+            </div>
           </article>
         ))}
       </div>
