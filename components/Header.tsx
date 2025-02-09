@@ -50,6 +50,12 @@ export default function Header() {
                 Promotion
               </Link>
               <Link
+                href="/category/aimusic"
+                className="text-sm font-medium text-muted-foreground hover:text-foreground"
+              >
+                AI Music
+              </Link>
+              <Link
                 href="/services"
                 className="text-sm font-medium text-muted-foreground hover:text-foreground"
               >

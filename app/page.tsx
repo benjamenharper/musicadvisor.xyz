@@ -38,19 +38,23 @@ export default async function Home() {
     const featuredCategory = categories.find(cat => cat.slug === 'featured');
     const newsCategory = categories.find(cat => cat.slug === 'news');
     const promotionCategory = categories.find(cat => cat.slug === 'promotion');
-    const aiMusicCategory = categories.find(cat => cat.slug === 'ai-music');
+    const aiMusicCategory = categories.find(cat => cat.slug === 'aimusic');
 
-    if (!featuredCategory || !newsCategory || !promotionCategory || !aiMusicCategory) {
+    if (!featuredCategory || !newsCategory || !promotionCategory) {
       throw new Error('Required categories not found');
     }
 
     // Fetch posts for each category (limited to 9 posts each)
-    const [featuredPosts, newsPosts, promotionPosts, aiMusicPosts] = await Promise.all([
+    const [featuredPosts, newsPosts, promotionPosts] = await Promise.all([
       fetchPosts(config.defaultSite, featuredCategory.id.toString(), { per_page: '9', _embed: 'true', categories: featuredCategory.id.toString() }),
       fetchPosts(config.defaultSite, newsCategory.id.toString(), { per_page: '9', _embed: 'true', categories: newsCategory.id.toString() }),
-      fetchPosts(config.defaultSite, promotionCategory.id.toString(), { per_page: '9', _embed: 'true', categories: promotionCategory.id.toString() }),
-      fetchPosts(config.defaultSite, aiMusicCategory.id.toString(), { per_page: '9', _embed: 'true', categories: aiMusicCategory.id.toString() })
+      fetchPosts(config.defaultSite, promotionCategory.id.toString(), { per_page: '9', _embed: 'true', categories: promotionCategory.id.toString() })
     ]);
+
+    // Fetch AI Music posts only if the category exists
+    const aiMusicPosts = aiMusicCategory 
+      ? await fetchPosts(config.defaultSite, aiMusicCategory.id.toString(), { per_page: '9', _embed: 'true', categories: aiMusicCategory.id.toString() })
+      : [];
 
     const renderPostGrid = (posts: any[], category: any) => {
       if (!posts || posts.length === 0) return null;
@@ -114,7 +118,7 @@ export default async function Home() {
           {renderPostGrid(featuredPosts, featuredCategory)}
           {renderPostGrid(newsPosts, newsCategory)}
           {renderPostGrid(promotionPosts, promotionCategory)}
-          {renderPostGrid(aiMusicPosts, aiMusicCategory)}
+          {aiMusicCategory && renderPostGrid(aiMusicPosts, aiMusicCategory)}
 
           {/* Show debug info if no posts are found */}
           {!featuredPosts?.length && !newsPosts?.length && !promotionPosts?.length && !aiMusicPosts?.length && (

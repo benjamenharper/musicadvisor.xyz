@@ -70,7 +70,7 @@ export default function Sidebar() {
             Music Marketing
           </Link>
           <Link
-            href="/category/ai-music"
+            href="/category/aimusic"
             className="block text-muted-foreground hover:text-foreground transition-colors"
           >
             AI Music
