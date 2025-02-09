@@ -53,6 +53,12 @@ export default function RootLayout({
                   >
                     Music Promotion
                   </Link>
+                  <Link
+                    href="/category/ai-music"
+                    className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    AI Music
+                  </Link>
                 </div>
               </Header>
               <main className="flex-1">

@@ -38,16 +38,18 @@ export default async function Home() {
     const featuredCategory = categories.find(cat => cat.slug === 'featured');
     const newsCategory = categories.find(cat => cat.slug === 'news');
     const promotionCategory = categories.find(cat => cat.slug === 'promotion');
+    const aiMusicCategory = categories.find(cat => cat.slug === 'ai-music');
 
-    if (!featuredCategory || !newsCategory || !promotionCategory) {
+    if (!featuredCategory || !newsCategory || !promotionCategory || !aiMusicCategory) {
       throw new Error('Required categories not found');
     }
 
     // Fetch posts for each category (limited to 9 posts each)
-    const [featuredPosts, newsPosts, promotionPosts] = await Promise.all([
+    const [featuredPosts, newsPosts, promotionPosts, aiMusicPosts] = await Promise.all([
       fetchPosts(config.defaultSite, featuredCategory.id.toString(), { per_page: '9', _embed: 'true', categories: featuredCategory.id.toString() }),
       fetchPosts(config.defaultSite, newsCategory.id.toString(), { per_page: '9', _embed: 'true', categories: newsCategory.id.toString() }),
-      fetchPosts(config.defaultSite, promotionCategory.id.toString(), { per_page: '9', _embed: 'true', categories: promotionCategory.id.toString() })
+      fetchPosts(config.defaultSite, promotionCategory.id.toString(), { per_page: '9', _embed: 'true', categories: promotionCategory.id.toString() }),
+      fetchPosts(config.defaultSite, aiMusicCategory.id.toString(), { per_page: '9', _embed: 'true', categories: aiMusicCategory.id.toString() })
     ]);
 
     const renderPostGrid = (posts: any[], category: any) => {
@@ -102,12 +104,20 @@ export default async function Home() {
     return (
       <main className="bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
-          {featuredPosts?.length > 0 && renderPostGrid(featuredPosts, featuredCategory)}
-          {newsPosts?.length > 0 && renderPostGrid(newsPosts, newsCategory)}
-          {promotionPosts?.length > 0 && renderPostGrid(promotionPosts, promotionCategory)}
+          <div className="text-center mb-12">
+            <h2 className="text-2xl font-bold text-gray-900">Welcome to Music Advisor</h2>
+            <p className="text-lg text-gray-600 mt-2">
+              Expert guidance for musicians and artists in the digital age
+            </p>
+          </div>
+
+          {renderPostGrid(featuredPosts, featuredCategory)}
+          {renderPostGrid(newsPosts, newsCategory)}
+          {renderPostGrid(promotionPosts, promotionCategory)}
+          {renderPostGrid(aiMusicPosts, aiMusicCategory)}
 
           {/* Show debug info if no posts are found */}
-          {!featuredPosts?.length && !newsPosts?.length && !promotionPosts?.length && (
+          {!featuredPosts?.length && !newsPosts?.length && !promotionPosts?.length && !aiMusicPosts?.length && (
             <div className="text-center">
               <h2 className="text-2xl font-bold text-gray-900">Welcome to Music Advisor</h2>
               <p className="mt-2 text-gray-600">
@@ -121,7 +131,8 @@ export default async function Home() {
                     postCounts: {
                       featured: featuredPosts?.length || 0,
                       news: newsPosts?.length || 0,
-                      promotion: promotionPosts?.length || 0
+                      promotion: promotionPosts?.length || 0,
+                      'ai-music': aiMusicPosts?.length || 0
                     }
                   }, null, 2)}
                 </pre>

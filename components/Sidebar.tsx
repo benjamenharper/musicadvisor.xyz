@@ -69,6 +69,12 @@ export default function Sidebar() {
           >
             Music Marketing
           </Link>
+          <Link
+            href="/category/ai-music"
+            className="block text-muted-foreground hover:text-foreground transition-colors"
+          >
+            AI Music
+          </Link>
         </nav>
       </div>
     </aside>
