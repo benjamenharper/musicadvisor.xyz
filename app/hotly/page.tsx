@@ -1,6 +1,5 @@
-import Image from 'next/image';
-import Link from 'next/link';
 import { ArrowRight, Music, Radio, Zap, Share2, BarChart2, Users } from 'lucide-react';
+import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -10,14 +9,6 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Start Your Music Journey with Hotly',
     description: 'Discover, share, and promote your music with Hotly.',
-    images: [
-      {
-        url: '/hotly-banner.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Hotly Music App'
-      }
-    ]
   }
 };
 
@@ -58,35 +49,27 @@ export default function HotlyPromo() {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Banner */}
-      <div className="bg-gradient-to-br from-primary via-blue-600 to-purple-700 h-[500px] flex items-center">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute inset-0 bg-black/40 z-10" />
-          <Image
-            src="/musicianscropped.png"
-            alt="Hotly Music Banner"
-            fill
-            className="object-cover"
-            priority
-          />
-        </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 text-white">
-          <div className="max-w-3xl">
-            <h1 className="text-5xl font-bold mb-6">
+      <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-pink-500 h-[500px] flex items-center">
+        <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 text-white">
+          <div>
+            <h1 className="text-5xl font-bold mb-6 text-left">
               Start Your Music Journey with Hotly
             </h1>
-            <p className="text-xl mb-8 text-gray-100">
+            <p className="text-xl mb-8 text-white text-left">
               The most advanced music platform for artists and music lovers. 
               Discover, share, and promote your music like never before.
             </p>
-            <Link
-              href="https://bit.ly/hotlymusicapp"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-8 py-4 bg-white text-primary rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors duration-200"
-            >
-              Get Started Now
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
+            <div className="text-left">
+              <Link
+                href="https://bit.ly/hotlymusicapp"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-8 py-4 bg-white text-blue-600 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors duration-200"
+              >
+                Get Started Now
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -167,6 +150,26 @@ export default function HotlyPromo() {
             Get Started with Hotly
             <ArrowRight className="ml-2 h-5 w-5" />
           </Link>
+        </div>
+
+        {/* Mini Banner */}
+        <div className="mt-32 mb-20">
+          <div className="bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 rounded-2xl shadow-lg border border-blue-200/30">
+            <div className="px-10 py-6 flex flex-col sm:flex-row justify-between items-center gap-6">
+              <p className="text-gray-700 text-xl font-medium">
+                Start creating and sharing your music today
+              </p>
+              <Link
+                href="https://bit.ly/hotlymusicapp"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-8 py-4 bg-white border-2 border-blue-300 text-blue-600 rounded-full font-semibold text-lg hover:bg-blue-50 hover:border-blue-400 transition-all duration-200 whitespace-nowrap shadow-sm"
+              >
+                Try Hotly Now
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </div>
