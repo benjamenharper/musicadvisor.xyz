@@ -22,7 +22,7 @@ export default function Footer() {
         {/* Links */}
         <div className="flex justify-center mb-8">
           <a
-            href="https://hotly.com"
+            href="https://bit.ly/hotlymusicapp"
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm text-primary hover:text-primary/90 transition-colors"
