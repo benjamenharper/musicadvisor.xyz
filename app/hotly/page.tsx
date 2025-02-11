@@ -61,7 +61,7 @@ export default function HotlyPromo() {
             </p>
             <div className="text-left">
               <Link
-                href="https://bit.ly/hotlymusicapp"
+                href="https://bit.ly/hotlymusic"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center px-8 py-4 bg-white text-blue-600 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors duration-200"
@@ -142,7 +142,7 @@ export default function HotlyPromo() {
             and advance their music career.
           </p>
           <Link
-            href="https://bit.ly/hotlymusicapp"
+            href="https://bit.ly/hotlymusic"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center px-8 py-4 bg-primary text-white rounded-full font-semibold text-lg hover:bg-primary/90 transition-colors duration-200"
@@ -160,7 +160,7 @@ export default function HotlyPromo() {
                 Start creating and sharing your music today
               </p>
               <Link
-                href="https://bit.ly/hotlymusicapp"
+                href="https://bit.ly/hotlymusic"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center px-8 py-4 bg-white border-2 border-blue-300 text-blue-600 rounded-full font-semibold text-lg hover:bg-blue-50 hover:border-blue-400 transition-all duration-200 whitespace-nowrap shadow-sm"
