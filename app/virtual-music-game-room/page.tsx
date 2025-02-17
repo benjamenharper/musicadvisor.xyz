@@ -9,10 +9,10 @@ export default function VirtualMusicRoom() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Convert Your Songs Into Monetized Games & Experiences
+              Create Song Trivia Games & Social Music Experiences
             </h1>
             <p className="text-xl text-blue-100 mb-8">
-              Transform your music library into interactive games and immersive experiences. Create unique musical challenges, puzzles, and adventures that your audience will love.
+              Build an engaging community space where guests can play song trivia, guess your music, and connect with fellow music enthusiasts. Monetize through custom-priced live video chats and exclusive experiences.
             </p>
             <Link
               href="https://bit.ly/hotlymusic"
@@ -30,21 +30,21 @@ export default function VirtualMusicRoom() {
       <section className="py-20">
         <div className="container mx-auto px-4 py-16">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-6">Turn Your Music Into Interactive Games</h2>
+            <h2 className="text-3xl font-bold mb-6">Connect Through Music Games</h2>
             <p className="text-lg text-gray-600 mb-8">
-              Create engaging musical experiences that your audience can play, share, and enjoy. From rhythm games to music discovery adventures, the possibilities are endless.
+              Create a vibrant community space where music brings people together. Host engaging trivia games, song guessing challenges, and foster meaningful connections between your guests.
             </p>
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-semibold mb-4">Game Creation Tools</h3>
+                <h3 className="text-xl font-semibold mb-4">Interactive Music Games</h3>
                 <p className="text-gray-600">
-                  Easy-to-use tools for converting your songs into interactive games. No coding required - just your music and creativity.
+                  Design custom song trivia and guessing games based on your music. Create engaging challenges that bring your community together and showcase your content.
                 </p>
               </div>
               <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-semibold mb-4">Monetization Options</h3>
+                <h3 className="text-xl font-semibold mb-4">Social & Monetization</h3>
                 <p className="text-gray-600">
-                  Set your own pricing, offer subscriptions, or create premium game content. Multiple ways to earn from your musical games.
+                  Enable guests to connect and make new friends while enjoying your music. Monetize through custom-priced live video chats and exclusive community experiences.
                 </p>
               </div>
             </div>

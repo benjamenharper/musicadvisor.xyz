@@ -112,10 +112,10 @@ export default async function Home() {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                Convert Your Songs Into Monetized Games & Experiences
+                Create Song Trivia Games & Social Music Experiences
               </h2>
               <p className="text-lg md:text-xl text-blue-100 mb-8">
-                Transform your music library into interactive games and immersive experiences. Create, monetize, and share your musical creativity with Hotly's Virtual Music Game Room platform.
+                Build a vibrant community where guests play song trivia, guess your music, and connect with fellow music lovers. Monetize your creativity through live video chats and custom-priced experiences.
               </p>
               <div className="space-y-4">
                 <Link
