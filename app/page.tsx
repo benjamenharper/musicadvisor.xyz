@@ -107,6 +107,38 @@ export default async function Home() {
 
     return (
       <main className="bg-background">
+        {/* Virtual Music Room Banner */}
+        <section className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-16 mb-12">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Create & Monetize Your Virtual Music Room
+              </h2>
+              <p className="text-lg md:text-xl text-blue-100 mb-8">
+                Host exclusive listening sessions, virtual concerts, and music workshops. Set your own pricing and build your community with Hotly's Virtual Music Room platform.
+              </p>
+              <div className="space-y-4">
+                <Link
+                  href="https://bit.ly/hotlymusic"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-8 py-4 bg-white text-blue-600 rounded-full text-lg font-semibold hover:bg-blue-50 transition-colors"
+                >
+                  Launch A Music Room
+                </Link>
+                <div>
+                  <Link
+                    href="/virtual-music-room"
+                    className="inline-block text-blue-100 hover:text-white transition-colors mt-4"
+                  >
+                    Learn more about Virtual Music Rooms →
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
           <div className="text-center mb-12">
             <h2 className="text-2xl font-bold text-gray-900">Welcome to Music Advisor</h2>
