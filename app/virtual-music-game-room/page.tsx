@@ -160,34 +160,24 @@ export default function VirtualMusicRoom() {
               <div className="w-12 h-12 shrink-0 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xl">1</div>
               <div>
                 <h3 className="text-xl font-semibold mb-2">Create Your Music Games</h3>
-                <p className="text-gray-600">Create fun song trivia and song guessing games that everyone will enjoy.</p>
+                <p className="text-gray-600">Sign up and create fun song trivia and song guessing games. Customize them to match your style.</p>
               </div>
             </div>
 
             <div className="flex items-center gap-8">
               <div className="w-12 h-12 shrink-0 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xl">2</div>
               <div>
-                <h3 className="text-xl font-semibold mb-2">Set Up Your Music Games</h3>
-                <p className="text-gray-600">Create fun song trivia and song guessing games. Make them engaging and enjoyable for everyone.</p>
+                <h3 className="text-xl font-semibold mb-2">Invite Your Audience</h3>
+                <p className="text-gray-600">Share your music games with fans and friends. Let them join in and play together.</p>
               </div>
             </div>
 
             <div className="flex items-center gap-8">
               <div className="w-12 h-12 shrink-0 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xl">3</div>
               <div>
-                <h3 className="text-xl font-semibold mb-2">Share Your Music Games</h3>
+                <h3 className="text-xl font-semibold mb-2">Build Your Community</h3>
                 <p className="text-gray-600">
-                  Connect with your audience through interactive music games. Build a community around your music.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-8">
-              <div className="w-12 h-12 shrink-0 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xl">4</div>
-              <div>
-                <h3 className="text-xl font-semibold mb-2">Grow Your Revenue</h3>
-                <p className="text-gray-600">
-                  Track your earnings, analyze audience engagement, and optimize your virtual events for maximum impact and revenue.
+                  Connect with players through chat and interactive features. Grow your music community through fun gameplay.
                 </p>
               </div>
             </div>
