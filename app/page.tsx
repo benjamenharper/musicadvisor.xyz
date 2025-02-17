@@ -112,10 +112,10 @@ export default async function Home() {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                Create Song Trivia Games & Social Music Experiences
+                Create Music Game Experiences
               </h2>
               <p className="text-lg md:text-xl text-blue-100 mb-8">
-                Build a vibrant community where guests play song trivia, guess your music, and connect with fellow music lovers. Monetize your creativity through live video chats and custom-priced experiences.
+                Host engaging music game rooms where guests can play trivia, guess songs, and connect with fellow music enthusiasts. Monetize through custom experiences and live interactions.
               </p>
               <div className="space-y-4">
                 <Link
@@ -124,14 +124,14 @@ export default async function Home() {
                   rel="noopener noreferrer"
                   className="inline-block px-8 py-4 bg-white text-blue-600 rounded-full text-lg font-semibold hover:bg-blue-50 transition-colors"
                 >
-                  Launch A Music Game Room
+                  Host A Music Game Room
                 </Link>
                 <div>
                   <Link
                     href="/virtual-music-game-room"
                     className="inline-block text-blue-100 hover:text-white transition-colors mt-4"
                   >
-                    Learn more about Virtual Music Game Rooms →
+                    Learn more about Music Game Rooms →
                   </Link>
                 </div>
               </div>
