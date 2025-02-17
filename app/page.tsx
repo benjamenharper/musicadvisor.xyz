@@ -115,7 +115,7 @@ export default async function Home() {
                 Create Music Game Experiences
               </h2>
               <p className="text-lg md:text-xl text-blue-100 mb-8">
-                Host engaging music game rooms where guests can play trivia, guess songs, and connect with fellow music enthusiasts. Monetize through custom experiences and live interactions.
+                Host engaging music games where guests can play song trivia, guess songs, and connect with fellow music enthusiasts. Create fun interactive music experiences.
               </p>
               <div className="space-y-4">
                 <Link

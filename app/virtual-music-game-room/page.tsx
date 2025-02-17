@@ -12,7 +12,7 @@ export default function VirtualMusicRoom() {
               Create Music Game Experiences
             </h1>
             <p className="text-xl text-blue-100 mb-8">
-              Host fun music game rooms where guests can play trivia, guess songs, and connect with fellow music enthusiasts. Build a community around your music through interactive games.
+              Host fun music games where guests can play song trivia, guess songs, and connect with fellow music enthusiasts. Build a community around your music through interactive games.
             </p>
             <Link
               href="https://bit.ly/hotlymusic"
@@ -38,7 +38,7 @@ export default function VirtualMusicRoom() {
               </div>
               <h3 className="text-xl font-semibold mb-4">Interactive Music Games</h3>
               <p className="text-gray-600">
-                Create engaging trivia games and song guessing challenges. Let fans compete and have fun with music.
+                Create engaging song trivia games and song guessing challenges. Let fans compete and have fun with music.
               </p>
             </div>
 
@@ -50,7 +50,7 @@ export default function VirtualMusicRoom() {
               </div>
               <h3 className="text-xl font-semibold mb-4">Share Music & Happiness</h3>
               <p className="text-gray-600">
-                Share your favorite music through fun interactive gameplay. Create themed challenges that bring joy to your community.
+                Share your favorite music through fun interactive music games. Create themed challenges that bring joy to your community.
               </p>
             </div>
 
@@ -71,7 +71,7 @@ export default function VirtualMusicRoom() {
         {/* Monetization Section */}
         <div className="container mx-auto px-4 py-16">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-6 text-center">Connect & Earn Through Games</h2>
+            <h2 className="text-3xl font-bold mb-6 text-center">Connect & Earn Through Music Games</h2>
             <div className="grid md:grid-cols-2 gap-8">
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <div className="flex items-center mb-4">
@@ -83,7 +83,7 @@ export default function VirtualMusicRoom() {
                   <h3 className="text-xl font-semibold">Live Chat</h3>
                 </div>
                 <p className="text-gray-600">
-                  Connect with your community during game sessions. Share music and build lasting connections.
+                  Connect with your community during music game sessions. Share music and build lasting connections.
                 </p>
               </div>
 
@@ -94,10 +94,10 @@ export default function VirtualMusicRoom() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-semibold">Game Variety</h3>
+                  <h3 className="text-xl font-semibold">Music Game Variety</h3>
                 </div>
                 <p className="text-gray-600">
-                  Keep your audience engaged with different music challenges and fun activities.
+                  Keep your audience engaged with different music games and fun activities.
                 </p>
               </div>
 
@@ -111,7 +111,7 @@ export default function VirtualMusicRoom() {
                   <h3 className="text-xl font-semibold">Tips & Donations</h3>
                 </div>
                 <p className="text-gray-600">
-                  Let fans support you through tips during game sessions. Simple and straightforward.
+                  Let fans support you through tips during music game sessions. Simple and straightforward.
                 </p>
               </div>
 
@@ -159,27 +159,25 @@ export default function VirtualMusicRoom() {
             <div className="flex items-center gap-8">
               <div className="w-12 h-12 shrink-0 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xl">1</div>
               <div>
-                <h3 className="text-xl font-semibold mb-2">Create Your Room</h3>
-                <p className="text-gray-600">
-                  Sign up and create your personalized virtual music room in minutes. Customize your room's appearance and settings to match your brand.
-                </p>
+                <h3 className="text-xl font-semibold mb-2">Create Your Music Games</h3>
+                <p className="text-gray-600">Create fun song trivia and song guessing games that everyone will enjoy.</p>
               </div>
             </div>
 
             <div className="flex items-center gap-8">
               <div className="w-12 h-12 shrink-0 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xl">2</div>
               <div>
-                <h3 className="text-xl font-semibold mb-2">Set Up Your Games</h3>
-                <p className="text-gray-600">Create fun music trivia and song guessing games. Make them engaging and enjoyable for everyone.</p>
+                <h3 className="text-xl font-semibold mb-2">Set Up Your Music Games</h3>
+                <p className="text-gray-600">Create fun song trivia and song guessing games. Make them engaging and enjoyable for everyone.</p>
               </div>
             </div>
 
             <div className="flex items-center gap-8">
               <div className="w-12 h-12 shrink-0 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xl">3</div>
               <div>
-                <h3 className="text-xl font-semibold mb-2">Engage Your Audience</h3>
+                <h3 className="text-xl font-semibold mb-2">Share Your Music Games</h3>
                 <p className="text-gray-600">
-                  Connect with your audience through chat, reactions, and interactive features. Build a community around your music.
+                  Connect with your audience through interactive music games. Build a community around your music.
                 </p>
               </div>
             </div>
@@ -202,7 +200,7 @@ export default function VirtualMusicRoom() {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Launch A Music Game Room?</h2>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Join the future of music engagement. Create your music game room today and start connecting with your audience through fun interactive games.
+            Join the future of music engagement. Create your music game room today and start connecting with your audience through fun interactive music games.
           </p>
           <Link
             href="https://bit.ly/hotlymusic"
