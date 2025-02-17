@@ -20,7 +20,7 @@ export default function VirtualMusicRoom() {
               rel="noopener noreferrer"
               className="inline-block px-8 py-4 bg-white text-blue-600 rounded-full text-lg font-semibold hover:bg-blue-50 transition-colors"
             >
-              Host A Music Game Room
+              Launch A Music Game Room
             </Link>
           </div>
         </div>
@@ -71,7 +71,7 @@ export default function VirtualMusicRoom() {
         {/* Monetization Section */}
         <div className="container mx-auto px-4 py-16">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-6 text-center">Connect Through Games</h2>
+            <h2 className="text-3xl font-bold mb-6 text-center">Connect & Earn Through Games</h2>
             <div className="grid md:grid-cols-2 gap-8">
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <div className="flex items-center mb-4">
@@ -83,7 +83,7 @@ export default function VirtualMusicRoom() {
                   <h3 className="text-xl font-semibold">Live Chat</h3>
                 </div>
                 <p className="text-gray-600">
-                  Chat with your community during game sessions. Build connections and share musical moments together.
+                  Connect with your community during game sessions. Share music and build lasting connections.
                 </p>
               </div>
 
@@ -97,7 +97,35 @@ export default function VirtualMusicRoom() {
                   <h3 className="text-xl font-semibold">Game Variety</h3>
                 </div>
                 <p className="text-gray-600">
-                  Mix up your game sessions with different music challenges. Keep your community engaged with fresh and fun activities.
+                  Keep your audience engaged with different music challenges and fun activities.
+                </p>
+              </div>
+
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-semibold">Tips & Donations</h3>
+                </div>
+                <p className="text-gray-600">
+                  Let fans support you through tips during game sessions. Simple and straightforward.
+                </p>
+              </div>
+
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-semibold">Growth Analytics</h3>
+                </div>
+                <p className="text-gray-600">
+                  Track engagement and grow your community. Simple metrics to help you improve.
                 </p>
               </div>
             </div>
@@ -107,7 +135,7 @@ export default function VirtualMusicRoom() {
         {/* Call to Action */}
         <div className="container mx-auto px-4 py-16 text-center">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-6">Ready to Host A Music Game Room?</h2>
+            <h2 className="text-3xl font-bold mb-6">Ready to Launch A Music Game Room?</h2>
             <p className="text-lg text-gray-600 mb-8">
               Create engaging music games, build your community, and start connecting with your audience through fun interactive games.
             </p>
@@ -117,7 +145,7 @@ export default function VirtualMusicRoom() {
               rel="noopener noreferrer"
               className="inline-block px-8 py-4 bg-blue-600 text-white rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors"
             >
-              Host A Music Game Room
+              Launch A Music Game Room
             </Link>
           </div>
         </div>
@@ -172,7 +200,7 @@ export default function VirtualMusicRoom() {
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Host A Music Game Room?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Launch A Music Game Room?</h2>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
             Join the future of music engagement. Create your music game room today and start connecting with your audience through fun interactive games.
           </p>
@@ -182,7 +210,7 @@ export default function VirtualMusicRoom() {
             rel="noopener noreferrer"
             className="inline-block px-8 py-4 bg-white text-blue-600 rounded-full text-lg font-semibold hover:bg-blue-50 transition-colors"
           >
-            Host A Music Game Room
+            Launch A Music Game Room
           </Link>
         </div>
       </section>

@@ -124,7 +124,7 @@ export default async function Home() {
                   rel="noopener noreferrer"
                   className="inline-block px-8 py-4 bg-white text-blue-600 rounded-full text-lg font-semibold hover:bg-blue-50 transition-colors"
                 >
-                  Host A Music Game Room
+                  Launch A Music Game Room
                 </Link>
                 <div>
                   <Link
