@@ -73,7 +73,7 @@ export default function Header() {
                 rel="noopener noreferrer"
                 className="text-sm font-medium px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors"
               >
-                Launch A Music Room
+                Launch A Music Game Room
               </Link>
             </div>
           </nav>
