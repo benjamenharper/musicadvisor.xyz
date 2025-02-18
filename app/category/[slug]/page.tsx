@@ -4,6 +4,35 @@ import { format } from 'date-fns';
 import { notFound } from 'next/navigation';
 import AuthorAttribution from '@/components/AuthorAttribution';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+// Generate metadata for the category page
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const categories = await fetchCategories();
+  const category = categories.find(cat => cat.slug === params.slug);
+  
+  if (!category) {
+    return {
+      title: 'Category Not Found',
+      description: 'The requested category could not be found.'
+    };
+  }
+
+  const categoryName = decodeHTML(category.name);
+  const description = category.description 
+    ? decodeHTML(category.description) 
+    : `Latest articles and insights about ${categoryName} from MusicAdvisor.xyz`;
+
+  return {
+    title: `${categoryName} - Music Industry Insights`,
+    description,
+    keywords: [categoryName.toLowerCase(), 'music industry', 'music advice', 'music insights'],
+    openGraph: {
+      title: `${categoryName} - Music Industry Insights | MusicAdvisor.xyz`,
+      description
+    }
+  };
+}
 
 export default async function CategoryPage({ params }: { params: { slug: string } }) {
   try {

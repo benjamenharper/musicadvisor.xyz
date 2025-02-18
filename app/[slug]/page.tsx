@@ -5,6 +5,40 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import AuthorAttribution from '@/components/AuthorAttribution';
 import SidebarWrapper from '@/components/sidebar/SidebarWrapper';
+import type { Metadata } from 'next';
+
+// Generate metadata for the post
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const post = await fetchPostBySlug(params.slug);
+  
+  if (!post) {
+    return {
+      title: 'Post Not Found',
+      description: 'The requested post could not be found.'
+    };
+  }
+
+  const title = decodeHTML(post.title.rendered);
+  const description = decodeHTML(post.excerpt.rendered.replace(/<[^>]+>/g, '').slice(0, 160));
+  const featuredImage = post._embedded?.['wp:featuredmedia']?.[0]?.source_url;
+
+  return {
+    title,
+    description,
+    openGraph: featuredImage ? {
+      title,
+      description,
+      images: [
+        {
+          url: featuredImage,
+          width: 1200,
+          height: 630,
+          alt: title
+        }
+      ]
+    } : undefined
+  };
+}
 
 export default async function PostPage({ params }: { params: { slug: string } }) {
   try {
