@@ -50,3 +50,26 @@ export const mockPosts = [
     tags: ["social-media", "marketing", "engagement"]
   }
 ];
+
+export const mockProperties = [
+  {
+    id: 1,
+    title: "Music Studio Space",
+    description: "Professional recording studio with state-of-the-art equipment",
+    type: "studio",
+    price: 2500,
+    location: "Los Angeles, CA",
+    features: ["Recording Equipment", "Sound Treatment", "Control Room"],
+    images: ["/images/studio1.jpg"]
+  },
+  {
+    id: 2,
+    title: "Performance Venue",
+    description: "Intimate venue perfect for live performances",
+    type: "venue",
+    price: 1500,
+    location: "Nashville, TN",
+    features: ["Stage", "Sound System", "Lighting"],
+    images: ["/images/venue1.jpg"]
+  }
+];
