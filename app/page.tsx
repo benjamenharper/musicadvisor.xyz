@@ -13,11 +13,11 @@ export const revalidate = 0;
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'MusicAdvisor - Expert Music Industry Guidance',
+  title: 'Music Industry News & Expert Guidance',
   description: 'Get expert guidance on music promotion, marketing, and distribution. Stay informed with the latest music industry trends, news, and strategies for success.',
   keywords: ['music industry guidance', 'music promotion tips', 'music marketing advice', 'artist development', 'music industry news', 'music business strategy'],
   openGraph: {
-    title: 'MusicAdvisor - Expert Music Industry Guidance',
+    title: 'Music Industry News & Expert Guidance | MusicAdvisor.xyz',
     description: 'Get expert guidance on music promotion, marketing, and distribution. Stay informed with the latest music industry trends.',
     images: [
       {

@@ -14,8 +14,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "MusicAdvisor - Music Promotion and News",
-  description: "Helping Artists Thrive - Music Industry News and Promotion Tips",
+  title: {
+    default: 'MusicAdvisor.xyz - Music Industry Guidance',
+    template: '%s | MusicAdvisor.xyz'
+  },
+  description: "Expert guidance on music promotion, marketing, and distribution. Stay informed with the latest music industry trends, news, and strategies for success.",
   verification: {
     google: 'IzPak72Ui3pU-C9bh-jWxuAhvJMRhDWxPuUxhM0DGoA',
   },
