@@ -153,8 +153,80 @@ export const fetchCategories = async (siteKey: string) => {
   }
 };
 
+export const fetchAuthors = async (siteKey: string) => {
+  const site = config.sites[siteKey];
+  if (!site) {
+    console.error('Site not found:', siteKey);
+    throw new Error(`Site ${siteKey} not found in config`);
+  }
+
+  const baseUrl = `${site.url}/wp-json/wp/v2/users`;
+  const timestamp = Date.now();
+
+  const params = new URLSearchParams({
+    timestamp: timestamp.toString(),
+    per_page: '100',
+    _fields: 'id,name,slug,description'
+  });
+
+  const url = `${baseUrl}?${params.toString()}`;
+
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        'Accept': 'application/json',
+        'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      }
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching authors:', error);
+    return [];
+  }
+};
+
+export const fetchPages = async (siteKey: string) => {
+  const site = config.sites[siteKey];
+  if (!site) {
+    console.error('Site not found:', siteKey);
+    throw new Error(`Site ${siteKey} not found in config`);
+  }
+
+  const baseUrl = `${site.url}/wp-json/wp/v2/pages`;
+  const timestamp = Date.now();
+
+  const params = new URLSearchParams({
+    timestamp: timestamp.toString(),
+    per_page: '100',
+    _fields: 'id,title,slug,modified'
+  });
+
+  const url = `${baseUrl}?${params.toString()}`;
+
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        'Accept': 'application/json',
+        'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      }
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching pages:', error);
+    return [];
+  }
+};
+
 export default {
   fetchProperties,
   fetchPosts,
-  fetchCategories
+  fetchCategories,
+  fetchAuthors,
+  fetchPages
 };
