@@ -2,12 +2,14 @@
 
 import Script from 'next/script';
 
-const GoogleAnalytics = () => {
+export default function GoogleAnalytics() {
+  const GA_MEASUREMENT_ID = 'G-SBL4322M3P'; // Correct measurement ID
+
   return (
     <>
       <Script
         strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=G-SBL4322M3P`}
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
       />
       <Script
         id="google-analytics"
@@ -17,12 +19,10 @@ const GoogleAnalytics = () => {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-SBL4322M3P');
+            gtag('config', '${GA_MEASUREMENT_ID}');
           `,
         }}
       />
     </>
   );
-};
-
-export default GoogleAnalytics;
+}

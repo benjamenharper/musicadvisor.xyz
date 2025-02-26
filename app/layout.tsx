@@ -5,20 +5,27 @@ import ClientLayout from "@/components/ClientLayout";
 import ClientSideProvider from "@/components/providers/ClientSideProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Link from 'next/link';
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
   title: {
-    default: 'MusicAdvisor.xyz - Music Industry Guidance',
-    template: '%s | MusicAdvisor.xyz'
+    default: 'Music Advisor',
+    template: '%s | Music Advisor',
   },
-  description: "Expert guidance on music promotion, marketing, and distribution. Stay informed with the latest music industry trends, news, and strategies for success.",
+  description: 'Music Promotion and News',
+  keywords: [
+    'music',
+    'promotion',
+    'news',
+    'artist development',
+    'music industry',
+  ],
   verification: {
     google: 'IzPak72Ui3pU-C9bh-jWxuAhvJMRhDWxPuUxhM0DGoA',
   },
@@ -37,32 +44,32 @@ export default function RootLayout({
           <ClientLayout>
             <div className="min-h-screen bg-background flex flex-col">
               <Header>
-                <div className="flex items-center gap-4">
-                  <Link
+                <nav className="flex items-center gap-4">
+                  <a
                     href="/category/featured"
                     className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                   >
                     Featured
-                  </Link>
-                  <Link
+                  </a>
+                  <a
                     href="/category/artist-development"
                     className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                   >
                     Artist Development
-                  </Link>
-                  <Link
+                  </a>
+                  <a
                     href="/category/music-promotion"
                     className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                   >
                     Music Promotion
-                  </Link>
-                  <Link
+                  </a>
+                  <a
                     href="/category/ai-music"
                     className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                   >
                     AI Music
-                  </Link>
-                </div>
+                  </a>
+                </nav>
               </Header>
               <main className="flex-1">
                 {children}

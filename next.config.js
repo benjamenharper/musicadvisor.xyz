@@ -66,11 +66,6 @@ const nextConfig = {
       },
     ];
   },
-  // Force dynamic rendering
-  unstable_runtimeJS: true,
-  unstable_JsPreload: false,
-  // Disable static optimization
-  unstable_staticGeneration: false,
-}
+};
 
 module.exports = nextConfig
