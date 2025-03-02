@@ -4,6 +4,7 @@ import { decodeHTML } from '@/lib/utils';
 import Link from 'next/link';
 import AuthorAttribution from '@/components/AuthorAttribution';
 import { config } from '@/lib/config';
+import { Music } from 'lucide-react';
 
 // Force dynamic rendering at runtime
 export const dynamic = 'force-dynamic';
@@ -107,32 +108,64 @@ export default async function Home() {
 
     return (
       <main className="bg-background">
-        {/* Virtual Music Game Room Banner */}
-        <section className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-16 mb-12">
+        {/* Welcome Banner - Now above the music room banner */}
+        <section className="w-full bg-gradient-to-r from-purple-600 to-indigo-700 text-white py-12 mb-12">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                Create Music Game Experiences
-              </h2>
-              <p className="text-lg md:text-xl text-blue-100 mb-8">
-                Host engaging music games where guests can play song trivia, guess songs, and connect with fellow music enthusiasts. Create fun interactive music experiences.
+              <div className="flex justify-center mb-6">
+                <div className="bg-white p-4 rounded-full shadow-lg">
+                  <Music className="w-12 h-12 text-purple-600" />
+                </div>
+              </div>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">Welcome to Music Advisor</h1>
+              <p className="text-xl md:text-2xl text-purple-100">
+                For musicians and artists, by musicians and artists—expert guidance in the digital age.
               </p>
-              <div className="space-y-4">
+              <div className="mt-8">
                 <Link
-                  href="https://bit.ly/hotlymusic"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block px-8 py-4 bg-white text-blue-600 rounded-full text-lg font-semibold hover:bg-blue-50 transition-colors"
+                  href="/services"
+                  className="inline-block px-6 py-3 bg-white text-purple-600 rounded-full text-lg font-semibold hover:bg-purple-50 transition-colors"
                 >
-                  Launch A Music Game Room
+                  Explore Our Services
                 </Link>
-                <div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Music Game Room Banner - Now a secondary callout */}
+        <section className="max-w-6xl mx-auto mb-12 px-4">
+          <div className="bg-blue-50 border border-blue-100 rounded-xl overflow-hidden shadow-md">
+            <div className="md:flex items-center">
+              <div className="md:w-2/3 p-8">
+                <h2 className="text-2xl md:text-3xl font-bold text-blue-800 mb-4">
+                  Create Music Game Experiences
+                </h2>
+                <p className="text-blue-700 mb-6">
+                  Host engaging music games where guests can play song trivia, guess songs, and connect with fellow music enthusiasts.
+                </p>
+                <div className="space-x-4">
+                  <Link
+                    href="https://bit.ly/hotlymusic"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block px-5 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+                  >
+                    Launch A Music Game Room
+                  </Link>
                   <Link
                     href="/virtual-music-game-room"
-                    className="inline-block text-blue-100 hover:text-white transition-colors mt-4"
+                    className="inline-block text-blue-600 hover:text-blue-800 transition-colors text-sm"
                   >
-                    Learn more about Music Game Rooms →
+                    Learn more →
                   </Link>
+                </div>
+              </div>
+              <div className="md:w-1/3 bg-blue-600 p-6 hidden md:block">
+                <div className="flex justify-center items-center h-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-24 h-24 text-white opacity-80">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z" />
+                  </svg>
                 </div>
               </div>
             </div>
@@ -140,21 +173,6 @@ export default async function Home() {
         </section>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl font-bold text-gray-900">Welcome to Music Advisor</h2>
-            <p className="text-lg text-gray-600 mt-2">
-            For musicians and artists, by musicians and artists—expert guidance in the digital age.
-
-
-
-
-
-
-
- 
-            </p>
-          </div>
-
           {renderPostGrid(featuredPosts, featuredCategory)}
           {renderPostGrid(newsPosts, newsCategory)}
           {renderPostGrid(promotionPosts, promotionCategory)}
