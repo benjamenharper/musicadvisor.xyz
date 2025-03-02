@@ -55,6 +55,20 @@ const nextConfig = {
           },
         ],
       },
+      {
+        // Add specific headers for sitemap.xml to make it more crawler-friendly
+        source: '/sitemap.xml',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=3600',
+          },
+          {
+            key: 'Content-Type',
+            value: 'application/xml',
+          },
+        ],
+      },
     ];
   },
   async redirects() {
