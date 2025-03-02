@@ -143,7 +143,15 @@ export default async function Home() {
           <div className="text-center mb-12">
             <h2 className="text-2xl font-bold text-gray-900">Welcome to Music Advisor</h2>
             <p className="text-lg text-gray-600 mt-2">
-              Expert guidance for musicians and artists in the digital age
+            For musicians and artists, by musicians and artists—expert guidance in the digital age.
+
+
+
+
+
+
+
+ 
             </p>
           </div>
 
