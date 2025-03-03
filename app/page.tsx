@@ -123,72 +123,68 @@ export default async function Home() {
                 For musicians and artists, by musicians and artists
               </p>
               <div className="mt-6">
-                <Link
-                  href="/services"
-                  className="inline-block px-4 py-2 bg-white/20 hover:bg-white/30 text-white text-sm rounded-md transition-colors"
-                >
-                  Explore Our Services →
-                </Link>
+                {/* Services link removed as requested */}
               </div>
             </div>
           </div>
         </section>
 
-        {/* PlayWit.me Banner - First callout */}
-        <section className="max-w-6xl mx-auto mb-6 px-4">
-          <div className="bg-green-50 border border-green-100 rounded-xl overflow-hidden shadow-md">
-            <div className="p-6">
-              <h2 className="text-2xl font-bold text-green-800 mb-3">
-                Create Viral Experiences & Monetize them
-              </h2>
-              <p className="text-green-700 mb-4">
-                Build engaging interactive experiences that go viral and generate revenue with PlayWit.me's powerful platform.
-              </p>
-              <div className="space-x-4">
-                <Link
-                  href="https://bit.ly/playwitmelink"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block px-5 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"
-                >
-                  Get Started with PlayWit.me
-                </Link>
-                <Link
-                  href="/playwitme"
-                  className="inline-block text-green-600 hover:text-green-800 transition-colors text-sm"
-                >
-                  Learn more →
-                </Link>
+        {/* Callouts section - 2 column layout */}
+        <section className="max-w-7xl mx-auto mb-12 px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* PlayWit.me Banner - Left column */}
+            <div className="border border-gray-200 rounded-xl overflow-hidden shadow-md">
+              <div className="p-6">
+                <h2 className="text-2xl font-bold text-gray-800 mb-3">
+                  Create Viral Experiences & Monetize them
+                </h2>
+                <p className="text-gray-700 mb-4">
+                  Build engaging interactive experiences that go viral and generate revenue with PlayWit.me's powerful platform.
+                </p>
+                <div className="space-x-4">
+                  <Link
+                    href="https://bit.ly/playwitmelink"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block px-5 py-2 bg-gray-600 text-white rounded-lg text-sm font-medium hover:bg-gray-700 transition-colors"
+                  >
+                    Get Started with PlayWit.me
+                  </Link>
+                  <Link
+                    href="/playwitme"
+                    className="inline-block text-gray-600 hover:text-gray-800 transition-colors text-sm"
+                  >
+                    Learn more →
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
 
-        {/* Music Game Room Banner - Now a secondary callout without the large icon */}
-        <section className="max-w-6xl mx-auto mb-12 px-4">
-          <div className="bg-blue-50 border border-blue-100 rounded-xl overflow-hidden shadow-md">
-            <div className="p-6">
-              <h2 className="text-2xl font-bold text-blue-800 mb-3">
-                Create Music Game Experiences
-              </h2>
-              <p className="text-blue-700 mb-4">
-                Host engaging music games where guests can play song trivia, guess songs, and connect with fellow music enthusiasts.
-              </p>
-              <div className="space-x-4">
-                <Link
-                  href="https://bit.ly/hotlymusic"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block px-5 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-                >
-                  Launch A Music Game Room
-                </Link>
-                <Link
-                  href="/virtual-music-game-room"
-                  className="inline-block text-blue-600 hover:text-blue-800 transition-colors text-sm"
-                >
-                  Learn more →
-                </Link>
+            {/* Music Game Room Banner - Right column */}
+            <div className="border border-gray-200 rounded-xl overflow-hidden shadow-md">
+              <div className="p-6">
+                <h2 className="text-2xl font-bold text-gray-800 mb-3">
+                  Create Music Game Experiences
+                </h2>
+                <p className="text-gray-700 mb-4">
+                  Host engaging music games where guests can play song trivia, guess songs, and connect with fellow music enthusiasts.
+                </p>
+                <div className="space-x-4">
+                  <Link
+                    href="https://bit.ly/hotlymusic"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block px-5 py-2 bg-gray-600 text-white rounded-lg text-sm font-medium hover:bg-gray-700 transition-colors"
+                  >
+                    Launch A Music Game Room
+                  </Link>
+                  <Link
+                    href="/virtual-music-game-room"
+                    className="inline-block text-gray-600 hover:text-gray-800 transition-colors text-sm"
+                  >
+                    Learn more →
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
