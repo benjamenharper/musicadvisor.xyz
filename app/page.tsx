@@ -134,6 +134,36 @@ export default async function Home() {
           </div>
         </section>
 
+        {/* PlayWit.me Banner - First callout */}
+        <section className="max-w-6xl mx-auto mb-6 px-4">
+          <div className="bg-green-50 border border-green-100 rounded-xl overflow-hidden shadow-md">
+            <div className="p-6">
+              <h2 className="text-2xl font-bold text-green-800 mb-3">
+                Create Viral Experiences & Monetize them
+              </h2>
+              <p className="text-green-700 mb-4">
+                Build engaging interactive experiences that go viral and generate revenue with PlayWit.me's powerful platform.
+              </p>
+              <div className="space-x-4">
+                <Link
+                  href="https://bit.ly/playwitmelink"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-5 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"
+                >
+                  Get Started with PlayWit.me
+                </Link>
+                <Link
+                  href="/playwitme"
+                  className="inline-block text-green-600 hover:text-green-800 transition-colors text-sm"
+                >
+                  Learn more →
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Music Game Room Banner - Now a secondary callout without the large icon */}
         <section className="max-w-6xl mx-auto mb-12 px-4">
           <div className="bg-blue-50 border border-blue-100 rounded-xl overflow-hidden shadow-md">
