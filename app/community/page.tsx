@@ -1,0 +1,207 @@
+import Link from 'next/link';
+import Image from 'next/image';
+import type { Metadata } from 'next';
+import { MessageSquare, Users, Share2, Headphones, Music, Zap } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'Join Our Music Community',
+  description: 'Connect with fellow musicians, producers, and industry experts in our vibrant music community. Share your music, get feedback, and grow together.',
+  keywords: ['music community', 'musician network', 'music collaboration', 'artist community', 'music feedback'],
+  openGraph: {
+    title: 'Join Our Music Community | MusicAdvisor.xyz',
+    description: 'Connect with fellow musicians, producers, and industry experts in our vibrant music community.',
+    images: [
+      {
+        url: '/musicianscropped.png',
+        width: 1200,
+        height: 630,
+        alt: 'MusicAdvisor Community'
+      }
+    ]
+  }
+};
+
+export default function CommunityPage() {
+  return (
+    <main className="bg-background">
+      {/* Community Banner */}
+      <section className="w-full bg-gradient-to-r from-indigo-600 to-violet-500 text-white py-10 mb-12">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="flex items-center justify-center mb-4">
+              <MessageSquare className="w-6 h-6 text-indigo-200 mr-3" />
+              <h1 className="text-3xl md:text-4xl font-bold">Join Our Community</h1>
+            </div>
+            <p className="text-xl md:text-2xl text-indigo-100 mb-3">
+              Connect, Collaborate, and Grow Together
+            </p>
+            <p className="text-lg text-indigo-200 mb-5">
+              A supportive network of musicians, producers, and industry experts
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Main Community Section */}
+        <section className="mb-16 text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Music Community</h2>
+          <div className="prose prose-lg mx-auto">
+            <p>
+              We're building a thriving music community where musicians, producers, and industry professionals 
+              come together to share knowledge, get feedback, and build meaningful connections.
+            </p>
+            <p>
+              Whether you're just starting your musical journey or you're an established artist looking 
+              to network, our community offers a supportive space to grow your career and craft.
+            </p>
+          </div>
+          
+          <div className="mt-8">
+            <p className="text-lg text-gray-600">
+              Our community platform is coming soon! Sign up for our newsletter to be notified when we launch.
+            </p>
+            <div className="mt-6">
+              <Link 
+                href="/tools"
+                className="inline-flex items-center px-8 py-3 bg-indigo-600 text-white text-lg font-medium rounded-full hover:bg-indigo-700 transition-colors"
+              >
+                <Users className="w-5 h-5 mr-2" />
+                Explore Our Tools
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Community Benefits */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">Why Join Our Community?</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Benefit 1 */}
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="flex items-center mb-4">
+                <div className="bg-indigo-100 p-3 rounded-full mr-4">
+                  <Share2 className="w-6 h-6 text-indigo-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900">Share Your Music</h3>
+              </div>
+              <p className="text-gray-600">
+                Get your music heard by fellow artists and receive constructive feedback to help you improve and refine your sound.
+              </p>
+            </div>
+            
+            {/* Benefit 2 */}
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="flex items-center mb-4">
+                <div className="bg-indigo-100 p-3 rounded-full mr-4">
+                  <Users className="w-6 h-6 text-indigo-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900">Network & Collaborate</h3>
+              </div>
+              <p className="text-gray-600">
+                Connect with like-minded musicians, producers, and industry professionals. Find your next collaborator or mentor.
+              </p>
+            </div>
+            
+            {/* Benefit 3 */}
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="flex items-center mb-4">
+                <div className="bg-indigo-100 p-3 rounded-full mr-4">
+                  <Headphones className="w-6 h-6 text-indigo-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900">Exclusive Content</h3>
+              </div>
+              <p className="text-gray-600">
+                Access exclusive tutorials, resources, and insights from industry experts that aren't available anywhere else.
+              </p>
+            </div>
+            
+            {/* Benefit 4 */}
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="flex items-center mb-4">
+                <div className="bg-indigo-100 p-3 rounded-full mr-4">
+                  <Music className="w-6 h-6 text-indigo-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900">Music Challenges</h3>
+              </div>
+              <p className="text-gray-600">
+                Participate in regular music challenges and competitions to push your creative boundaries and showcase your talent.
+              </p>
+            </div>
+            
+            {/* Benefit 5 */}
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="flex items-center mb-4">
+                <div className="bg-indigo-100 p-3 rounded-full mr-4">
+                  <Zap className="w-6 h-6 text-indigo-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900">Growth Opportunities</h3>
+              </div>
+              <p className="text-gray-600">
+                Discover opportunities for playlist placements, collaborations, and exposure to help grow your audience and career.
+              </p>
+            </div>
+            
+            {/* Benefit 6 */}
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="flex items-center mb-4">
+                <div className="bg-indigo-100 p-3 rounded-full mr-4">
+                  <MessageSquare className="w-6 h-6 text-indigo-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900">Supportive Community</h3>
+              </div>
+              <p className="text-gray-600">
+                Join a positive, encouraging community that celebrates your wins and helps you overcome challenges in your music journey.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Community Values */}
+        <section className="mb-16 bg-gray-50 rounded-lg p-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Our Community Values</h2>
+          <div className="prose prose-lg">
+            <p>
+              Our community thrives on mutual respect, constructive feedback, and positive interactions. 
+              We're committed to maintaining a welcoming environment for all members.
+            </p>
+            <ul>
+              <li>Be respectful and supportive of other community members</li>
+              <li>Provide constructive feedback when asked</li>
+              <li>Share knowledge and resources generously</li>
+              <li>Respect copyright and intellectual property</li>
+              <li>Celebrate diversity and inclusion</li>
+              <li>Focus on growth and continuous improvement</li>
+            </ul>
+          </div>
+        </section>
+
+        {/* Coming Soon Section */}
+        <section className="text-center bg-indigo-50 rounded-lg p-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Community Platform Coming Soon</h2>
+          <p className="text-lg text-gray-600 mb-6">
+            We're working hard to create the best possible community experience for musicians and industry professionals.
+          </p>
+          <p className="text-lg text-gray-600 mb-6">
+            In the meantime, explore our tools and resources to help you on your music journey.
+          </p>
+          <Link 
+            href="/guides"
+            className="inline-flex items-center px-8 py-3 bg-indigo-600 text-white text-lg font-medium rounded-full hover:bg-indigo-700 transition-colors mr-4"
+          >
+            <Share2 className="w-5 h-5 mr-2" />
+            Explore Guides
+          </Link>
+          <Link 
+            href="/tools"
+            className="inline-flex items-center px-8 py-3 bg-gray-600 text-white text-lg font-medium rounded-full hover:bg-gray-700 transition-colors"
+          >
+            <Zap className="w-5 h-5 mr-2" />
+            Discover Tools
+          </Link>
+        </section>
+      </div>
+    </main>
+  );
+}

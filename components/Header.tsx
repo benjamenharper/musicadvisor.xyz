@@ -32,48 +32,36 @@ export default function Header() {
           <nav className="hidden md:flex items-center space-x-8">
             <div className="flex items-center gap-4">
               <Link
-                href="/category/featured"
-                className="text-sm font-medium text-muted-foreground hover:text-foreground"
-              >
-                Featured
-              </Link>
-              <Link
-                href="/category/news"
-                className="text-sm font-medium text-muted-foreground hover:text-foreground"
-              >
-                News
-              </Link>
-              <Link
-                href="/category/promotion"
-                className="text-sm font-medium text-muted-foreground hover:text-foreground"
-              >
-                Promotion
-              </Link>
-              <Link
-                href="/category/aimusic"
-                className="text-sm font-medium text-muted-foreground hover:text-foreground"
-              >
-                AI Music
-              </Link>
-              <Link
-                href="/services"
-                className="text-sm font-medium text-muted-foreground hover:text-foreground"
-              >
-                Services
-              </Link>
-              <Link
                 href="/about"
                 className="text-sm font-medium text-muted-foreground hover:text-foreground"
               >
                 About
               </Link>
               <Link
-                href="https://bit.ly/hotlymusic"
+                href="/guides"
+                className="text-sm font-medium text-muted-foreground hover:text-foreground"
+              >
+                Guides
+              </Link>
+              <Link
+                href="/community"
+                className="text-sm font-medium text-muted-foreground hover:text-foreground"
+              >
+                Community
+              </Link>
+              <Link
+                href="/tools"
+                className="text-sm font-medium text-muted-foreground hover:text-foreground"
+              >
+                Tools
+              </Link>
+              <Link
+                href="https://bit.ly/playwitmelink"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-sm font-medium px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors"
               >
-                Launch A Music Game Room
+                Become A Host
               </Link>
             </div>
           </nav>

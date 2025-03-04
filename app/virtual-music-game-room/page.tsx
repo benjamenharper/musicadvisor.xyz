@@ -20,7 +20,7 @@ export default function VirtualMusicRoom() {
               rel="noopener noreferrer"
               className="inline-block px-8 py-4 bg-white text-blue-600 rounded-full text-lg font-semibold hover:bg-blue-50 transition-colors"
             >
-              Launch A Music Game Room
+              Become A Host
             </Link>
           </div>
         </div>
@@ -121,7 +121,7 @@ export default function VirtualMusicRoom() {
         {/* Call to Action */}
         <div className="container mx-auto px-4 py-16 text-center">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-6">Ready to Launch A Music Game Room?</h2>
+            <h2 className="text-3xl font-bold mb-6">Ready to Become A Host?</h2>
             <p className="text-lg text-gray-600 mb-8">
               Create engaging music games, build your community, and start connecting with your audience through fun interactive games.
             </p>
@@ -131,7 +131,7 @@ export default function VirtualMusicRoom() {
               rel="noopener noreferrer"
               className="inline-block px-8 py-4 bg-blue-600 text-white rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors"
             >
-              Launch A Music Game Room
+              Become A Host
             </Link>
           </div>
         </div>
@@ -174,7 +174,7 @@ export default function VirtualMusicRoom() {
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Launch A Music Game Room?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Become A Host?</h2>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
             Join the future of music engagement. Create your music game room today and start connecting with your audience through fun interactive music games.
           </p>
@@ -184,7 +184,7 @@ export default function VirtualMusicRoom() {
             rel="noopener noreferrer"
             className="inline-block px-8 py-4 bg-white text-blue-600 rounded-full text-lg font-semibold hover:bg-blue-50 transition-colors"
           >
-            Launch A Music Game Room
+            Become A Host
           </Link>
         </div>
       </section>

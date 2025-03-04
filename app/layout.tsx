@@ -46,28 +46,28 @@ export default function RootLayout({
               <Header>
                 <nav className="flex items-center gap-4">
                   <a
-                    href="/category/featured"
+                    href="/about"
                     className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    Featured
+                    About
                   </a>
                   <a
-                    href="/category/artist-development"
+                    href="/guides"
                     className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    Artist Development
+                    Guides
                   </a>
                   <a
-                    href="/category/music-promotion"
+                    href="/community"
                     className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    Music Promotion
+                    Community
                   </a>
                   <a
-                    href="/category/ai-music"
+                    href="/tools"
                     className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    AI Music
+                    Tools
                   </a>
                 </nav>
               </Header>
