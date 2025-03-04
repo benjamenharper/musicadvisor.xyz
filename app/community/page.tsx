@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Metadata } from 'next';
-import { MessageSquare, Users, Share2, Headphones, Music, Zap } from 'lucide-react';
+import { MessageSquare, Users, Share2, Headphones, Music, Zap, Instagram } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Join Our Music Community',
   description: 'Connect with fellow musicians, producers, and industry experts in our vibrant music community. Share your music, get feedback, and grow together.',
-  keywords: ['music community', 'musician network', 'music collaboration', 'artist community', 'music feedback'],
+  keywords: ['music community', 'musician network', 'music collaboration', 'artist community', 'music feedback', 'discord', 'instagram'],
   openGraph: {
     title: 'Join Our Music Community | MusicAdvisor.xyz',
     description: 'Connect with fellow musicians, producers, and industry experts in our vibrant music community.',
@@ -57,9 +57,57 @@ export default function CommunityPage() {
             </p>
           </div>
           
+          {/* Social Platforms */}
+          <div className="mt-10 mb-12 bg-white rounded-lg shadow-md p-8">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">Join Us on Social Media</h3>
+            <p className="text-lg text-gray-600 mb-6">
+              Connect with our community on Discord and Instagram to stay updated, share your music, and interact with fellow artists.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+              {/* Discord */}
+              <a 
+                href="https://discord.gg/5tqCqTqbsc" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex flex-col items-center p-6 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors"
+              >
+                <div className="bg-indigo-100 p-4 rounded-full mb-4">
+                  <MessageSquare className="w-10 h-10 text-indigo-600" />
+                </div>
+                <h4 className="text-xl font-semibold text-gray-900 mb-2">Join Our Discord</h4>
+                <p className="text-gray-600 text-center mb-4">
+                  Chat with other musicians, share your work, and get real-time feedback and support.
+                </p>
+                <span className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white font-medium rounded-full hover:bg-indigo-700 transition-colors">
+                  Join Discord Server
+                </span>
+              </a>
+              
+              {/* Instagram */}
+              <a 
+                href="https://www.instagram.com/musicadvisor.xyz" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex flex-col items-center p-6 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
+              >
+                <div className="bg-purple-100 p-4 rounded-full mb-4">
+                  <Instagram className="w-10 h-10 text-purple-600" />
+                </div>
+                <h4 className="text-xl font-semibold text-gray-900 mb-2">Follow on Instagram</h4>
+                <p className="text-gray-600 text-center mb-4">
+                  Get inspired by visual content, success stories, and behind-the-scenes from our community.
+                </p>
+                <span className="inline-flex items-center px-4 py-2 bg-purple-600 text-white font-medium rounded-full hover:bg-purple-700 transition-colors">
+                  Follow @musicadvisor.xyz
+                </span>
+              </a>
+            </div>
+          </div>
+          
           <div className="mt-8">
             <p className="text-lg text-gray-600">
-              Our community platform is coming soon! Sign up for our newsletter to be notified when we launch.
+              Our full community platform is coming soon! Join our social channels now to be the first to know when we launch.
             </p>
             <div className="mt-6">
               <Link 
@@ -184,7 +232,7 @@ export default function CommunityPage() {
             We're working hard to create the best possible community experience for musicians and industry professionals.
           </p>
           <p className="text-lg text-gray-600 mb-6">
-            In the meantime, explore our tools and resources to help you on your music journey.
+            In the meantime, join our Discord server and follow us on Instagram to connect with our growing community!
           </p>
           <Link 
             href="/guides"
