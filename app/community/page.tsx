@@ -38,6 +38,27 @@ export default function CommunityPage() {
             <p className="text-lg text-indigo-200 mb-5">
               A supportive network of musicians, producers, and industry experts
             </p>
+            
+            <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
+              <a 
+                href="https://discord.gg/5tqCqTqbsc" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-8 py-3 bg-white text-indigo-600 text-lg font-medium rounded-full hover:bg-indigo-100 transition-colors"
+              >
+                <MessageSquare className="w-5 h-5 mr-2" />
+                Join Discord
+              </a>
+              <a 
+                href="https://www.instagram.com/musicadvisor.xyz" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-8 py-3 bg-white text-purple-600 text-lg font-medium rounded-full hover:bg-purple-100 transition-colors"
+              >
+                <Instagram className="w-5 h-5 mr-2" />
+                Follow on Instagram
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -59,9 +80,9 @@ export default function CommunityPage() {
           
           {/* Social Platforms */}
           <div className="mt-10 mb-12 bg-white rounded-lg shadow-md p-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">Join Us on Social Media</h3>
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Community is Live!</h3>
             <p className="text-lg text-gray-600 mb-6">
-              Connect with our community on Discord and Instagram to stay updated, share your music, and interact with fellow artists.
+              Join our active communities on Discord and Instagram to connect with fellow artists, share your music, and stay updated with the latest resources.
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
@@ -107,17 +128,8 @@ export default function CommunityPage() {
           
           <div className="mt-8">
             <p className="text-lg text-gray-600">
-              Our full community platform is coming soon! Join our social channels now to be the first to know when we launch.
+              Our community is growing every day! Join our Discord server and Instagram page to connect with other artists and influencers.
             </p>
-            <div className="mt-6">
-              <Link 
-                href="/tools"
-                className="inline-flex items-center px-8 py-3 bg-indigo-600 text-white text-lg font-medium rounded-full hover:bg-indigo-700 transition-colors"
-              >
-                <Users className="w-5 h-5 mr-2" />
-                Explore Our Tools
-              </Link>
-            </div>
           </div>
         </section>
 
@@ -225,29 +237,32 @@ export default function CommunityPage() {
           </div>
         </section>
 
-        {/* Coming Soon Section */}
+        {/* Join Now Section */}
         <section className="text-center bg-indigo-50 rounded-lg p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Community Platform Coming Soon</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Join Our Community Today!</h2>
           <p className="text-lg text-gray-600 mb-6">
-            We're working hard to create the best possible community experience for musicians and industry professionals.
+            Our community is live and growing! Connect with fellow artists and influencers on Discord and Instagram.
           </p>
-          <p className="text-lg text-gray-600 mb-6">
-            In the meantime, join our Discord server and follow us on Instagram to connect with our growing community!
-          </p>
-          <Link 
-            href="/guides"
-            className="inline-flex items-center px-8 py-3 bg-indigo-600 text-white text-lg font-medium rounded-full hover:bg-indigo-700 transition-colors mr-4"
-          >
-            <Share2 className="w-5 h-5 mr-2" />
-            Explore Guides
-          </Link>
-          <Link 
-            href="/tools"
-            className="inline-flex items-center px-8 py-3 bg-gray-600 text-white text-lg font-medium rounded-full hover:bg-gray-700 transition-colors"
-          >
-            <Zap className="w-5 h-5 mr-2" />
-            Discover Tools
-          </Link>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <a 
+              href="https://discord.gg/5tqCqTqbsc" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center px-8 py-3 bg-indigo-600 text-white text-lg font-medium rounded-full hover:bg-indigo-700 transition-colors"
+            >
+              <MessageSquare className="w-5 h-5 mr-2" />
+              Join Discord
+            </a>
+            <a 
+              href="https://www.instagram.com/musicadvisor.xyz" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center px-8 py-3 bg-purple-600 text-white text-lg font-medium rounded-full hover:bg-purple-700 transition-colors"
+            >
+              <Instagram className="w-5 h-5 mr-2" />
+              Follow on Instagram
+            </a>
+          </div>
         </section>
       </div>
     </main>
