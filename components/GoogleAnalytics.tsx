@@ -3,8 +3,8 @@
 import Script from 'next/script';
 
 export default function GoogleAnalytics() {
-  const GA_MEASUREMENT_ID = 'G-SBL4322M3P'; // Correct measurement ID
-
+  const GA_MEASUREMENT_ID = 'G-072196R4C8'; // Updated measurement ID - replaced old ID that overlapped with previous website
+  
   return (
     <>
       <Script
