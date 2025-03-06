@@ -2,6 +2,7 @@
 
 // Initialize Google Analytics
 export const GA_MEASUREMENT_ID = 'G-072196R4C8';
+export const GA_DOMAIN = 'musicadvisor.xyz';
 
 // Log page views
 export const pageview = (url: string, title?: string) => {
@@ -10,6 +11,7 @@ export const pageview = (url: string, title?: string) => {
       page_path: url,
       page_title: title || document.title,
       page_location: window.location.href,
+      send_to: GA_MEASUREMENT_ID
     });
     console.log('GA pageview tracked:', url);
   } else {
@@ -29,6 +31,7 @@ export const event = ({ action, category, label, value }: {
       event_category: category,
       event_label: label,
       value: value,
+      send_to: GA_MEASUREMENT_ID
     });
     console.log('GA event tracked:', { action, category, label, value });
   } else {
