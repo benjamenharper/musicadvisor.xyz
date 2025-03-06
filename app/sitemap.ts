@@ -11,90 +11,124 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Base URL from environment or default
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://musicadvisor.xyz';
-
-  // Static routes
+  
+  // Current date for static pages
+  const currentDate = new Date();
+  
+  // Static routes - core pages
   const routes = [
     {
       url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
+      lastModified: currentDate,
+      changeFrequency: 'daily' as const,
       priority: 1,
     },
     {
       url: `${baseUrl}/virtual-music-game-room`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/ai-music`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/services`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/about`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.5,
+      lastModified: currentDate,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
     },
     {
       url: `${baseUrl}/hotly`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.7,
     },
     {
       url: `${baseUrl}/resources`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.6,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/guides`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/community`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/tools`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
     }
   ];
 
   // Add category pages
   const categoryRoutes = categories.map((category) => ({
     url: `${baseUrl}/category/${category.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly',
+    lastModified: currentDate,
+    changeFrequency: 'weekly' as const,
     priority: 0.7,
   }));
 
   // Add post pages
   const postRoutes = posts.map((post) => ({
     url: `${baseUrl}/${post.slug}`,
-    lastModified: new Date(post.modified),
-    changeFrequency: 'monthly',
+    lastModified: new Date(post.modified || post.date),
+    changeFrequency: 'monthly' as const,
     priority: 0.6,
   }));
 
   // Add author pages
   const authorRoutes = authors.map((author) => ({
     url: `${baseUrl}/authors/${author.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly',
+    lastModified: currentDate,
+    changeFrequency: 'monthly' as const,
     priority: 0.5,
   }));
 
   // Add WordPress pages
   const pageRoutes = pages.map((page) => ({
     url: `${baseUrl}/pages/${page.slug}`,
-    lastModified: new Date(page.modified),
-    changeFrequency: 'monthly',
+    lastModified: new Date(page.modified || page.date),
+    changeFrequency: 'monthly' as const,
     priority: 0.6,
   }));
 
-  return [
+  // Combine all routes
+  const allRoutes = [
     ...routes,
     ...categoryRoutes,
     ...postRoutes,
     ...authorRoutes,
     ...pageRoutes,
   ];
+
+  // Remove any duplicate URLs
+  const uniqueUrls = new Set();
+  const uniqueRoutes = allRoutes.filter(route => {
+    if (uniqueUrls.has(route.url)) {
+      return false;
+    }
+    uniqueUrls.add(route.url);
+    return true;
+  });
+
+  return uniqueRoutes;
 }
