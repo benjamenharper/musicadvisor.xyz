@@ -6,12 +6,20 @@ import ClientSideProvider from "@/components/providers/ClientSideProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import dynamic from 'next/dynamic';
 
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
   display: 'swap',
 });
+
+const GADebug = dynamic(() => 
+  process.env.NODE_ENV === 'development' 
+    ? import('@/components/GADebug').then(mod => mod.default)
+    : Promise.resolve(() => null),
+  { ssr: false }
+);
 
 export const metadata: Metadata = {
   title: {
@@ -78,6 +86,7 @@ export default function RootLayout({
             </div>
           </ClientLayout>
         </ClientSideProvider>
+        <GADebug />
       </body>
     </html>
   );

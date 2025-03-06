@@ -1,15 +1,39 @@
 'use client';
 
 import Script from 'next/script';
+import { useEffect } from 'react';
+import { GA_MEASUREMENT_ID, checkGAStatus } from '@/lib/analytics';
 
 export default function GoogleAnalytics() {
-  const GA_MEASUREMENT_ID = 'G-072196R4C8'; // Updated measurement ID - replaced old ID that overlapped with previous website
+  useEffect(() => {
+    // Debug logging to verify GA is loading
+    console.log('Google Analytics component mounted with ID:', GA_MEASUREMENT_ID);
+    
+    // Check if GA is loaded and working
+    checkGAStatus().then(isLoaded => {
+      if (!isLoaded) {
+        console.warn('Google Analytics might be blocked by an extension or browser setting');
+      } else {
+        console.log('Google Analytics appears to be loaded correctly');
+      }
+    });
+  }, []);
+
+  const onGAScriptLoad = () => {
+    console.log('Google Analytics script loaded successfully');
+  };
+
+  const onGAScriptError = () => {
+    console.error('Failed to load Google Analytics script');
+  };
   
   return (
     <>
       <Script
         strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+        onLoad={onGAScriptLoad}
+        onError={onGAScriptError}
       />
       <Script
         id="google-analytics"
@@ -19,7 +43,12 @@ export default function GoogleAnalytics() {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', '${GA_MEASUREMENT_ID}');
+            gtag('config', '${GA_MEASUREMENT_ID}', {
+              page_path: window.location.pathname,
+              send_page_view: true,
+              debug_mode: true
+            });
+            console.log('Google Analytics config initialized');
           `,
         }}
       />
