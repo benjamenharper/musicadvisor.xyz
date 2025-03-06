@@ -52,20 +52,20 @@ export default function AboutPage() {
           <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Mission</h2>
           <div className="prose prose-lg">
             <p>
-              MusicAdvisor is your trusted source for music industry insights, promotion strategies, 
-              and expert advice. We help artists and music influencers navigate the ever-evolving digital 
-              landscape with actionable tips, in-depth analysis, and industry news.
+              MusicAdvisor is your ultimate source for music industry analysis, promotional techniques, 
+              and professional tips. We navigate music influencers and artists through the ever-evolving digital 
+              landscape with actionable tips, in-depth analysis, and music industry news.
             </p>
             <p>
-              Our mission is to empower musicians to thrive both as artists and as influential voices 
-              in the music community. We provide the knowledge, tools, and resources needed to create 
-              meaningful art, build engaged audiences, and develop sustainable careers in today's 
-              digital-first music industry.
+              Our mission is to empower artists to prosper as both creators and as viable voices 
+              in the music business. We provide the information, tools, and services artists need to create 
+              great work, reach and connect with audiences, and develop sustainable careers in the digital-first 
+              music business.
             </p>
             <p>
-              Whether you're an emerging artist looking to grow your influence or an established 
-              performer seeking to maximize your impact, our content is designed to help you reach your 
-              goals, connect with your audience, and transform your artistic passion into a thriving career.
+              Whether you're an emerging artist attempting to increase your exposure or an established 
+              act looking to maximize your career, our content is designed to help you reach your 
+              goals, connect with your audience, and build your musical passion into a viable career.
             </p>
           </div>
         </section>
@@ -91,16 +91,16 @@ export default function AboutPage() {
               <h3 className="text-lg text-indigo-600 mb-4">Music Industry Consultant</h3>
               <div className="prose prose-lg">
                 <p>
-                  Conor Murphy is a seasoned music industry consultant with a proven track record 
-                  in artist management and strategic growth. His expertise spans across business 
-                  strategy, career development, and influence building, helping artists make 
+                  Conor Murphy is a seasoned music industry consultant with a successful track record 
+                  in artist management and strategic development. He specializes in business 
+                  strategy, career development, and influence building that allows artists to make highly 
                   informed decisions about their careers.
                 </p>
                 <p>
-                  With years of hands-on experience in the music industry, Conor provides valuable 
-                  insights into artist management, audience development, and strategic planning. His 
-                  practical approach helps artists build sustainable careers and grow their influence 
-                  in today's competitive music landscape.
+                  Having worked practically in the music industry for years, Conor provides insightful 
+                  opinions regarding artist management, audience development, and planning strategy. Conor's 
+                  practical insight helps artists build long-term careers and amplify their influence in today's 
+                  competitive music business.
                 </p>
               </div>
               <div className="mt-6 flex gap-4">
@@ -147,14 +147,14 @@ export default function AboutPage() {
               <div className="prose prose-lg">
                 <p>
                   Angelica Peterson is our resident industry analyst, bringing data-driven insights 
-                  to our content. Her expertise in market trends and audience analytics helps artists 
-                  understand and navigate the complex music business landscape.
+                  to our content. Her expertise in market trends and audience analysis helps artists 
+                  understand and navigate the complex music industry landscape.
                 </p>
                 <p>
-                  With a background in both classical music and digital marketing, Angelica 
-                  understands the unique challenges faced by today's musicians. Her articles 
-                  focus on practical promotion strategies, influence building, and professional 
-                  development for artists looking to expand their reach.
+                  As a student of both classical music and digital marketing, Angelica knows the 
+                  particular challenges facing musicians today. Her writing focuses on actionable 
+                  promotion tips, establishing influence, and artist career growth aimed at those 
+                  looking to expand their audience.
                 </p>
                 <p>
                   When she's not writing for MusicAdvisor, Angelica consults with independent 
@@ -191,10 +191,9 @@ export default function AboutPage() {
                   musicians build strong, engaged audiences across multiple platforms.
                 </p>
                 <p>
-                  His coverage spans from major industry shifts to grassroots movements in the music 
-                  scene. Mark's writing style combines journalistic precision with accessible 
-                  explanations that help artists understand complex industry developments and leverage them 
-                  to grow their influence.
+                  His coverage spans from high-level industry shifts to grassroots movements in the music industry. 
+                  Mark's writing combines reportorial precision with explanatory clarity that enables artists to 
+                  understand complex industry trends and leverage them to grow their audiences.
                 </p>
               </div>
             </div>
@@ -222,18 +221,18 @@ export default function AboutPage() {
               <h3 className="text-lg text-indigo-600 mb-4">Content Strategist</h3>
               <div className="prose prose-lg">
                 <p>
-                  Alison Jenks specializes in content strategy and digital storytelling. Her background 
-                  in music journalism and social media management gives her unique insights into creating 
-                  compelling narratives that resonate with audiences and drive engagement.
+                  Alison Jenks is a digital storyteller and content strategist by trade. With a background 
+                  in social media management and music journalism, she has unique expertise in crafting 
+                  compelling stories that resonate with individuals and foster engagement.
                 </p>
                 <p>
-                  With expertise in both music business and digital influence, Alison provides 
-                  actionable insights and proven strategies for artists looking to thrive in the digital age. 
-                  Her articles focus on practical steps artists can take to grow their fanbase, establish 
-                  their influence, and maximize their promotional efforts.
+                  With a foundation in both music business and digital influence, Alison delivers 
+                  actionable tips and tried-and-true strategies for artists looking to thrive in the digital age. 
+                  Her writing focuses on achievable steps artists can take to grow their fanbase, build their 
+                  influence, and streamline their promotional efforts.
                 </p>
                 <p>
-                  Alison regularly speaks at music industry conferences and conducts online workshops 
+                  Alison regularly speaks at music business conferences and teaches online workshops 
                   on modern music promotion techniques and building influential artist brands.
                 </p>
               </div>
@@ -246,7 +245,7 @@ export default function AboutPage() {
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Get in Touch</h2>
           <div className="prose prose-lg">
             <p>
-              Have a question or want to contribute to MusicAdvisor? We'd love to hear from you. 
+              Have a question or want to contribute to MusicAdvisor? We would love to hear from you. 
               Contact us at <a href="mailto:contact@musicadvisor.xyz" className="text-indigo-600 hover:text-indigo-700">
               contact@musicadvisor.xyz</a>.
             </p>
