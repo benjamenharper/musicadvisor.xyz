@@ -158,8 +158,21 @@ function fixImageUrl(url: string): string {
     
     // If it's a WordPress content URL
     if (urlObj.pathname.includes('/wp-content/')) {
-      // Replace the domain with the WordPress domain
-      return `https://benh155.sg-host.com${urlObj.pathname}`;
+      // Check if the URL contains specific image names we know exist
+      const imageName = urlObj.pathname.split('/').pop() || '';
+      if (imageName.includes('playwitme') || 
+          imageName.includes('gameroom') || 
+          imageName.includes('dashboard')) {
+        
+        // Get the base name without size suffix (e.g., remove -1024x473)
+        const baseName = imageName.replace(/-\d+x\d+/, '');
+        
+        // Use the local version from the public directory
+        return `/${baseName}`;
+      }
+      
+      // For other WordPress content, keep the original domain but ensure no sizing parameters
+      return `https://benh155.sg-host.com${urlObj.pathname.replace(/-\d+x\d+/, '')}`;
     }
     
     // If it's a relative URL

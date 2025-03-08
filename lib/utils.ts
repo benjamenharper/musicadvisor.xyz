@@ -58,31 +58,51 @@ export function processWordPressContent(content: string, wpDomain: string = 'htt
   // Use regex to process the HTML content
   // This works on both server and client side
   
-  // First, handle WordPress specific URLs with wp-content paths
+  // First, handle specific known images that should be served from the local public directory
   let processedContent = content.replace(
+    /<img[^>]+src=["']([^"']+)(playwitme|gameroom|dashboard)(-\d+x\d+)?\.png["'][^>]*>/g,
+    (match, prefix, imageName, sizeSuffix) => {
+      // Replace with the local version from the public directory
+      return match.replace(
+        /src=["'][^"']+["']/g, 
+        `src="/${imageName}.png"`
+      );
+    }
+  );
+  
+  // Then handle WordPress specific URLs with wp-content paths
+  processedContent = processedContent.replace(
     /<img[^>]+src=["']([^"']+)["'][^>]*>/g,
     (match, src) => {
-      // Skip if the URL is already absolute
-      if (src.startsWith('data:') || src.startsWith('http://') || src.startsWith('https://')) {
-        // If it's a WordPress content URL but on a different domain, fix it
-        if (src.includes('/wp-content/') && 
-            !src.includes(domain) && 
-            (src.startsWith('http://') || src.startsWith('https://'))) {
-          const wpContentPath = src.substring(src.indexOf('/wp-content/'));
-          return match.replace(`src="${src}"`, `src="${domain}${wpContentPath}"`)
-                     .replace(`src='${src}'`, `src='${domain}${wpContentPath}'`);
-        }
+      // Skip if the URL is already absolute and not a WordPress content URL
+      if ((src.startsWith('http://') || src.startsWith('https://')) && 
+          (!src.includes('/wp-content/') || src.includes(domain))) {
         return match;
       }
       
-      // If it's a relative URL, make it absolute
-      const absoluteSrc = src.startsWith('/') 
-        ? `${domain}${src}` 
-        : `${domain}/${src}`;
+      // If it's a WordPress content URL but on a different domain, fix it
+      if (src.includes('/wp-content/') && 
+          !src.includes(domain) && 
+          (src.startsWith('http://') || src.startsWith('https://'))) {
+        const wpContentPath = src.substring(src.indexOf('/wp-content/'));
+        // Remove any image size parameters (e.g., -1024x473)
+        const cleanPath = wpContentPath.replace(/-\d+x\d+(\.[a-zA-Z0-9]+)$/, '$1');
+        return match.replace(`src="${src}"`, `src="${domain}${cleanPath}"`)
+                   .replace(`src='${src}'`, `src='${domain}${cleanPath}'`);
+      }
       
-      // Replace the src attribute with the absolute URL
-      return match.replace(`src="${src}"`, `src="${absoluteSrc}"`)
-                 .replace(`src='${src}'`, `src='${absoluteSrc}'`);
+      // If it's a relative URL, make it absolute
+      if (!src.startsWith('http://') && !src.startsWith('https://')) {
+        const absoluteSrc = src.startsWith('/') 
+          ? `${domain}${src}` 
+          : `${domain}/${src}`;
+        
+        // Replace the src attribute with the absolute URL
+        return match.replace(`src="${src}"`, `src="${absoluteSrc}"`)
+                   .replace(`src='${src}'`, `src='${absoluteSrc}'`);
+      }
+      
+      return match;
     }
   );
   
@@ -93,6 +113,12 @@ export function processWordPressContent(content: string, wpDomain: string = 'htt
       const srcsetParts = srcset.split(',');
       const processedParts = srcsetParts.map((part: string) => {
         const [srcUrl, descriptor] = part.trim().split(/\s+/);
+        
+        // Check if this is one of our known local images
+        if (srcUrl.includes('playwitme') || srcUrl.includes('gameroom') || srcUrl.includes('dashboard')) {
+          const imageName = srcUrl.split('/').pop()?.replace(/-\d+x\d+(\.[a-zA-Z0-9]+)$/, '$1') || '';
+          return `/${imageName} ${descriptor || ''}`.trim();
+        }
         
         // Skip if the URL is already absolute and not a WordPress content URL
         if ((srcUrl.startsWith('http://') || srcUrl.startsWith('https://')) && 
@@ -105,16 +131,22 @@ export function processWordPressContent(content: string, wpDomain: string = 'htt
             !srcUrl.includes(domain) && 
             (srcUrl.startsWith('http://') || srcUrl.startsWith('https://'))) {
           const wpContentPath = srcUrl.substring(srcUrl.indexOf('/wp-content/'));
-          const fixedUrl = `${domain}${wpContentPath}`;
+          // Remove any image size parameters (e.g., -1024x473)
+          const cleanPath = wpContentPath.replace(/-\d+x\d+(\.[a-zA-Z0-9]+)$/, '$1');
+          const fixedUrl = `${domain}${cleanPath}`;
           return descriptor ? `${fixedUrl} ${descriptor}` : fixedUrl;
         }
         
         // If it's a relative URL, make it absolute
-        const absoluteSrcUrl = srcUrl.startsWith('/') 
-          ? `${domain}${srcUrl}` 
-          : `${domain}/${srcUrl}`;
+        if (!srcUrl.startsWith('http://') && !srcUrl.startsWith('https://')) {
+          const absoluteSrcUrl = srcUrl.startsWith('/') 
+            ? `${domain}${srcUrl}` 
+            : `${domain}/${srcUrl}`;
+          
+          return descriptor ? `${absoluteSrcUrl} ${descriptor}` : absoluteSrcUrl;
+        }
         
-        return descriptor ? `${absoluteSrcUrl} ${descriptor}` : absoluteSrcUrl;
+        return part;
       });
       
       return `srcset="${processedParts.join(', ')}"`;
@@ -132,8 +164,10 @@ export function processWordPressContent(content: string, wpDomain: string = 'htt
             !src.includes(domain) && 
             (src.startsWith('http://') || src.startsWith('https://'))) {
           const wpContentPath = src.substring(src.indexOf('/wp-content/'));
-          return match.replace(`src="${src}"`, `src="${domain}${wpContentPath}"`)
-                     .replace(`src='${src}'`, `src='${domain}${wpContentPath}'`);
+          // Remove any image size parameters (e.g., -1024x473)
+          const cleanPath = wpContentPath.replace(/-\d+x\d+(\.[a-zA-Z0-9]+)$/, '$1');
+          return match.replace(`src="${src}"`, `src="${domain}${cleanPath}"`)
+                     .replace(`src='${src}'`, `src='${domain}${cleanPath}'`);
         }
         return match;
       }
