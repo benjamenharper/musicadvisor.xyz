@@ -44,3 +44,33 @@ export function decodeHTML(html: string): string {
   
   return html.replace(/&[#\w]+;/g, entity => entities[entity] || entity);
 }
+
+/**
+ * Processes WordPress content to ensure all image URLs are absolute
+ * and pointing to the correct WordPress domain
+ */
+export function processWordPressContent(content: string, wpDomain: string = 'https://benh155.sg-host.com'): string {
+  if (!content) return '';
+  
+  // Ensure wpDomain doesn't have a trailing slash
+  const domain = wpDomain.replace(/\/$/, '');
+  
+  // Process image tags to ensure they have absolute URLs
+  return content.replace(
+    /<img[^>]+src=["']([^"']+)["'][^>]*>/g,
+    (match, src) => {
+      // If the URL is already absolute, leave it alone
+      if (src.startsWith('http://') || src.startsWith('https://')) {
+        return match;
+      }
+      
+      // If it's a relative URL, make it absolute
+      const absoluteSrc = src.startsWith('/') 
+        ? `${domain}${src}` 
+        : `${domain}/${src}`;
+      
+      // Replace the src attribute with the absolute URL
+      return match.replace(src, absoluteSrc);
+    }
+  );
+}

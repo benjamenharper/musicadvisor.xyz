@@ -1,6 +1,6 @@
 import { fetchPosts, fetchCategories } from '@/lib/api';
 import { format } from 'date-fns';
-import { decodeHTML } from '@/lib/utils';
+import { decodeHTML, processWordPressContent } from '@/lib/utils';
 import Link from 'next/link';
 import AuthorAttribution from '@/components/AuthorAttribution';
 import { config } from '@/lib/config';
@@ -118,7 +118,7 @@ export default async function GuidesPage() {
                   </div>
                   <div 
                     className="mt-3 text-gray-600 line-clamp-3"
-                    dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
+                    dangerouslySetInnerHTML={{ __html: processWordPressContent(post.excerpt.rendered) }}
                   />
                 </div>
               </div>

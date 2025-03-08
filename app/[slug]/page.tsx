@@ -1,6 +1,6 @@
 import { fetchPostBySlug, fetchRecentPosts } from '@/lib/wordpress';
 import { format } from 'date-fns';
-import { decodeHTML } from '@/lib/utils';
+import { decodeHTML, processWordPressContent } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import AuthorAttribution from '@/components/AuthorAttribution';
@@ -89,7 +89,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
               {post.content.rendered && (
                 <div 
                   className="prose prose-lg max-w-none"
-                  dangerouslySetInnerHTML={{ __html: post.content.rendered }}
+                  dangerouslySetInnerHTML={{ __html: processWordPressContent(post.content.rendered) }}
                 />
               )}
             </article>
@@ -101,7 +101,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
               <div className="bg-white rounded-lg shadow-lg p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Posts</h2>
                 <div className="space-y-4">
-                  {recentPosts.filter(p => p.id !== post.id).slice(0, 4).map((recentPost) => (
+                  {recentPosts.filter((p: { id: number }) => p.id !== post.id).slice(0, 4).map((recentPost: { id: number, slug: string }) => (
                     <div key={recentPost.id} className="border-b border-gray-100 last:border-0 pb-4 last:pb-0">
                       <Link 
                         href={`/${recentPost.slug}`}

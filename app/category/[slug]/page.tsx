@@ -1,5 +1,5 @@
 import { fetchPosts, fetchCategories } from '@/lib/wordpress';
-import { decodeHTML } from '@/lib/utils';
+import { decodeHTML, processWordPressContent } from '@/lib/utils';
 import { format } from 'date-fns';
 import { notFound } from 'next/navigation';
 import AuthorAttribution from '@/components/AuthorAttribution';
@@ -9,7 +9,7 @@ import type { Metadata } from 'next';
 // Generate metadata for the category page
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const categories = await fetchCategories();
-  const category = categories.find(cat => cat.slug === params.slug);
+  const category = categories.find((cat: { slug: string }) => cat.slug === params.slug);
   
   if (!category) {
     return {
@@ -42,7 +42,7 @@ export default async function CategoryPage({ params }: { params: { slug: string 
     const categories = await fetchCategories();
     console.log('CategoryPage: All categories:', categories);
     
-    const category = categories.find(cat => cat.slug === params.slug);
+    const category = categories.find((cat: { slug: string }) => cat.slug === params.slug);
     console.log('CategoryPage: Found category:', category);
     
     if (!category) {
@@ -67,7 +67,7 @@ export default async function CategoryPage({ params }: { params: { slug: string 
             {category.description && (
               <div 
                 className="prose prose-lg mb-8 text-gray-600"
-                dangerouslySetInnerHTML={{ __html: category.description }}
+                dangerouslySetInnerHTML={{ __html: processWordPressContent(category.description) }}
               />
             )}
             <p className="text-gray-600">No posts found in this category.</p>
@@ -83,11 +83,11 @@ export default async function CategoryPage({ params }: { params: { slug: string 
           {category.description && (
             <div 
               className="prose prose-lg mb-8 text-gray-600"
-              dangerouslySetInnerHTML={{ __html: category.description }}
+              dangerouslySetInnerHTML={{ __html: processWordPressContent(category.description) }}
             />
           )}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {posts.map((post) => (
+            {posts.map((post: any) => (
               <article key={post.id} className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
                 {post._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
                   <div className="relative h-48">
@@ -118,7 +118,7 @@ export default async function CategoryPage({ params }: { params: { slug: string 
                   {post.excerpt.rendered && (
                     <div 
                       className="mt-3 text-gray-600 line-clamp-3"
-                      dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
+                      dangerouslySetInnerHTML={{ __html: processWordPressContent(post.excerpt.rendered) }}
                     />
                   )}
                 </div>
