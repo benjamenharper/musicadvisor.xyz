@@ -55,69 +55,99 @@ export function processWordPressContent(content: string, wpDomain: string = 'htt
   // Ensure wpDomain doesn't have a trailing slash
   const domain = wpDomain.replace(/\/$/, '');
   
-  // First, handle WordPress specific URLs that might be using wp-content paths
+  // Use regex to process the HTML content
+  // This works on both server and client side
+  
+  // First, handle WordPress specific URLs with wp-content paths
   let processedContent = content.replace(
-    /(src|href|srcset)=["']([^"']+)["']/gi,
-    (match, attribute, url) => {
-      // Skip if the URL is a data URL
-      if (url.startsWith('data:')) {
+    /<img[^>]+src=["']([^"']+)["'][^>]*>/g,
+    (match, src) => {
+      // Skip if the URL is already absolute
+      if (src.startsWith('data:') || src.startsWith('http://') || src.startsWith('https://')) {
+        // If it's a WordPress content URL but on a different domain, fix it
+        if (src.includes('/wp-content/') && 
+            !src.includes(domain) && 
+            (src.startsWith('http://') || src.startsWith('https://'))) {
+          const wpContentPath = src.substring(src.indexOf('/wp-content/'));
+          return match.replace(`src="${src}"`, `src="${domain}${wpContentPath}"`)
+                     .replace(`src='${src}'`, `src='${domain}${wpContentPath}'`);
+        }
         return match;
       }
       
-      // Handle wp-content URLs that might be using a different domain or relative paths
-      if (url.includes('/wp-content/')) {
-        // If it's already an absolute URL but not pointing to our WordPress domain
-        if ((url.startsWith('http://') || url.startsWith('https://')) && !url.includes(domain)) {
-          // Extract the path after wp-content
-          const wpContentPath = url.substring(url.indexOf('/wp-content/'));
-          return `${attribute}="${domain}${wpContentPath}"`;
-        }
-      }
+      // If it's a relative URL, make it absolute
+      const absoluteSrc = src.startsWith('/') 
+        ? `${domain}${src}` 
+        : `${domain}/${src}`;
       
-      // If it's not a wp-content URL or already has the correct domain, leave it as is
-      return match;
+      // Replace the src attribute with the absolute URL
+      return match.replace(`src="${src}"`, `src="${absoluteSrc}"`)
+                 .replace(`src='${src}'`, `src='${absoluteSrc}'`);
     }
   );
   
-  // Then process all remaining URLs in the content (src, href, srcset attributes)
-  return processedContent.replace(
-    /(src|href|srcset)=["']([^"']+)["']/gi,
-    (match, attribute, url) => {
-      // Skip if the URL is a data URL or already absolute with the correct domain
-      if (url.startsWith('data:') || 
-          (url.startsWith('http://') && url.includes(domain)) || 
-          (url.startsWith('https://') && url.includes(domain))) {
-        return match;
-      }
+  // Process srcset attributes
+  processedContent = processedContent.replace(
+    /srcset=["']([^"']+)["']/g,
+    (match, srcset) => {
+      const srcsetParts = srcset.split(',');
+      const processedParts = srcsetParts.map((part: string) => {
+        const [srcUrl, descriptor] = part.trim().split(/\s+/);
+        
+        // Skip if the URL is already absolute and not a WordPress content URL
+        if ((srcUrl.startsWith('http://') || srcUrl.startsWith('https://')) && 
+            (!srcUrl.includes('/wp-content/') || srcUrl.includes(domain))) {
+          return part;
+        }
+        
+        // If it's a WordPress content URL but on a different domain, fix it
+        if (srcUrl.includes('/wp-content/') && 
+            !srcUrl.includes(domain) && 
+            (srcUrl.startsWith('http://') || srcUrl.startsWith('https://'))) {
+          const wpContentPath = srcUrl.substring(srcUrl.indexOf('/wp-content/'));
+          const fixedUrl = `${domain}${wpContentPath}`;
+          return descriptor ? `${fixedUrl} ${descriptor}` : fixedUrl;
+        }
+        
+        // If it's a relative URL, make it absolute
+        const absoluteSrcUrl = srcUrl.startsWith('/') 
+          ? `${domain}${srcUrl}` 
+          : `${domain}/${srcUrl}`;
+        
+        return descriptor ? `${absoluteSrcUrl} ${descriptor}` : absoluteSrcUrl;
+      });
       
-      // If it's an absolute URL but not pointing to our WordPress domain, leave it
-      // (This handles external resources like CDNs, YouTube embeds, etc.)
-      if (url.startsWith('http://') || url.startsWith('https://')) {
-        return match;
-      }
-      
-      // Handle srcset attribute (multiple URLs)
-      if (attribute.toLowerCase() === 'srcset') {
-        const srcsetParts = url.split(',');
-        const processedParts = srcsetParts.map((part: string) => {
-          const [srcUrl, descriptor] = part.trim().split(/\s+/);
-          if (srcUrl.startsWith('http://') || srcUrl.startsWith('https://')) {
-            return part;
-          }
-          const absoluteSrcUrl = srcUrl.startsWith('/') 
-            ? `${domain}${srcUrl}` 
-            : `${domain}/${srcUrl}`;
-          return descriptor ? `${absoluteSrcUrl} ${descriptor}` : absoluteSrcUrl;
-        });
-        return `${attribute}="${processedParts.join(', ')}"`;
-      }
-      
-      // Handle regular src and href attributes
-      const absoluteUrl = url.startsWith('/') 
-        ? `${domain}${url}` 
-        : `${domain}/${url}`;
-      
-      return `${attribute}="${absoluteUrl}"`;
+      return `srcset="${processedParts.join(', ')}"`;
     }
   );
+  
+  // Process other media elements like video sources
+  processedContent = processedContent.replace(
+    /<(source|video|audio)[^>]+src=["']([^"']+)["'][^>]*>/g,
+    (match, tag, src) => {
+      // Skip if the URL is already absolute
+      if (src.startsWith('data:') || src.startsWith('http://') || src.startsWith('https://')) {
+        // If it's a WordPress content URL but on a different domain, fix it
+        if (src.includes('/wp-content/') && 
+            !src.includes(domain) && 
+            (src.startsWith('http://') || src.startsWith('https://'))) {
+          const wpContentPath = src.substring(src.indexOf('/wp-content/'));
+          return match.replace(`src="${src}"`, `src="${domain}${wpContentPath}"`)
+                     .replace(`src='${src}'`, `src='${domain}${wpContentPath}'`);
+        }
+        return match;
+      }
+      
+      // If it's a relative URL, make it absolute
+      const absoluteSrc = src.startsWith('/') 
+        ? `${domain}${src}` 
+        : `${domain}/${src}`;
+      
+      // Replace the src attribute with the absolute URL
+      return match.replace(`src="${src}"`, `src="${absoluteSrc}"`)
+                 .replace(`src='${src}'`, `src='${absoluteSrc}'`);
+    }
+  );
+  
+  return processedContent;
 }
