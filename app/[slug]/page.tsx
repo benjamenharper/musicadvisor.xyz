@@ -6,6 +6,10 @@ import Link from 'next/link';
 import AuthorAttribution from '@/components/AuthorAttribution';
 import SidebarWrapper from '@/components/sidebar/SidebarWrapper';
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
+
+// Dynamically import the ImageDebugger component (client-side only)
+const ImageDebugger = dynamic(() => import('@/components/ImageDebugger'), { ssr: false });
 
 // Generate metadata for the post
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
@@ -87,10 +91,14 @@ export default async function PostPage({ params }: { params: { slug: string } })
               </header>
 
               {post.content.rendered && (
-                <div 
-                  className="prose prose-lg max-w-none"
-                  dangerouslySetInnerHTML={{ __html: processWordPressContent(post.content.rendered) }}
-                />
+                <>
+                  <div 
+                    className="prose prose-lg max-w-none"
+                    dangerouslySetInnerHTML={{ __html: processWordPressContent(post.content.rendered) }}
+                  />
+                  {/* Image Debugger - will help diagnose image loading issues */}
+                  <ImageDebugger content={post.content.rendered} />
+                </>
               )}
             </article>
 
