@@ -101,17 +101,17 @@ export default async function PostPage({ params }: { params: { slug: string } })
               <div className="bg-white rounded-lg shadow-lg p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Posts</h2>
                 <div className="space-y-4">
-                  {recentPosts.filter((p: { id: number }) => p.id !== post.id).slice(0, 4).map((recentPost: { id: number, slug: string }) => (
+                  {recentPosts.filter((p: { id: number; slug: string; title?: { rendered: string }; date?: string }) => p.id !== post.id).slice(0, 4).map((recentPost: { id: number; slug: string; title?: { rendered: string }; date?: string }) => (
                     <div key={recentPost.id} className="border-b border-gray-100 last:border-0 pb-4 last:pb-0">
                       <Link 
                         href={`/${recentPost.slug}`}
                         className="block hover:text-indigo-600 transition-colors"
                       >
                         <h3 className="font-medium text-gray-900 line-clamp-2" 
-                          dangerouslySetInnerHTML={{ __html: recentPost.title.rendered || '' }}
+                          dangerouslySetInnerHTML={{ __html: recentPost.title?.rendered || '' }}
                         />
                         <time className="text-sm text-gray-500">
-                          {format(new Date(recentPost.date), 'MMMM d, yyyy')}
+                          {recentPost.date ? format(new Date(recentPost.date), 'MMMM d, yyyy') : ''}
                         </time>
                       </Link>
                     </div>
