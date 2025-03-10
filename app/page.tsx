@@ -117,7 +117,7 @@ export default async function Home() {
                 <h1 className="text-3xl md:text-4xl font-bold">Welcome to Music Advisor</h1>
               </div>
               <p className="text-xl md:text-2xl text-purple-100 mb-3">
-                Expert Guidance in the Digital Era
+                Expert Guidance in the A.I. Era
               </p>
               <p className="text-lg text-purple-200 mb-5">
                 For musicians and artists, by musicians and artists
