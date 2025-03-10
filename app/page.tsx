@@ -129,10 +129,10 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Callouts section - 2 column layout */}
+        {/* Callouts section - Single PlayWit.me callout */}
         <section className="max-w-7xl mx-auto mb-12 px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* PlayWit.me Banner - Left column */}
+          <div className="mx-auto max-w-3xl">
+            {/* PlayWit.me Banner */}
             <div className="border border-gray-200 rounded-xl overflow-hidden shadow-md">
               <div className="p-6">
                 <h2 className="text-2xl font-bold text-gray-800 mb-3">
@@ -152,34 +152,6 @@ export default async function Home() {
                   </Link>
                   <Link
                     href="/tools"
-                    className="inline-block text-gray-600 hover:text-gray-800 transition-colors text-sm"
-                  >
-                    Learn more →
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            {/* Music Game Room Banner - Right column */}
-            <div className="border border-gray-200 rounded-xl overflow-hidden shadow-md">
-              <div className="p-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-3">
-                  Host Music Game Room Experiences
-                </h2>
-                <p className="text-gray-700 mb-4">
-                  Host engaging music games where guests can play song trivia, guess songs, and connect with fellow music enthusiasts.
-                </p>
-                <div className="space-x-4">
-                  <Link
-                    href="https://bit.ly/hotlymusic"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block px-5 py-2 bg-gray-600 text-white rounded-lg text-sm font-medium hover:bg-gray-700 transition-colors"
-                  >
-                    Become A Host
-                  </Link>
-                  <Link
-                    href="/virtual-music-game-room"
                     className="inline-block text-gray-600 hover:text-gray-800 transition-colors text-sm"
                   >
                     Learn more →
