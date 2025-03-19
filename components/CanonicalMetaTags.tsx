@@ -2,8 +2,13 @@
 
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
+import Head from 'next/head';
 
-export default function CanonicalUrl() {
+/**
+ * Component that adds a canonical URL meta tag to the page
+ * This should be used in the root layout to ensure all pages have canonical URLs
+ */
+export default function CanonicalMetaTags() {
   const pathname = usePathname();
   const baseUrl = 'https://musicadvisor.xyz';
   const canonicalUrl = `${baseUrl}${pathname}`;

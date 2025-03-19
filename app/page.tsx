@@ -5,31 +5,21 @@ import Link from 'next/link';
 import AuthorAttribution from '@/components/AuthorAttribution';
 import { config } from '@/lib/config';
 import { Music } from 'lucide-react';
+import type { Metadata } from 'next';
+import { generateMetadata } from '@/lib/metadata';
 
 // Force dynamic rendering at runtime
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 export const revalidate = 0;
 
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Music Industry News & Expert Guidance',
-  description: 'Get expert guidance on music promotion, marketing, and distribution. Stay informed with the latest music industry trends, news, and strategies for success.',
-  keywords: ['music industry guidance', 'music promotion tips', 'music marketing advice', 'artist development', 'music industry news', 'music business strategy'],
-  openGraph: {
-    title: 'Music Industry News & Expert Guidance | MusicAdvisor.xyz',
-    description: 'Get expert guidance on music promotion, marketing, and distribution. Stay informed with the latest music industry trends.',
-    images: [
-      {
-        url: '/musicianscropped.png',
-        width: 1200,
-        height: 630,
-        alt: 'MusicAdvisor - Music Industry Guidance'
-      }
-    ]
-  }
-};
+export const metadata: Metadata = generateMetadata(
+  'Music Industry News & Expert Guidance',
+  'Get expert guidance on music promotion, marketing, and distribution. Stay informed with the latest music industry trends, news, and strategies for success.',
+  ['music industry guidance', 'music promotion tips', 'music marketing advice', 'artist development', 'music industry news', 'music business strategy'],
+  '/musicianscropped.png',
+  '/'
+);
 
 export default async function Home() {
   try {

@@ -6,7 +6,7 @@ import ClientSideProvider from "@/components/providers/ClientSideProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
-import CanonicalUrl from "@/components/CanonicalUrl";
+import CanonicalMetaTags from "@/components/CanonicalMetaTags";
 import dynamic from 'next/dynamic';
 
 const inter = Inter({
@@ -41,9 +41,6 @@ export const metadata: Metadata = {
   ],
   verification: {
     google: 'IzPak72Ui3pU-C9bh-jWxuAhvJMRhDWxPuUxhM0DGoA',
-  },
-  alternates: {
-    canonical: '/',
   },
   robots: {
     index: true,
@@ -89,7 +86,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans antialiased min-h-screen flex flex-col bg-background text-foreground`}>
         <GoogleAnalytics />
-        <CanonicalUrl />
+        <CanonicalMetaTags />
         <ClientSideProvider>
           <ClientLayout>
             <div className="min-h-screen bg-background flex flex-col">
