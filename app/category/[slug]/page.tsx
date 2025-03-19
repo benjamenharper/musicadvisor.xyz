@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import AuthorAttribution from '@/components/AuthorAttribution';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { generateCanonicalMetadata } from '@/lib/canonicalUrl';
 
 // Generate metadata for the category page
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
@@ -27,6 +28,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     title: `${categoryName} - Music Industry Insights`,
     description,
     keywords: [categoryName.toLowerCase(), 'music industry', 'music advice', 'music insights'],
+    ...generateCanonicalMetadata(`/category/${params.slug}`),
     openGraph: {
       title: `${categoryName} - Music Industry Insights | MusicAdvisor.xyz`,
       description

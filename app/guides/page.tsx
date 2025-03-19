@@ -5,6 +5,7 @@ import Link from 'next/link';
 import AuthorAttribution from '@/components/AuthorAttribution';
 import { config } from '@/lib/config';
 import { Rocket } from 'lucide-react';
+import { generateCanonicalMetadata } from '@/lib/canonicalUrl';
 
 // Force dynamic rendering at runtime
 export const dynamic = 'force-dynamic';
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
   title: 'Guides for Artists & Influencers',
   description: 'Discover expert guides for artists and influencers on music promotion, marketing, audience growth, and monetizing your passion.',
   keywords: ['music influencer', 'artist guides', 'music promotion', 'featured music content', 'AI music guides', 'music marketing strategies'],
+  ...generateCanonicalMetadata('/guides'),
   openGraph: {
     title: 'Guides for Artists & Influencers | MusicAdvisor.xyz',
     description: 'Discover expert guides for artists and influencers on music promotion, marketing, and audience growth.',
