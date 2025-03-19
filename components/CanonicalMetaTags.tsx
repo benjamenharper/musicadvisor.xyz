@@ -2,7 +2,6 @@
 
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
-import Head from 'next/head';
 
 /**
  * Component that adds a canonical URL meta tag to the page

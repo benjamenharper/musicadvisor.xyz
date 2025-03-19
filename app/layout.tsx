@@ -93,34 +93,7 @@ export default function RootLayout({
         <ClientSideProvider>
           <ClientLayout>
             <div className="min-h-screen bg-background flex flex-col">
-              <Header>
-                <nav className="flex items-center gap-4 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 border-b border-border">
-                  <a
-                    href="/about"
-                    className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    About
-                  </a>
-                  <a
-                    href="/guides"
-                    className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Guides
-                  </a>
-                  <a
-                    href="/community"
-                    className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Community
-                  </a>
-                  <a
-                    href="/tools"
-                    className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Tools
-                  </a>
-                </nav>
-              </Header>
+              <Header />
               <main className="flex-1">
                 {children}
               </main>

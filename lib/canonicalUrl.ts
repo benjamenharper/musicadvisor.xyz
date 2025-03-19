@@ -31,15 +31,3 @@ export function generateCanonicalMetadata(path: string) {
     },
   };
 }
-
-/**
- * Ensures that all pages have canonical URLs by providing a fallback
- * This function should be used in the root layout metadata
- */
-export function ensureCanonicalUrl() {
-  return {
-    alternates: {
-      canonical: 'https://musicadvisor.xyz',
-    },
-  };
-}
