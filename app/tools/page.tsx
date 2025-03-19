@@ -2,11 +2,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import type { Metadata } from 'next';
 import { Wrench, Share2, BarChart, Zap, Sparkles, TrendingUp } from 'lucide-react';
+import { generateCanonicalMetadata } from '@/lib/canonicalUrl';
 
 export const metadata: Metadata = {
   title: 'Tools for Artists & Influencers',
   description: 'Discover powerful tools for music artists and influencers to create viral experiences, engage with fans, and monetize their content. Explore PlayWit.me for creating interactive experiences.',
   keywords: ['artist tools', 'influencer tools', 'music artist', 'music influencer', 'PlayWit.me', 'fan engagement', 'creator tools', 'music monetization'],
+  ...generateCanonicalMetadata('/tools'),
   openGraph: {
     title: 'Tools for Artists & Influencers | MusicAdvisor.xyz',
     description: 'Discover powerful tools for music artists and influencers to create viral experiences, engage with fans, and monetize their content.',

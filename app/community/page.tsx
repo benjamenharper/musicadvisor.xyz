@@ -2,11 +2,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import type { Metadata } from 'next';
 import { MessageSquare, Users, Share2, Headphones, Music, Zap, Instagram } from 'lucide-react';
+import { generateCanonicalMetadata } from '@/lib/canonicalUrl';
 
 export const metadata: Metadata = {
   title: 'Join Our Music Community',
   description: 'Connect with fellow musicians, producers, and industry experts in our vibrant music community. Share your music, get feedback, and grow together.',
   keywords: ['music community', 'musician network', 'music collaboration', 'artist community', 'music feedback', 'discord', 'instagram'],
+  ...generateCanonicalMetadata('/community'),
   openGraph: {
     title: 'Join Our Music Community | MusicAdvisor.xyz',
     description: 'Connect with fellow musicians, producers, and industry experts in our vibrant music community.',

@@ -39,6 +39,9 @@ export const metadata: Metadata = {
     'influencer marketing',
     'music distribution',
   ],
+  alternates: {
+    canonical: 'https://musicadvisor.xyz',
+  },
   verification: {
     google: 'IzPak72Ui3pU-C9bh-jWxuAhvJMRhDWxPuUxhM0DGoA',
   },
@@ -91,7 +94,7 @@ export default function RootLayout({
           <ClientLayout>
             <div className="min-h-screen bg-background flex flex-col">
               <Header>
-                <nav className="flex items-center gap-4">
+                <nav className="flex items-center gap-4 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 border-b border-border">
                   <a
                     href="/about"
                     className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"

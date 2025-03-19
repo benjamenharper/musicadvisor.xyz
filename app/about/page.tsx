@@ -6,11 +6,13 @@ import markImage from '@/public/markjackson.jpg';
 import alisonImage from '@/public/alisonjenks.jpg';
 import conorImage from '@/public/conormurphy.png';
 import { Users } from 'lucide-react';
+import { generateCanonicalMetadata } from '@/lib/canonicalUrl';
 
 export const metadata: Metadata = {
   title: 'About MusicAdvisor | Helping Artists & Influencers Thrive',
   description: 'Meet the team behind MusicAdvisor. Industry experts providing guidance and strategies to help artists and music influencers succeed in today\'s digital landscape.',
   keywords: ['music industry experts', 'artist development', 'music influencers', 'music consultants', 'music industry professionals', 'music advisors', 'artist & influencer growth'],
+  ...generateCanonicalMetadata('/about'),
   openGraph: {
     title: 'About MusicAdvisor | Helping Artists & Influencers Thrive',
     description: 'Meet the team behind MusicAdvisor. Industry experts providing guidance and strategies to help artists and music influencers succeed.',

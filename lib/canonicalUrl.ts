@@ -17,7 +17,7 @@ export function getCanonicalUrl(path: string): string {
 }
 
 /**
- * Creates a server component that adds a canonical link to the document head
+ * Creates metadata that includes a canonical URL
  * For use in layout.tsx files or page.tsx files that need dynamic canonical URLs
  * 
  * @param path - The path for the canonical URL
@@ -28,6 +28,18 @@ export function generateCanonicalMetadata(path: string) {
   return {
     alternates: {
       canonical: url,
+    },
+  };
+}
+
+/**
+ * Ensures that all pages have canonical URLs by providing a fallback
+ * This function should be used in the root layout metadata
+ */
+export function ensureCanonicalUrl() {
+  return {
+    alternates: {
+      canonical: 'https://musicadvisor.xyz',
     },
   };
 }

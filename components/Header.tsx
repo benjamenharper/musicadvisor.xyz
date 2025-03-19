@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useStore } from '@/components/providers/StoreProvider';
 import { config } from '@/lib/config';
 
-export default function Header() {
+export default function Header({ children }: { children?: React.ReactNode }) {
   const currentSiteKey = useStore((state) => state.currentSiteKey);
   const site = config.sites[currentSiteKey];
 
@@ -65,6 +65,7 @@ export default function Header() {
               </Link>
             </div>
           </nav>
+          {children}
         </div>
       </div>
     </header>
