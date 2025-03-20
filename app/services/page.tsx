@@ -1,11 +1,13 @@
 import Link from 'next/link';
 import { Music, Radio, TrendingUp, Users, MessageSquare, Target } from 'lucide-react';
 import type { Metadata } from 'next';
+import { generateCanonicalMetadata } from '@/lib/canonicalUrl';
 
 export const metadata: Metadata = {
   title: 'Music Promotion & Distribution Services',
   description: 'Professional music promotion and distribution services to help artists reach their target audience. Get expert help with marketing, playlist pitching, and digital distribution.',
   keywords: ['music promotion', 'music distribution', 'playlist pitching', 'music marketing', 'digital distribution', 'artist promotion'],
+  ...generateCanonicalMetadata('/services'),
   openGraph: {
     title: 'Music Promotion & Distribution Services',
     description: 'Professional music promotion and distribution services to help artists reach their target audience.',
