@@ -6,6 +6,7 @@ import Link from 'next/link';
 import AuthorAttribution from '@/components/AuthorAttribution';
 import SidebarWrapper from '@/components/sidebar/SidebarWrapper';
 import type { Metadata } from 'next';
+import { generateCanonicalMetadata } from '@/lib/canonicalUrl';
 
 // Generate metadata for the post
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
@@ -25,6 +26,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   return {
     title,
     description,
+    ...generateCanonicalMetadata(`/${params.slug}`),
     openGraph: featuredImage ? {
       title,
       description,

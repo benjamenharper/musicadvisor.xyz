@@ -1,11 +1,13 @@
 import { ArrowRight, Music, Radio, Zap, Share2, BarChart2, Users } from 'lucide-react';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { generateCanonicalMetadata } from '@/lib/canonicalUrl';
 
 export const metadata: Metadata = {
   title: 'Start Your Music Journey with Hotly',
   description: 'Discover, share, and promote your music with Hotly. The most advanced music platform for artists and music lovers.',
   keywords: ['hotly music', 'music app', 'music promotion', 'music discovery', 'artist promotion'],
+  ...generateCanonicalMetadata('/hotly'),
   openGraph: {
     title: 'Start Your Music Journey with Hotly',
     description: 'Discover, share, and promote your music with Hotly.',
