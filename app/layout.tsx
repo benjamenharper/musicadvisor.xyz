@@ -39,9 +39,6 @@ export const metadata: Metadata = {
     'influencer marketing',
     'music distribution',
   ],
-  alternates: {
-    canonical: 'https://musicadvisor.xyz',
-  },
   verification: {
     google: 'IzPak72Ui3pU-C9bh-jWxuAhvJMRhDWxPuUxhM0DGoA',
   },
